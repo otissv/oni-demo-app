@@ -71,6 +71,28 @@ Tests live as `*_test.odin` next to the package under test. Prefer `./oni/script
 
 **App → engine:** Prefer `oni/api.odin` names (`o.Begin_Screen`, `o.Render`, `o.Load_Texture`, …). Import engine as `o`, widgets as `w`, set helpers as `set`.
 
+## Memory
+
+Every manual allocation must have a matching cleanup path — either explicit `delete`/`free` or bulk release via an arena. run tests after changes that allocate.
+
+**Allocators in this codebase:**
+
+| Allocator | Lifetime | Cleanup |
+|-----------|----------|---------|
+| `context.temp_allocator` | Current frame / proc scratch | Wiped by the engine each frame (`free_all`); do not `delete` |
+| Layout frame arena (`layout_frame_allocator()`) | One layout frame | `layout_frame_arena_reset` each frame; destroyed on shutdown |
+| `context.allocator` (heap) | Until explicitly freed | `delete` for slices/maps/strings; `free` for `new` |
+
+**Rules:**
+
+- Pick the allocator deliberately — do not heap-allocate ephemeral data and rely on process exit
+- Long-lived maps, dynamic arrays, and copied strings need `delete` (or key `delete` when removing map entries) in shutdown, unmount, or resize paths — see `ui_shutdown`, `widget_shutdown`, `layout_shutdown`
+- When the layout frame arena is active (`layout_uses_frame_arena()`), arena-owned slices must not be `delete`d individually; the arena reset frees them
+- Temp-allocator strings/keys that must survive a frame wipe need explicit retention (e.g. `widget_retain_key` before storing in maps)
+- Hot-reload `Persistent` is `free`d in `app_shutdown`; clear or `delete` any heap fields inside it before teardown
+- In tests and short-lived procs, use `defer delete(...)` / `defer free(...)` for heap allocations made in the test body
+
+
 ## Layout / draw pass
 
 Layout owns sizing/positioning and Draw paints only.
