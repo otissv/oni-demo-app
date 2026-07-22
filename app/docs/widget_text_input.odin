@@ -18,7 +18,7 @@ text_input_password_value: string = "secret"
 text_input_password_owned: bool
 
 @(private)
-text_input_multiline_value: string = "Line one\nLine two\nLine three"
+text_input_multiline_value: string = "Line one\nLine two\nLine three\nLine four\nLine five\nLine six\nLine seven"
 
 @(private)
 text_input_multiline_owned: bool
@@ -120,6 +120,7 @@ Widget_Text_Input :: proc() {
 					multiline = true,
 					width = set.Width(480),
 					height = set.Height(96),
+					overflow_y = set.Overflow_Y(.AUTO),
 				},
 				on_change = proc(_: w.Text_Input_Event, text: string) {
 					if text_input_multiline_owned {

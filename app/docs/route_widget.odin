@@ -20,7 +20,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_TABLE
+active_widget_option: Sidebar_Widgets_options = .WIDGET_TEXT_INPUT
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -151,9 +151,14 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 			active_widget_option = .WIDGET_RICH_TEXT_INPUT
 		},
 		child = proc(_: ui.Button_state) {
-			w.Text({
-				config = {id = "widget_sidebar_button_rich_text_input_text", text = "RichText Input"},
-			})
+			w.Text(
+				{
+					config = {
+						id = "widget_sidebar_button_rich_text_input_text",
+						text = "RichText Input",
+					},
+				},
+			)
 		},
 	})
 
