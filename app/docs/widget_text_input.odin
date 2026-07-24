@@ -23,6 +23,9 @@ text_input_multiline_value: string = "Line one\nLine two\nLine three\nLine four\
 @(private)
 text_input_multiline_owned: bool
 
+@(private)
+text_input_readonly_value: string = "read only value"
+
 Widget_Text_Input :: proc() {
 	w.Rectangle({
 		config = {
@@ -36,7 +39,7 @@ Widget_Text_Input :: proc() {
 				{
 					config = {
 						id = "text-input-demo-caption",
-						text = "Single-line, password, and multiline text inputs. Tab between fields; type to edit.",
+						text = "Single-line, password, multiline, and readonly text inputs. Tab between fields; type to edit.",
 					},
 				},
 			)
@@ -120,7 +123,7 @@ Widget_Text_Input :: proc() {
 					multiline = true,
 					width = set.Width(480),
 					height = set.Height(96),
-					overflow_y = set.Overflow_Y(.AUTO),
+					overflow_y = set.Overflow_Y(.SCROLL),
 				},
 				on_change = proc(_: w.Text_Input_Event, text: string) {
 					if text_input_multiline_owned {
@@ -130,6 +133,27 @@ Widget_Text_Input :: proc() {
 					}
 
 					text_input_multiline_value = text
+				},
+			})
+
+			w.Text(
+				{
+					config = {
+						id = "text-input-demo-readonly-label",
+						text = "Readonly",
+						font_size = set.F32(13),
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
+				},
+			)
+
+			w.Text_Input({
+				config = {
+					id = "text-input-demo-readonly",
+					text = text_input_readonly_value,
+					readonly = true,
+					width = set.Width(480),
+					height = set.Height(40),
 				},
 			})
 		},
