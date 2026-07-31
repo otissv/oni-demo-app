@@ -25,11 +25,7 @@ main_ui :: proc() {
 	c.Nav()
 
 	w.Rectangle({
-		config = {
-			id = "main",
-			y = set.F32(60),
-			padding = set.Padding(o.Pd_struct{x = 10}),
-		},
+		config = {id = "main", y = set.F32(60), padding = set.Padding(o.Pd_struct{x = 10})},
 		child = proc(state: w.Rectangle_State) {
 			#partial switch g.app.Route {
 			case .Artboard:

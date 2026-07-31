@@ -1,10 +1,19 @@
 package app
 
 import o "../oni"
-import g "./globlas"
 import w "../oni/widgets"
+import g "./globlas"
 import "core:fmt"
 import "core:mem"
+
+/*
+User-defined app classification. Values are stored in engine state via o.Set_App_Type_From.
+*/
+App_Type :: enum {
+	Application,
+	Game,
+}
+
 
 /*
 Root heap allocation shared between the host and hot-reloaded app library.
@@ -20,6 +29,16 @@ persistent: ^Persistent
 
 // Optional once-per-run hook; wire from app.odin when needed (see templates/app.odin).
 init: proc()
+
+
+install_app_type_defaults :: proc(type: o.App_Type_Id) {
+	switch App_Type(int(type)) {
+	case .Application:
+		o.Shortcut_Install_Tool_Defaults()
+	case .Game:
+		o.Shortcut_Install_Game_Defaults()
+	}
+}
 
 /*
 Re-binds o engine, theme, and globals.app to the current persistent state.
@@ -43,6 +62,8 @@ ensure_persistent :: proc() {
 		persistent.app.Route = .Widgets
 	}
 	bind()
+	o.Register_App_Type_Defaults(install_app_type_defaults)
+	o.Set_App_Type_From(App_Type, App_Type.Application)
 }
 
 /*
@@ -71,7 +92,7 @@ Re-registers app-owned shortcut action procs after a DLL swap.
 Does not reload bindings from disk (in-memory table survives in Persistent).
 */
 rebind_app_shortcuts :: proc() {
-	// Register app Shortcut_Register_Action handlers here.
+	o.Register_App_Type_Defaults(install_app_type_defaults)
 }
 
 /*
