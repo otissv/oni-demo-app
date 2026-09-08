@@ -14,6 +14,7 @@ Sidebar_Widgets_options :: enum {
 	WIDGET_RECTANGLE,
 	WIDGET_RICH_TEXT,
 	WIDGET_RICH_TEXT_INPUT,
+	WIDGET_SELECT,
 	WIDGET_TEXT,
 	WIDGET_TEXT_INPUT,
 	WIDGET_TABLE,
@@ -44,6 +45,8 @@ widget_container := proc(state: w.Rectangle_State) {
 		WidgetText()
 	case .WIDGET_TEXT_INPUT:
 		Widget_Text_Input()
+	case .WIDGET_SELECT:
+		Widget_Select()
 	}
 }
 
@@ -172,6 +175,19 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		},
 		child = proc(_: ui.Button_state) {
 			w.Text({config = {id = "widget_sidebar_button_preserve_text", text = "Preserve"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_select",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_SELECT
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_select_text", text = "Select"}})
 		},
 	})
 
