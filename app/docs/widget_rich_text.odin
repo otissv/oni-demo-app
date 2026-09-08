@@ -23,6 +23,7 @@ Widget_Rich_Text :: proc() {
 				},
 			)
 
+
 			w.RichText(
 				{
 					config = {

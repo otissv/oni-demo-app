@@ -29,6 +29,17 @@ Widget_Rich_Text_Input :: proc() {
 				},
 			)
 
+
+			w.Text(
+				{
+					config = {
+						for_id = "rich-text-input-demo-field",
+						id = "rich-text-demo-lable",
+						text = "RichTextxxxxxxxxxxxxxxxxx",
+					},
+				},
+			)
+
 			w.Rich_Text_Input({
 				config = {
 					id = "rich-text-input-demo-field",

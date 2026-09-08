@@ -77,6 +77,7 @@ Widget_Text_Input :: proc() {
 			w.Text(
 				{
 					config = {
+						for_id = "text-input-demo-password",
 						id = "text-input-demo-password-label",
 						text = "Password",
 						font_size = set.F32(13),
@@ -107,6 +108,7 @@ Widget_Text_Input :: proc() {
 			w.Text(
 				{
 					config = {
+						for_id = "text-input-demo-multiline",
 						id = "text-input-demo-multiline-label",
 						text = "Multiline",
 						font_size = set.F32(13),
@@ -147,15 +149,17 @@ Widget_Text_Input :: proc() {
 				},
 			)
 
-			w.Text_Input({
-				config = {
-					id = "text-input-demo-readonly",
-					text = text_input_readonly_value,
-					readonly = true,
-					width = set.Width(480),
-					height = set.Height(40),
+			w.Text_Input(
+				{
+					config = {
+						id = "text-input-demo-readonly",
+						text = text_input_readonly_value,
+						readonly = true,
+						width = set.Width(480),
+						height = set.Height(40),
+					},
 				},
-			})
+			)
 		},
 	})
 }
