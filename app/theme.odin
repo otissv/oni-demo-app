@@ -6,6 +6,7 @@ import o "../oni"
 Builds the default app theme with fonts from settings.kdl.
 
 Replaces registered font families from settings, then sets body/heading sizes.
+Engine Inter faces are used when settings omit faces.
 Palette, spacing, and layout defaults come from o.
 */
 build_theme :: proc() -> o.Theme {
