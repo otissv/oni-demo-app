@@ -8,9 +8,11 @@
 //   family Inter { … }  // family name is an argument, not family=Inter
 
 // ---------------------------------------------------------------------------
-// window — Window title / size / minimums (applied live on file change)
+// window — title / size / minimums / mode (applied live on file change)
+//   mode window | borderless | maximize | fullscreen
 // ---------------------------------------------------------------------------
 window {
+    mode window
     title "Oni GUI"
     width 1280
     height 720
