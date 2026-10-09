@@ -212,6 +212,7 @@ app_shutdown :: proc() {
 	bind()
 	save_shortcuts()
 	w.Shortcuts_Table_Session_Destroy(&persistent.app.shortcuts_table)
+	w.Shutdown()
 	o.Shutdown()
 	free(persistent)
 	persistent = nil

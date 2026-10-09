@@ -9,19 +9,23 @@ import w "../../oni/widgets"
 @(private)
 Sidebar_Widgets_options :: enum {
 	WIDGET_BUTTON,
+	WIDGET_CHECKBOX,
 	WIDGET_IMAGE,
+	WIDGET_LINK,
 	WIDGET_PRESERVE,
+	WIDGET_RADIO,
 	WIDGET_RECTANGLE,
 	WIDGET_RICH_TEXT,
 	WIDGET_RICH_TEXT_INPUT,
 	WIDGET_SELECT,
+	WIDGET_SLIDER,
 	WIDGET_TEXT,
 	WIDGET_TEXT_INPUT,
 	WIDGET_TABLE,
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_RICH_TEXT_INPUT
+active_widget_option: Sidebar_Widgets_options = .WIDGET_CHECKBOX
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -35,6 +39,12 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Image()
 	case .WIDGET_BUTTON:
 		Widget_Button()
+	case .WIDGET_CHECKBOX:
+		Widget_Checkbox()
+	case .WIDGET_LINK:
+		Widget_Link()
+	case .WIDGET_RADIO:
+		Widget_Radio()
 	case .WIDGET_PRESERVE:
 		Widget_Preserve()
 	case .WIDGET_RICH_TEXT:
@@ -47,6 +57,8 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Text_Input()
 	case .WIDGET_SELECT:
 		Widget_Select()
+	case .WIDGET_SLIDER:
+		Widget_Slider()
 	}
 }
 
@@ -77,6 +89,44 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		},
 	})
 
+	ui.Button({
+		id = "widget_sidebar_button_checkbox",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_CHECKBOX
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_checkbox_text", text = "Checkbox"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_radio",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_RADIO
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_radio_text", text = "Radio"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_link",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_LINK
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_link_text", text = "Link"}})
+		},
+	})
 
 	ui.Button({
 		id = "widget_sidebar_button_image",
@@ -188,6 +238,19 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		},
 		child = proc(_: ui.Button_state) {
 			w.Text({config = {id = "widget_sidebar_button_select_text", text = "Select"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_slider",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_SLIDER
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_slider_text", text = "Slider"}})
 		},
 	})
 

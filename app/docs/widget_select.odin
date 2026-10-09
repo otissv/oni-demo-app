@@ -58,21 +58,17 @@ select_demo_on_langs_values :: proc(values: []string) {
 
 @(private)
 select_demo_fruit_trigger :: proc(_: w.Select_Trigger_State) {
-	w.Select_Value({
-		config = {id = "select-demo-fruit-value"},
-		placeholder = "Pick a fruit…",
-	})
+	w.Select_Value({config = {id = "select-demo-fruit-value"}, placeholder = "Pick a fruit…"})
 }
 
 @(private)
 select_demo_fruit_child :: proc(_: w.Select_State) {
-	w.Select_Trigger({
-		config = {
-			id = "select-demo-fruit-trigger",
-			width = set.Width(f32(240)),
+	w.Select_Trigger(
+		{
+			config = {id = "select-demo-fruit-trigger", width = set.Width(f32(240))},
+			child = select_demo_fruit_trigger,
 		},
-		child = select_demo_fruit_trigger,
-	})
+	)
 }
 
 @(private)
@@ -91,29 +87,22 @@ select_demo_fruit_group :: proc(_: w.Option_Group_State) {
 
 @(private)
 select_demo_fruit_content :: proc(_: w.Select_State) {
-	w.Option_Group({
-		config = {id = "select-demo-fruit-group"},
-		child = select_demo_fruit_group,
-	})
+	w.Option_Group({config = {id = "select-demo-fruit-group"}, child = select_demo_fruit_group})
 }
 
 @(private)
 select_demo_theme_trigger :: proc(_: w.Select_Trigger_State) {
-	w.Select_Value({
-		config = {id = "select-demo-theme-value"},
-		placeholder = "Theme",
-	})
+	w.Select_Value({config = {id = "select-demo-theme-value"}, placeholder = "Theme"})
 }
 
 @(private)
 select_demo_theme_child :: proc(_: w.Select_State) {
-	w.Select_Trigger({
-		config = {
-			id = "select-demo-theme-trigger",
-			width = set.Width(f32(240)),
+	w.Select_Trigger(
+		{
+			config = {id = "select-demo-theme-trigger", width = set.Width(f32(240))},
+			child = select_demo_theme_trigger,
 		},
-		child = select_demo_theme_trigger,
-	})
+	)
 }
 
 @(private)
@@ -125,10 +114,7 @@ select_demo_theme_group :: proc(_: w.Option_Group_State) {
 
 @(private)
 select_demo_theme_content :: proc(_: w.Select_State) {
-	w.Option_Group({
-		config = {id = "select-demo-theme-group"},
-		child = select_demo_theme_group,
-	})
+	w.Option_Group({config = {id = "select-demo-theme-group"}, child = select_demo_theme_group})
 }
 
 @(private)
@@ -142,10 +128,7 @@ select_demo_langs_group :: proc(_: w.Option_Group_State) {
 
 @(private)
 select_demo_langs_content :: proc(_: w.Select_State) {
-	w.Option_Group({
-		config = {id = "select-demo-langs-group"},
-		child = select_demo_langs_group,
-	})
+	w.Option_Group({config = {id = "select-demo-langs-group"}, child = select_demo_langs_group})
 }
 
 @(private)
@@ -181,16 +164,18 @@ select_demo_body :: proc(_: w.Rectangle_State) {
 		},
 	)
 
-	w.Select({
-		config = {id = "select-demo-fruit"},
-		value = select_demo_fruit,
-		open = select_demo_fruit_open,
-		autocomplete = "off",
-		on_value_change = select_demo_on_fruit_value,
-		on_open_change = select_demo_on_fruit_open,
-		child = select_demo_fruit_child,
-		content = select_demo_fruit_content,
-	})
+	w.Select(
+		{
+			config = {id = "select-demo-fruit"},
+			value = select_demo_fruit,
+			open = select_demo_fruit_open,
+			autocomplete = "off",
+			on_value_change = select_demo_on_fruit_value,
+			on_open_change = select_demo_on_fruit_open,
+			child = select_demo_fruit_child,
+			content = select_demo_fruit_content,
+		},
+	)
 
 	fruit_status := select_demo_fruit != "" ? select_demo_fruit : "(none)"
 	w.Text(
@@ -215,17 +200,19 @@ select_demo_body :: proc(_: w.Rectangle_State) {
 		},
 	)
 
-	w.Select({
-		config = {id = "select-demo-theme"},
-		value = select_demo_theme,
-		open = select_demo_theme_open,
-		disabled = true,
-		autocomplete = "on",
-		on_value_change = select_demo_on_theme_value,
-		on_open_change = select_demo_on_theme_open,
-		child = select_demo_theme_child,
-		content = select_demo_theme_content,
-	})
+	w.Select(
+		{
+			config = {id = "select-demo-theme"},
+			value = select_demo_theme,
+			open = select_demo_theme_open,
+			disabled = true,
+			autocomplete = "on",
+			on_value_change = select_demo_on_theme_value,
+			on_open_change = select_demo_on_theme_open,
+			child = select_demo_theme_child,
+			content = select_demo_theme_content,
+		},
+	)
 
 	w.Text(
 		{
@@ -238,15 +225,17 @@ select_demo_body :: proc(_: w.Rectangle_State) {
 		},
 	)
 
-	w.Select({
-		config = {id = "select-demo-langs"},
-		multiple = true,
-		size = 4,
-		values = select_demo_langs[:],
-		autocomplete = "off",
-		on_values_change = select_demo_on_langs_values,
-		content = select_demo_langs_content,
-	})
+	w.Select(
+		{
+			config = {id = "select-demo-langs"},
+			multiple = true,
+			size = 4,
+			values = select_demo_langs[:],
+			autocomplete = "off",
+			on_values_change = select_demo_on_langs_values,
+			content = select_demo_langs_content,
+		},
+	)
 
 	w.Text(
 		{
@@ -261,13 +250,15 @@ select_demo_body :: proc(_: w.Rectangle_State) {
 }
 
 Widget_Select :: proc() {
-	w.Rectangle({
-		config = {
-			id = "select-demo",
-			direction = set.Direction(.VERTICAL),
-			gap_y = set.Gap_Y(u16(12)),
-			width = set.Width(f32(480)),
+	w.Rectangle(
+		{
+			config = {
+				id = "select-demo",
+				direction = set.Direction(.VERTICAL),
+				gap_y = set.Gap_Y(u16(12)),
+				width = set.Width(f32(480)),
+			},
+			child = select_demo_body,
 		},
-		child = select_demo_body,
-	})
+	)
 }
