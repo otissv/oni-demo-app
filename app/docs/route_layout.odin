@@ -28,6 +28,7 @@ Sidebar_Layout_options :: enum {
 	LAYOUT_OPACITY,
 	LAYOUT_POPOVER,
 	LAYOUT_SCROLLVIEW,
+	LAYOUT_GRID,
 }
 
 @(private)
@@ -80,6 +81,8 @@ layout_container := proc(state: w.Rectangle_State) {
 		Layout_Popover()
 	case .LAYOUT_SCROLLVIEW:
 		Layout_Scrollview()
+	case .LAYOUT_GRID:
+		Layout_Grid()
 	}
 }
 
@@ -372,6 +375,19 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		},
 		child = proc(_: ui.Button_state) {
 			w.Text({config = {id = "layout-scrollview-nav", text = "Scrollview"}})
+		},
+	})
+
+	ui.Button({
+		id = "layout-grid",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_layout_option = .LAYOUT_GRID
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "layout-grid-nav", text = "Grid"}})
 		},
 	})
 }

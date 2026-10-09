@@ -22,6 +22,63 @@ select_demo_theme_open: bool
 select_demo_langs: [dynamic]string
 
 @(private)
+SELECT_DOCS_USAGE_IMPORT :: `import w "oni/widgets"
+import set "oni/set"`
+
+@(private)
+SELECT_DOCS_USAGE_CALL :: `w.Select({
+	config = {id = "fruit"},
+	value = fruit,
+	open = fruit_open,
+	on_value_change = proc(v: string) { fruit = v },
+	on_open_change = proc(o: bool) { fruit_open = o },
+	child = proc(_: w.Select_State) {
+		w.Select_Trigger({ config = {id = "fruit_trigger"}, child = ... })
+	},
+	content = proc(_: w.Select_State) {
+		w.Option_Group({ config = {id = "fruit_group"}, child = ... })
+	},
+})`
+
+@(private)
+SELECT_DOCS_PROPS := [?]Doc_Prop_Row {
+	{"config", "Select_Config (= Widget_Config)", "{}"},
+	{"value", "string", `""`},
+	{"values", "[]string", "nil"},
+	{"open", "bool", "false"},
+	{"name", "string", `""`},
+	{"required", "bool", "false"},
+	{"disabled", "bool", "false"},
+	{"multiple", "bool", "false"},
+	{"size", "u8", "0"},
+	{"autocomplete", "string", `""`},
+	{"on_value_change", "proc(value: string)", "nil"},
+	{"on_values_change", "proc(values: []string)", "nil"},
+	{"on_open_change", "proc(open: bool)", "nil"},
+	{"child", "proc(Select_State)", "nil"},
+	{"content", "proc(Select_State)", "nil"},
+	{"unmount", "bool", "false"},
+	{"can_interactive_during_mount", "bool", "false"},
+	{"on_mount", "proc(Select_State) -> Mount", "nil"},
+	{"on_unmount", "proc(Select_State) -> Mount", "nil"},
+	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
+	{"scroll_bar", "Scroll_Bar_Style", "{}"},
+	{"on_focus", "proc(Select_Event)", "nil"},
+	{"on_blur", "proc(Select_Event)", "nil"},
+	{"on_mouse_enter", "proc(Select_Event)", "nil"},
+	{"on_mouse_leave", "proc(Select_Event)", "nil"},
+	{"on_mouse_pressed", "proc(Select_Event)", "nil"},
+	{"on_mouse_down", "proc(Select_Event)", "nil"},
+	{"on_mouse_released", "proc(Select_Event)", "nil"},
+	{"on_mouse_move", "proc(Select_Event)", "nil"},
+	{"on_click", "proc(Select_Event)", "nil"},
+	{"on_contextmenu", "proc(Select_Event)", "nil"},
+	{"on_key_pressed", "proc(Select_Event)", "nil"},
+	{"on_key_down", "proc(Select_Event)", "nil"},
+	{"on_key_released", "proc(Select_Event)", "nil"},
+}
+
+@(private)
 select_demo_on_fruit_value :: proc(value: string) {
 	select_demo_fruit = value
 }
@@ -58,14 +115,14 @@ select_demo_on_langs_values :: proc(values: []string) {
 
 @(private)
 select_demo_fruit_trigger :: proc(_: w.Select_Trigger_State) {
-	w.Select_Value({config = {id = "select-demo-fruit-value"}, placeholder = "Pick a fruit…"})
+	w.Select_Value({config = {id = "select_docs_fruit_value"}, placeholder = "Pick a fruit…"})
 }
 
 @(private)
 select_demo_fruit_child :: proc(_: w.Select_State) {
 	w.Select_Trigger(
 		{
-			config = {id = "select-demo-fruit-trigger", width = set.Width(f32(240))},
+			config = {id = "select_docs_fruit_trigger", width = set.Width(f32(240))},
 			child = select_demo_fruit_trigger,
 		},
 	)
@@ -73,33 +130,26 @@ select_demo_fruit_child :: proc(_: w.Select_State) {
 
 @(private)
 select_demo_fruit_group :: proc(_: w.Option_Group_State) {
-	w.Option({config = {id = "select-demo-opt-apple"}, value = "apple", text = "Apple"})
-	w.Option({config = {id = "select-demo-opt-banana"}, value = "banana", text = "Banana"})
-	w.Option({config = {id = "select-demo-opt-cherry"}, value = "cherry", text = "Cherry"})
-	w.Option(
-		{
-			config = {id = "select-demo-opt-dragonfruit"},
-			value = "dragonfruit",
-			text = "Dragonfruit",
-		},
-	)
+	w.Option({config = {id = "select_docs_opt_apple"}, value = "apple", text = "Apple"})
+	w.Option({config = {id = "select_docs_opt_banana"}, value = "banana", text = "Banana"})
+	w.Option({config = {id = "select_docs_opt_cherry"}, value = "cherry", text = "Cherry"})
 }
 
 @(private)
 select_demo_fruit_content :: proc(_: w.Select_State) {
-	w.Option_Group({config = {id = "select-demo-fruit-group"}, child = select_demo_fruit_group})
+	w.Option_Group({config = {id = "select_docs_fruit_group"}, child = select_demo_fruit_group})
 }
 
 @(private)
 select_demo_theme_trigger :: proc(_: w.Select_Trigger_State) {
-	w.Select_Value({config = {id = "select-demo-theme-value"}, placeholder = "Theme"})
+	w.Select_Value({config = {id = "select_docs_theme_value"}, placeholder = "Theme"})
 }
 
 @(private)
 select_demo_theme_child :: proc(_: w.Select_State) {
 	w.Select_Trigger(
 		{
-			config = {id = "select-demo-theme-trigger", width = set.Width(f32(240))},
+			config = {id = "select_docs_theme_trigger", width = set.Width(f32(240))},
 			child = select_demo_theme_trigger,
 		},
 	)
@@ -107,28 +157,26 @@ select_demo_theme_child :: proc(_: w.Select_State) {
 
 @(private)
 select_demo_theme_group :: proc(_: w.Option_Group_State) {
-	w.Option({config = {id = "select-demo-opt-light"}, value = "light", text = "Light"})
-	w.Option({config = {id = "select-demo-opt-dark"}, value = "dark", text = "Dark"})
-	w.Option({config = {id = "select-demo-opt-system"}, value = "system", text = "System"})
+	w.Option({config = {id = "select_docs_opt_light"}, value = "light", text = "Light"})
+	w.Option({config = {id = "select_docs_opt_dark"}, value = "dark", text = "Dark"})
+	w.Option({config = {id = "select_docs_opt_system"}, value = "system", text = "System"})
 }
 
 @(private)
 select_demo_theme_content :: proc(_: w.Select_State) {
-	w.Option_Group({config = {id = "select-demo-theme-group"}, child = select_demo_theme_group})
+	w.Option_Group({config = {id = "select_docs_theme_group"}, child = select_demo_theme_group})
 }
 
 @(private)
 select_demo_langs_group :: proc(_: w.Option_Group_State) {
-	w.Option({config = {id = "select-demo-opt-odin"}, value = "odin", text = "Odin"})
-	w.Option({config = {id = "select-demo-opt-rust"}, value = "rust", text = "Rust"})
-	w.Option({config = {id = "select-demo-opt-go"}, value = "go", text = "Go"})
-	w.Option({config = {id = "select-demo-opt-c"}, value = "c", text = "C"})
-	w.Option({config = {id = "select-demo-opt-zig"}, value = "zig", text = "Zig"})
+	w.Option({config = {id = "select_docs_opt_odin"}, value = "odin", text = "Odin"})
+	w.Option({config = {id = "select_docs_opt_rust"}, value = "rust", text = "Rust"})
+	w.Option({config = {id = "select_docs_opt_go"}, value = "go", text = "Go"})
 }
 
 @(private)
 select_demo_langs_content :: proc(_: w.Select_State) {
-	w.Option_Group({config = {id = "select-demo-langs-group"}, child = select_demo_langs_group})
+	w.Option_Group({config = {id = "select_docs_langs_group"}, child = select_demo_langs_group})
 }
 
 @(private)
@@ -143,122 +191,194 @@ select_demo_langs_status :: proc() -> string {
 }
 
 @(private)
-select_demo_body :: proc(_: w.Rectangle_State) {
-	w.Text(
-		{
-			config = {
-				id = "select-demo-caption",
-				text = "Select supports disabled, multiple, size (listbox rows), and autocomplete. Dropdown uses Trigger+Value; multiple/size renders an inline list.",
-			},
+select_docs_basic_preview :: proc(_: w.Rectangle_State) {
+	w.Rectangle({
+		config = {
+			id = "select_docs_basic_col",
+			direction = set.Direction(.VERTICAL),
+			gap_y = set.Gap_Y(u16(8)),
 		},
-	)
+		child = select_docs_basic_inner,
+	})
+}
 
-	w.Text(
-		{
-			config = {
-				id = "select-demo-fruit-label",
-				text = "Fruit",
-				font_size = set.F32(13),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
-		},
-	)
-
+@(private)
+select_docs_basic_inner :: proc(_: w.Rectangle_State) {
 	w.Select(
 		{
-			config = {id = "select-demo-fruit"},
+			config = {id = "select_docs_basic"},
 			value = select_demo_fruit,
 			open = select_demo_fruit_open,
-			autocomplete = "off",
 			on_value_change = select_demo_on_fruit_value,
 			on_open_change = select_demo_on_fruit_open,
 			child = select_demo_fruit_child,
 			content = select_demo_fruit_content,
 		},
 	)
-
 	fruit_status := select_demo_fruit != "" ? select_demo_fruit : "(none)"
-	w.Text(
-		{
-			config = {
-				id = "select-demo-fruit-status",
-				text = fmt.tprintf("Selected: %s", fruit_status),
-				font_size = set.F32(13),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
+	w.Text({
+		config = {
+			id = "select_docs_basic_status",
+			text = fmt.tprintf("Selected: %s", fruit_status),
+			font_size = set.F32(13),
+			color = set.Colors(o.Color.MUTED_FOREGROUND),
 		},
-	)
+	})
+}
 
-	w.Text(
-		{
-			config = {
-				id = "select-demo-theme-label",
-				text = "Theme (disabled)",
-				font_size = set.F32(13),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
-		},
-	)
-
+@(private)
+select_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 	w.Select(
 		{
-			config = {id = "select-demo-theme"},
+			config = {id = "select_docs_disabled"},
 			value = select_demo_theme,
 			open = select_demo_theme_open,
 			disabled = true,
-			autocomplete = "on",
 			on_value_change = select_demo_on_theme_value,
 			on_open_change = select_demo_on_theme_open,
 			child = select_demo_theme_child,
 			content = select_demo_theme_content,
 		},
 	)
+}
 
-	w.Text(
-		{
-			config = {
-				id = "select-demo-langs-label",
-				text = "Languages (multiple, size=4)",
-				font_size = set.F32(13),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
+@(private)
+select_docs_multiple_preview :: proc(_: w.Rectangle_State) {
+	w.Rectangle({
+		config = {
+			id = "select_docs_multiple_col",
+			direction = set.Direction(.VERTICAL),
+			gap_y = set.Gap_Y(u16(8)),
 		},
-	)
+		child = select_docs_multiple_inner,
+	})
+}
 
+@(private)
+select_docs_multiple_inner :: proc(_: w.Rectangle_State) {
 	w.Select(
 		{
-			config = {id = "select-demo-langs"},
+			config = {id = "select_docs_multiple"},
 			multiple = true,
 			size = 4,
 			values = select_demo_langs[:],
-			autocomplete = "off",
 			on_values_change = select_demo_on_langs_values,
 			content = select_demo_langs_content,
 		},
 	)
+	w.Text({
+		config = {
+			id = "select_docs_multiple_status",
+			text = fmt.tprintf("Selected: %s", select_demo_langs_status()),
+			font_size = set.F32(13),
+			color = set.Colors(o.Color.MUTED_FOREGROUND),
+		},
+	})
+}
 
-	w.Text(
-		{
-			config = {
-				id = "select-demo-langs-status",
-				text = fmt.tprintf("Selected: %s", select_demo_langs_status()),
-				font_size = set.F32(13),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
+@(private)
+select_docs_body :: proc(_: w.Rectangle_State) {
+	doc_title("select_docs_title", "Select")
+	doc_lede(
+		"select_docs_lede",
+		"Radix-style select root: controlled value and open state, trigger + popover content for single choice, or an inline listbox when multiple or size > 1.",
+	)
+
+	doc_preview("select_docs_hero_preview", select_docs_basic_preview)
+
+	doc_section(
+		"select_docs_installation",
+		"Installation",
+		"Select composes Select_Trigger, Select_Value, Option_Group, and Option from oni/widgets.",
+		proc(_: w.Rectangle_State) {
+			doc_code("select_docs_installation_code", SELECT_DOCS_USAGE_IMPORT)
+		},
+	)
+
+	doc_section(
+		"select_docs_usage",
+		"Usage",
+		"value, open, and values are caller-owned. child builds the trigger; content builds the dropdown panel.",
+		proc(_: w.Rectangle_State) {
+			doc_code("select_docs_usage_call", SELECT_DOCS_USAGE_CALL)
+		},
+	)
+
+	doc_section(
+		"select_docs_basic",
+		"Basic dropdown",
+		"Select_Trigger wraps Select_Value; Option_Group lists Option rows in content.",
+		proc(_: w.Rectangle_State) {
+			doc_preview("select_docs_basic_preview_wrap", select_docs_basic_preview)
+			doc_code(
+				"select_docs_basic_code",
+				`child = proc(_: w.Select_State) {
+	w.Select_Trigger({
+		config = {id = "trigger"},
+		child = proc(_: w.Select_Trigger_State) {
+			w.Select_Value({config = {id = "value"}, placeholder = "Pick…"})
+		},
+	})
+},
+content = proc(_: w.Select_State) {
+	w.Option_Group({
+		config = {id = "group"},
+		child = proc(_: w.Option_Group_State) {
+			w.Option({config = {id = "a"}, value = "a", text = "A"})
+		},
+	})
+},`,
+			)
+		},
+	)
+
+	doc_section(
+		"select_docs_disabled",
+		"Disabled",
+		"props.disabled blocks interaction; combine with a fixed value for locked settings.",
+		proc(_: w.Rectangle_State) {
+			doc_preview("select_docs_disabled_preview_wrap", select_docs_disabled_preview)
+			doc_code(
+				"select_docs_disabled_code",
+				`w.Select({ config = {id = "theme"}, value = "system", disabled = true, ... })`,
+			)
+		},
+	)
+
+	doc_section(
+		"select_docs_multiple",
+		"Multiple listbox",
+		"multiple with size renders a visible list; on_values_change receives the new slice — clone strings if you store them on the heap.",
+		proc(_: w.Rectangle_State) {
+			doc_preview("select_docs_multiple_preview_wrap", select_docs_multiple_preview)
+			doc_code(
+				"select_docs_multiple_code",
+				`w.Select({
+	config = {id = "langs"},
+	multiple = true,
+	size = 4,
+	values = selected[:],
+	on_values_change = proc(vals: []string) { /* clone into dynamic array */ },
+	content = ...,
+})`,
+			)
+		},
+	)
+
+	doc_section(
+		"select_docs_api",
+		"API Reference",
+		"w.Select in oni/widgets/select.odin. Select_Config is Widget_Config.",
+		proc(_: w.Rectangle_State) {
+			doc_h3("select_docs_api_props_h3", "Props")
+			doc_table("select_docs_props_table", SELECT_DOCS_PROPS[:])
+
+			doc_h3("select_docs_api_config_h3", "Config")
+			doc_table("select_docs_config_table", DOC_WIDGET_CONFIG[:])
 		},
 	)
 }
 
 Widget_Select :: proc() {
-	w.Rectangle(
-		{
-			config = {
-				id = "select-demo",
-				direction = set.Direction(.VERTICAL),
-				gap_y = set.Gap_Y(u16(12)),
-				width = set.Width(f32(480)),
-			},
-			child = select_demo_body,
-		},
-	)
+	doc_page("select_docs", select_docs_body)
 }

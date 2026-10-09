@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Oni is an Odin immediate mode UI toolkit on SDL3 + SDL_GPU. It is a **framework package** that a consumer project imports (typically as `./oni`). Tengu is a standalone animation package under `libs/tengu` with no Oni dependency.
+Oni is an Odin immediate mode UI composable toolkit on SDL3 + SDL_GPU. It is a **framework package** that a consumer project imports (typically as `./oni`). Tengu is a standalone animation package under `libs/tengu` with no Oni dependency.
 
 ## Consumer layout
 
@@ -140,6 +140,7 @@ Follow existing widgets (`widgets/button.odin`, `table.odin`):
 - Theme base via a private `*_theme_base` proc
 - Style overrides through `set.*` helpers, not raw unset fields when a set helper exists
 - Stable `config.id` strings for focus / `GetElementById` / `FocusElement`
+- Widgets are composable not monolithic.
 
 Demo UI lives under the consumer `app/routes/` and `app/ui/` (templates ship under `templates/app/`); shared chrome under `app/components/`.
 

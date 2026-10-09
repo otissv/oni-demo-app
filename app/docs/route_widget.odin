@@ -9,7 +9,9 @@ import w "../../oni/widgets"
 @(private)
 Sidebar_Widgets_options :: enum {
 	WIDGET_BUTTON,
+	WIDGET_CALENDAR,
 	WIDGET_CHECKBOX,
+	WIDGET_COLOR_PICKER,
 	WIDGET_IMAGE,
 	WIDGET_LINK,
 	WIDGET_PRESERVE,
@@ -25,7 +27,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_CHECKBOX
+active_widget_option: Sidebar_Widgets_options = .WIDGET_BUTTON
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -39,8 +41,12 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Image()
 	case .WIDGET_BUTTON:
 		Widget_Button()
+	case .WIDGET_CALENDAR:
+		Widget_Calendar()
 	case .WIDGET_CHECKBOX:
 		Widget_Checkbox()
+	case .WIDGET_COLOR_PICKER:
+		Widget_Color_Picker()
 	case .WIDGET_LINK:
 		Widget_Link()
 	case .WIDGET_RADIO:
@@ -90,6 +96,19 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 	})
 
 	ui.Button({
+		id = "widget_sidebar_button_calendar",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_CALENDAR
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text({config = {id = "widget_sidebar_button_calendar_text", text = "Calendar"}})
+		},
+	})
+
+	ui.Button({
 		id = "widget_sidebar_button_checkbox",
 		variant = .GHOST,
 		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
@@ -99,6 +118,21 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		},
 		child = proc(_: ui.Button_state) {
 			w.Text({config = {id = "widget_sidebar_button_checkbox_text", text = "Checkbox"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_color_picker",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_COLOR_PICKER
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text(
+				{config = {id = "widget_sidebar_button_color_picker_text", text = "Color Picker"}},
+			)
 		},
 	})
 
