@@ -107,6 +107,7 @@ doc_section_inner :: proc(_: w.Rectangle_State) {
 
 	if doc_section_scratch.body != "" {
 		doc_p(fmt.tprintf("%s_p", doc_section_scratch.id), doc_section_scratch.body)
+
 	}
 
 	if doc_section_scratch.child != nil {
@@ -152,7 +153,6 @@ doc_page :: proc(id: string, child: proc(state: w.Rectangle_State)) {
 				id = id,
 				direction = set.Direction(.VERTICAL),
 				gap_y = set.Gap_Y(u16(28)),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				height = set.Height(page_h),
 				overflow_y = set.Overflow_Y(.AUTO),
 				padding = set.Padding(o.Pd_struct{r = 24, b = 48}),
@@ -164,100 +164,52 @@ doc_page :: proc(id: string, child: proc(state: w.Rectangle_State)) {
 }
 
 doc_title :: proc(id, text: string) {
-	w.Text(
-		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_heading),
-				font_size = set.F32(36),
-				line_height = set.F32(1.15),
-				color = set.Colors(o.theme.palette[.FOREGROUND]),
-			},
-		},
-	)
+	ui.Heading({variant = .H1, id = id, text = text, theme = o.theme})
 }
 
 doc_lede :: proc(id, text: string) {
-	w.Text(
+	ui.Paragraph(
 		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_body),
-				font_size = set.F32(16),
-				line_height = set.F32(1.55),
-				wrap = set.Wrap(.BALANCE),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
+			id = id,
+			text = text,
+			theme = o.theme,
+			wrap = set.Wrap(.BALANCE),
+			font_size = set.F32(14),
+			width = set.Width(DOC_CONTENT_WIDTH),
 		},
 	)
 }
 
 doc_h2 :: proc(id, text: string) {
-	w.Text(
-		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_heading),
-				font_size = set.F32(24),
-				line_height = set.F32(1.2),
-				color = set.Colors(o.theme.palette[.FOREGROUND]),
-			},
-		},
-	)
+	ui.Heading({variant = .H2, theme = o.theme, id = id, text = text})
 }
 
 doc_h3 :: proc(id, text: string) {
-	w.Text(
-		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_heading),
-				font_size = set.F32(18),
-				line_height = set.F32(1.25),
-				color = set.Colors(o.theme.palette[.FOREGROUND]),
-			},
-		},
-	)
+	ui.Heading({variant = .H3, theme = o.theme, id = id, text = text})
+
 }
 
 doc_p :: proc(id, text: string) {
-	w.Text(
+	ui.Paragraph(
 		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_body),
-				font_size = set.F32(14),
-				line_height = set.F32(1.55),
-				wrap = set.Wrap(.BALANCE),
-				color = set.Colors(o.theme.palette[.FOREGROUND]),
-			},
+			id = id,
+			text = text,
+			theme = o.theme,
+			line_height = set.F32(1.55),
+			width = set.Width(DOC_CONTENT_WIDTH),
 		},
 	)
 }
 
 doc_muted :: proc(id, text: string) {
-	w.Text(
+	ui.Paragraph(
 		{
-			config = {
-				id = id,
-				text = text,
-				width = set.Width(DOC_CONTENT_WIDTH),
-				font = set.Font(o.theme.font_body),
-				font_size = set.F32(13),
-				line_height = set.F32(1.5),
-				wrap = set.Wrap(.BALANCE),
-				color = set.Colors(o.Color.MUTED_FOREGROUND),
-			},
+			id = id,
+			text = text,
+			theme = o.theme,
+			wrap = set.Wrap(.BALANCE),
+			font_size = set.F32(13),
+			color = set.Colors(o.Color.MUTED_FOREGROUND),
 		},
 	)
 }

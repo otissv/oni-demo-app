@@ -16,8 +16,7 @@ Heading_Variant :: enum {
 
 
 Heading_Props :: struct {
-	id:      string,
-	text:    string,
+	using _: w.Text_Config,
 	variant: Heading_Variant,
 	theme:   ^o.Theme,
 }
@@ -40,18 +39,19 @@ Heading :: proc(props: Heading_Props) {
 		font_size = set.F32(16)
 	}
 
-	w.Text(
-		{
-			config = {
-				id = props.id,
-				width = set.Width(480),
-				height = set.Height(28),
-				text = props.text,
-				font = set.Font(props.theme.font_heading),
-				color = set.Colors(o.theme.palette[.FOREGROUND]),
-				font_size = font_size,
-				line_height = set.F32(0),
-			},
-		},
-	)
+	base := w.Text_Config {
+		font        = set.Font(props.theme.font_heading),
+		color       = set.Colors(o.theme.palette[.FOREGROUND]),
+		font_size   = font_size,
+		line_height = set.F32(1),
+	}
+
+	config := w.Text_Config {
+		o.merge_widget_config(base, props),
+		props.text,
+		props.selectable,
+		props.for_id,
+	}
+
+	w.Text({config = config})
 }

@@ -8,7 +8,7 @@ window {
 }
 dpi scale=1.299999952316284
 fonts {
-    body-size 16
+    body-size 14
     heading-size 20
     family Inter {
         face {
