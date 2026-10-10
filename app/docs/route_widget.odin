@@ -10,6 +10,7 @@ import w "../../oni/widgets"
 Sidebar_Widgets_options :: enum {
 	WIDGET_BUTTON,
 	WIDGET_CALENDAR,
+	WIDGET_DATE_PICKER,
 	WIDGET_CHECKBOX,
 	WIDGET_COLOR_PICKER,
 	WIDGET_IMAGE,
@@ -43,6 +44,8 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Button()
 	case .WIDGET_CALENDAR:
 		Widget_Calendar()
+	case .WIDGET_DATE_PICKER:
+		Widget_Date_Picker()
 	case .WIDGET_CHECKBOX:
 		Widget_Checkbox()
 	case .WIDGET_COLOR_PICKER:
@@ -105,6 +108,21 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		},
 		child = proc(_: ui.Button_state) {
 			w.Text({config = {id = "widget_sidebar_button_calendar_text", text = "Calendar"}})
+		},
+	})
+
+	ui.Button({
+		id = "widget_sidebar_button_date_picker",
+		variant = .GHOST,
+		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+		radius = set.Radius(5),
+		on_click = proc(_: ui.Button_Event) {
+			active_widget_option = .WIDGET_DATE_PICKER
+		},
+		child = proc(_: ui.Button_state) {
+			w.Text(
+				{config = {id = "widget_sidebar_button_date_picker_text", text = "Date Picker"}},
+			)
 		},
 	})
 

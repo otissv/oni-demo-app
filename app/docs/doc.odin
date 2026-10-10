@@ -181,7 +181,15 @@ doc_lede :: proc(id, text: string) {
 }
 
 doc_h2 :: proc(id, text: string) {
-	ui.Heading({variant = .H2, theme = o.theme, id = id, text = text})
+	ui.Heading(
+		{
+			variant = .H2,
+			theme = o.theme,
+			id = id,
+			text = text,
+			margin = set.Margin(o.Mg_struct{b = 16}),
+		},
+	)
 }
 
 doc_h3 :: proc(id, text: string) {
