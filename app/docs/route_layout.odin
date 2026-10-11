@@ -1,12 +1,10 @@
 package oni_docs
 
-import ui "../../app/ui"
+import c "../../app/components"
 import o "../../oni"
-import set "../../oni/set"
 import w "../../oni/widgets"
 
 
-@(private)
 Sidebar_Layout_options :: enum {
 	// Layout
 	LAYOUT_HORIZONTAL,
@@ -58,7 +56,7 @@ layout_container := proc(state: w.Rectangle_State) {
 	case .LAYOUT_HORIZONTAL_WRAP_REVERSE:
 		Layout_Directions(direction, layout_width, layout_height)
 	case .LAYOUT_VERTICAL_WRAP_REVERSE:
-		Layout_Content(direction, layout_width, layout_height, content_align_x, content_align_y)
+		Layout_Directions(direction, layout_width, layout_height)
 	case .LAYOUT_MAX_CONTENT_X:
 		Layout_Content(direction, layout_width, layout_height, content_align_x, content_align_y)
 	case .LAYOUT_MIN_CONTENT_X:
@@ -87,307 +85,148 @@ layout_container := proc(state: w.Rectangle_State) {
 }
 
 layout_sidebar := proc(state: w.Rectangle_State) {
-	ui.Button({
-		id = "horizontal",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_HORIZONTAL
-			direction = .HORIZONTAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Horizontal"}})
-		},
+
+	c.sidebar_item("horizontal", "Horizontal", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_HORIZONTAL
+		direction = .HORIZONTAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "horizontal-reverse",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_HORIZONTAL_REVERSE
-			direction = .HORIZONTAL_REVERSE
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Horizontal Reverse"}})
-		},
+	c.sidebar_item("horizontal-reverse", "Horizontal Reverse", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_HORIZONTAL_REVERSE
+		direction = .HORIZONTAL_REVERSE
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "horizontal-wrap",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_HORIZONTAL_WRAP
-			direction = .HORIZONTAL_WRAP
-			layout_width = 400
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Horizontal Wrap"}})
-		},
+	c.sidebar_item("horizontal-wrap", "Horizontal Wrap", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_HORIZONTAL_WRAP
+		direction = .HORIZONTAL_WRAP
+		layout_width = 400
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "horizontal-wrap-reverse",
-		variant = .GHOST,
-		radius = set.Radius(5),
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_HORIZONTAL_WRAP_REVERSE
-			direction = .HORIZONTAL_WRAP_REVERSE
-			layout_width = 400
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Horizontal Wrap Reverse"}})
-		},
+	c.sidebar_item("horizontal-wrap-reverse", "Horizontal Wrap Reverse", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_HORIZONTAL_WRAP_REVERSE
+		direction = .HORIZONTAL_WRAP_REVERSE
+		layout_width = 400
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "vertical",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_VERTICAL
-			direction = .VERTICAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Vertical"}})
-		},
+	c.sidebar_item("vertical", "Vertical", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_VERTICAL
+		direction = .VERTICAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "vertical-reverse",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_VERTICAL_REVERSE
-			direction = .VERTICAL_REVERSE
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Vertical Reverse"}})
-		},
+	c.sidebar_item("vertical-reverse", "Vertical Reverse", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_VERTICAL_REVERSE
+		direction = .VERTICAL_REVERSE
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "vertical warp",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_VERTICAL_WRAP
-			direction = .VERTICAL_WRAP
-			layout_width = 280
-			layout_height = 400
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Vertical Wrap"}})
-		},
+	c.sidebar_item("vertical-wrap", "Vertical Wrap", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_VERTICAL_WRAP
+		direction = .VERTICAL_WRAP
+		layout_width = 280
+		layout_height = 400
 	})
 
-	ui.Button({
-		id = "vertical-wrap-reverse",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_VERTICAL_WRAP_REVERSE
-			direction = .VERTICAL_WRAP_REVERSE
-			layout_width = 280
-			layout_height = 400
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Vertical Wrap Reverse"}})
-		},
+	c.sidebar_item("vertical-wrap-reverse", "Vertical Wrap Reverse", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_VERTICAL_WRAP_REVERSE
+		direction = .VERTICAL_WRAP_REVERSE
+		layout_width = 280
+		layout_height = 400
 	})
 
-	ui.Button({
-		id = "max-content-x",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_MAX_CONTENT_X
-			content_align_x = .MAX_CONTENT
-			content_align_y = .START
-			direction = .HORIZONTAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Max Content X"}})
-		},
+	c.sidebar_item("max-content-x", "Max Content X", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_MAX_CONTENT_X
+		content_align_x = .MAX_CONTENT
+		content_align_y = .START
+		direction = .HORIZONTAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "min-content-x",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_MIN_CONTENT_X
-			content_align_x = .MIN_CONTENT
-			content_align_y = .START
-			direction = .HORIZONTAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Min Content X"}})
-		},
+	c.sidebar_item("min-content-x", "Min Content X", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_MIN_CONTENT_X
+		content_align_x = .MIN_CONTENT
+		content_align_y = .START
+		direction = .HORIZONTAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "max-content-y",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_MAX_CONTENT_Y
-			content_align_x = .START
-			content_align_y = .MAX_CONTENT
-			direction = .VERTICAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Max Content Y"}})
-		},
+	c.sidebar_item("max-content-y", "Max Content Y", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_MAX_CONTENT_Y
+		content_align_x = .START
+		content_align_y = .MAX_CONTENT
+		direction = .VERTICAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "min-content-y",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_MIN_CONTENT_Y
-			content_align_x = .START
-			content_align_y = .MIN_CONTENT
-			direction = .VERTICAL
-			layout_width = .AUTO
-			layout_height = .AUTO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "artboard-nav-button", text = "Min Content Y"}})
-		},
+	c.sidebar_item("min-content-y", "Min Content Y", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_MIN_CONTENT_Y
+		content_align_x = .START
+		content_align_y = .MIN_CONTENT
+		direction = .VERTICAL
+		layout_width = .AUTO
+		layout_height = .AUTO
 	})
 
-	ui.Button({
-		id = "order",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_ORDER
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-order-nav", text = "Order"}})
-		},
+	c.sidebar_item("order", "Order", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_ORDER
 	})
 
-	ui.Button({
-		id = "z-index",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_Z_INDEX
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-z-index-nav", text = "Z-Index"}})
-		},
+	c.sidebar_item("z-index", "Z-Index", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_Z_INDEX
 	})
 
-	ui.Button({
-		id = "position",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_POSITION
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-position-nav", text = "Position"}})
-		},
+	c.sidebar_item("position", "Position", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_POSITION
 	})
 
-	ui.Button({
-		id = "visibility",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_VISIBILITY
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-visibility-nav", text = "Visibility"}})
-		},
+	c.sidebar_item("visibility", "Visibility", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_VISIBILITY
 	})
 
-	ui.Button({
-		id = "opacity",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_OPACITY
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-opacity-nav", text = "Opacity"}})
-		},
+	c.sidebar_item("opacity", "Opacity", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_OPACITY
 	})
 
-	ui.Button({
-		id = "popover",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_POPOVER
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-popover-nav", text = "Popover"}})
-		},
+	c.sidebar_item("popover", "Popover", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_POPOVER
 	})
 
-	ui.Button({
-		id = "scrollview",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_SCROLLVIEW
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-scrollview-nav", text = "Scrollview"}})
-		},
+	c.sidebar_item("scrollview", "Scrollview", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_SCROLLVIEW
 	})
 
-	ui.Button({
-		id = "layout-grid",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_layout_option = .LAYOUT_GRID
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "layout-grid-nav", text = "Grid"}})
-		},
+	c.sidebar_item("grid", "Grid", proc() {
+		active_docs_section = .Layout
+		active_layout_option = .LAYOUT_GRID
 	})
 }

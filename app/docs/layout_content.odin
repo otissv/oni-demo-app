@@ -4,6 +4,13 @@ import o "../../oni"
 import set "../../oni/set"
 import w "../../oni/widgets"
 
+/*
+Content-align demo: siblings equalize to max/min intrinsic size on the chosen axis.
+
+Boxes use AUTO width/height so min/max-content justify can resize them. Labels use
+`wrap = NONE` so BALANCE does not stretch measure width to the row. The "fixed"
+box keeps definite size and is skipped by content-align (control).
+*/
 Layout_Content :: proc(
 	direction: o.Direction_Layout,
 	layout_width: o.Width,
@@ -11,6 +18,138 @@ Layout_Content :: proc(
 	content_align_x: o.Justify_Align,
 	content_align_y: o.Justify_Align,
 ) {
+	child: proc(state: w.Rectangle_State)
+
+	if content_align_y == .MAX_CONTENT || content_align_y == .MIN_CONTENT {
+		child = proc(state: w.Rectangle_State) {
+			_ = state
+
+			w.Rectangle({
+				config = {
+					id = "short",
+					padding = set.Padding(o.Pd_struct{x = 12, y = 8}),
+					background = set.Colors(o.theme.palette[.DESTRUCTIVE]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text({config = {id = "short-label", text = "item", wrap = set.Wrap(.NONE)}})
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "medium",
+					padding = set.Padding(o.Pd_struct{x = 12, y = 16}),
+					background = set.Colors(o.theme.palette[.ACCENT]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text({config = {id = "medium-label", text = "item", wrap = set.Wrap(.NONE)}})
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "long",
+					padding = set.Padding(o.Pd_struct{x = 12, y = 24}),
+					background = set.Colors(o.theme.palette[.SUCCESS]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text({config = {id = "long-label", text = "item", wrap = set.Wrap(.NONE)}})
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "fixed",
+					width = 140,
+					height = 100,
+					padding = set.Padding(f32(8)),
+					background = set.Colors(o.theme.palette[.INFO]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text(
+						{config = {id = "fixed-label", text = "fixed", wrap = set.Wrap(.NONE)}},
+					)
+				},
+			})
+		}
+	} else {
+		child = proc(state: w.Rectangle_State) {
+			_ = state
+
+			w.Rectangle({
+				config = {
+					id = "short",
+					padding = set.Padding(f32(8)),
+					background = set.Colors(o.theme.palette[.DESTRUCTIVE]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text({config = {id = "short-label", text = "sm", wrap = set.Wrap(.NONE)}})
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "medium",
+					padding = set.Padding(f32(16)),
+					background = set.Colors(o.theme.palette[.ACCENT]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text(
+						{
+							config = {
+								id = "medium-label",
+								text = "medium",
+								wrap = set.Wrap(.NONE),
+							},
+						},
+					)
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "long",
+					padding = set.Padding(f32(24)),
+					background = set.Colors(o.theme.palette[.SUCCESS]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text(
+						{
+							config = {
+								id = "long-label",
+								text = "long label",
+								wrap = set.Wrap(.NONE),
+							},
+						},
+					)
+				},
+			})
+
+			w.Rectangle({
+				config = {
+					id = "fixed",
+					width = 140,
+					height = 100,
+					padding = set.Padding(f32(8)),
+					background = set.Colors(o.theme.palette[.INFO]),
+					radius = set.Radius(8),
+				},
+				child = proc(_: w.Rectangle_State) {
+					w.Text(
+						{config = {id = "fixed-label", text = "fixed", wrap = set.Wrap(.NONE)}},
+					)
+				},
+			})
+		}
+	}
+
 	w.Rectangle({
 		config = {
 			id = "layout_content",
@@ -25,56 +164,6 @@ Layout_Content :: proc(
 			background = set.Colors(o.theme.palette[.BACKGROUND]),
 			radius = set.Radius(10),
 		},
-		child = proc(state: w.Rectangle_State) {
-			w.Rectangle({
-				config = {
-					id = "short",
-					height = 60,
-					padding = set.Padding(f32(8)),
-					background = set.Colors(o.theme.palette[.DESTRUCTIVE]),
-					radius = set.Radius(8),
-				},
-				child = proc(_: w.Rectangle_State) {
-					w.Text({config = {id = "short-label", text = "sm"}})
-				},
-			})
-			w.Rectangle({
-				config = {
-					id = "medium",
-					height = 80,
-					padding = set.Padding(f32(8)),
-					background = set.Colors(o.theme.palette[.ACCENT]),
-					radius = set.Radius(8),
-				},
-				child = proc(_: w.Rectangle_State) {
-					w.Text({config = {id = "medium-label", text = "md"}})
-				},
-			})
-			w.Rectangle({
-				config = {
-					id = "long",
-					height = 90,
-					padding = set.Padding(f32(8)),
-					background = set.Colors(o.theme.palette[.SUCCESS]),
-					radius = set.Radius(8),
-				},
-				child = proc(_: w.Rectangle_State) {
-					w.Text({config = {id = "long-label", text = "lg"}})
-				},
-			})
-			w.Rectangle({
-				config = {
-					id = "fixed",
-					width = 140,
-					height = 100,
-					padding = set.Padding(f32(8)),
-					background = set.Colors(o.theme.palette[.INFO]),
-					radius = set.Radius(8),
-				},
-				child = proc(_: w.Rectangle_State) {
-					w.Text({config = {id = "fixed-label", text = "fixed"}})
-				},
-			})
-		},
+		child = child,
 	})
 }

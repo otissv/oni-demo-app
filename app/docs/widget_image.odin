@@ -61,7 +61,6 @@ image_docs_hero :: proc(_: w.Rectangle_State) {
 				id = "image_docs_hero",
 				width = set.Width(464),
 				height = set.Height(464),
-				background = set.Colors(o.Color.MUTED),
 				texture_fit = set.Texture_Fit(.CONTAIN),
 			},
 		},

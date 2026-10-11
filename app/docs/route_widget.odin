@@ -1,12 +1,9 @@
 package oni_docs
 
-import ui "../../app/ui"
-import o "../../oni"
-import set "../../oni/set"
+import c "../../app/components"
 import w "../../oni/widgets"
 
 
-@(private)
 Sidebar_Widgets_options :: enum {
 	WIDGET_BUTTON,
 	WIDGET_CALENDAR,
@@ -33,7 +30,6 @@ active_widget_option: Sidebar_Widgets_options = .WIDGET_BUTTON
 
 widget_container := proc(state: w.Rectangle_State) {
 	switch active_widget_option {
-	// Widgets
 	case .WIDGET_RECTANGLE:
 		Widget_Rectangle()
 	case .WIDGET_TABLE:
@@ -72,238 +68,88 @@ widget_container := proc(state: w.Rectangle_State) {
 }
 
 widget_sidebar := proc(state: w.Rectangle_State) {
-	ui.Button({
-		id = "widget_sidebar_button_rect",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_RECTANGLE
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_rect_text", text = "Rectangle"}})
-		},
+	c.sidebar_item("widget-rectangle", "Rectangle", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_RECTANGLE
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_button",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_BUTTON
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_button_text", text = "Button"}})
-		},
+	c.sidebar_item("widget-button", "Button", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_BUTTON
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_calendar",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_CALENDAR
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_calendar_text", text = "Calendar"}})
-		},
+	c.sidebar_item("widget-calendar", "Calendar", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_CALENDAR
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_date_picker",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_DATE_PICKER
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text(
-				{config = {id = "widget_sidebar_button_date_picker_text", text = "Date Picker"}},
-			)
-		},
+	c.sidebar_item("widget-date-picker", "Date Picker", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_DATE_PICKER
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_checkbox",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_CHECKBOX
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_checkbox_text", text = "Checkbox"}})
-		},
+	c.sidebar_item("widget-checkbox", "Checkbox", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_CHECKBOX
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_color_picker",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_COLOR_PICKER
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text(
-				{config = {id = "widget_sidebar_button_color_picker_text", text = "Color Picker"}},
-			)
-		},
+	c.sidebar_item("widget-color-picker", "Color Picker", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_COLOR_PICKER
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_radio",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_RADIO
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_radio_text", text = "Radio"}})
-		},
+	c.sidebar_item("widget-radio", "Radio", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_RADIO
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_link",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_LINK
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_link_text", text = "Link"}})
-		},
+	c.sidebar_item("widget-link", "Link", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_LINK
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_image",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_IMAGE
-
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_image_text", text = "Image"}})
-		},
+	c.sidebar_item("widget-image", "Image", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_IMAGE
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_table",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_TABLE
-
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_table_text", text = "Table"}})
-		},
+	c.sidebar_item("widget-table", "Table", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_TABLE
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_text",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_TEXT
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_text_text", text = "Text"}})
-		},
+	c.sidebar_item("widget-text", "Text", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_TEXT
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_text_input",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_TEXT_INPUT
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_text_input_text", text = "Text Input"}})
-		},
+	c.sidebar_item("widget-text-input", "Text Input", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_TEXT_INPUT
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_rich_text",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_RICH_TEXT
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_rich_text_text", text = "RichText"}})
-		},
+	c.sidebar_item("widget-rich-text", "RichText", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_RICH_TEXT
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_rich_text_input",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_RICH_TEXT_INPUT
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text(
-				{
-					config = {
-						id = "widget_sidebar_button_rich_text_input_text",
-						text = "RichText Input",
-					},
-				},
-			)
-		},
+	c.sidebar_item("widget-rich-text-input", "RichText Input", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_RICH_TEXT_INPUT
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_preserve",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_PRESERVE
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_preserve_text", text = "Preserve"}})
-		},
+	c.sidebar_item("widget-preserve", "Preserve", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_PRESERVE
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_select",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_SELECT
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_select_text", text = "Select"}})
-		},
+	c.sidebar_item("widget-select", "Select", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_SELECT
 	})
 
-	ui.Button({
-		id = "widget_sidebar_button_slider",
-		variant = .GHOST,
-		justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-		radius = set.Radius(5),
-		on_click = proc(_: ui.Button_Event) {
-			active_widget_option = .WIDGET_SLIDER
-		},
-		child = proc(_: ui.Button_state) {
-			w.Text({config = {id = "widget_sidebar_button_slider_text", text = "Slider"}})
-		},
+	c.sidebar_item("widget-slider", "Slider", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_SLIDER
 	})
-
 }

@@ -4,8 +4,10 @@ import ui "../../app/ui"
 import o "../../oni"
 import set "../../oni/set"
 import w "../../oni/widgets"
+import c "../components"
 
-artboard_route :: proc() {
+
+artboard_container :: proc(state: w.Rectangle_State) {
 	w.Rectangle({
 		config = {id = "screen_rect", background = set.Colors(o.theme.palette[.BACKGROUND])},
 		child = proc(state: w.Rectangle_State) {
@@ -16,6 +18,11 @@ artboard_route :: proc() {
 	})
 }
 
+artboard_sidebar :: proc(state: w.Rectangle_State) {
+	c.sidebar_item("artboard-demo", "Demo", proc() {
+		active_docs_section = .Artboard
+	})
+}
 
 Panel :: proc() {
 	w.Rectangle({

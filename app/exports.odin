@@ -65,7 +65,7 @@ Safe to call from any exported entry point before touching engine state.
 ensure_persistent :: proc() {
 	if persistent == nil {
 		persistent = new(Persistent)
-		persistent.app.Route = .Widgets
+		persistent.app.Route = .Docs
 	}
 	bind()
 	o.Register_App_Type_Defaults(install_app_type_defaults)
@@ -137,7 +137,7 @@ reset_app_state :: proc() {
 	w.Shortcuts_Table_Session_Destroy(&persistent.app.shortcuts_table)
 	persistent.app = {}
 	persistent.app.theme = build_theme()
-	persistent.app.Route = .Widgets
+	persistent.app.Route = .Docs
 }
 
 /*

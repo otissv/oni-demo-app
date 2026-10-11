@@ -5,7 +5,6 @@ import set "../oni/set"
 import w "../oni/widgets"
 import c "./components"
 import docs "./docs"
-import g "./globlas"
 
 
 @(init)
@@ -23,39 +22,24 @@ NAV_BAR_H :: f32(60)
 
 @(private)
 main_route_child :: proc(_: w.Rectangle_State) {
-	#partial switch g.app.Route {
-	case .Artboard:
-		docs.artboard_route()
-	case .About:
-		docs.about_route()
-	case .Layout:
-		docs.layout_route()
-	case .Home:
-		docs.home_route()
-	case .Widgets:
-		docs.widgets_route()
-	case .Shortcuts:
-		docs.shortcuts_route()
-	}
+	docs.docs_route()
 }
 
 @(private)
 app_root_child :: proc(_: w.Rectangle_State) {
-	w.Rectangle(
-		{
-			config = {
-				id = "nav_bar",
-				height = set.Height(NAV_BAR_H),
-				width = set.Width(o.Dim_struct{percent = 100}),
-				direction = set.Direction(.HORIZONTAL),
-				justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
-				padding = set.Padding(o.Pd_struct{l = 16, r = 16}),
-			},
-			child = proc(_: w.Rectangle_State) {
-				c.Nav()
-			},
+	w.Rectangle({
+		config = {
+			id = "nav_bar",
+			height = set.Height(NAV_BAR_H),
+			width = set.Width(o.Dim_struct{percent = 100}),
+			direction = set.Direction(.HORIZONTAL),
+			justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
+			padding = set.Padding(o.Pd_struct{l = 16, r = 16}),
 		},
-	)
+		child = proc(_: w.Rectangle_State) {
+			c.Nav()
+		},
+	})
 
 	w.Rectangle(
 		{

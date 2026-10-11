@@ -5,7 +5,50 @@ import set "../../oni/set"
 import w "../../oni/widgets"
 import g "../globlas"
 import ui "../ui"
+import "core:fmt"
 
+@(private)
+nav_item_scratch: struct {
+	id, text: string,
+	route:    g.Routes,
+}
+
+@(private)
+nav_item_child :: proc(_: ui.Button_state) {
+	w.Text(
+		{
+			config = {
+				id = fmt.tprintf("%s-label", nav_item_scratch.id),
+				text = nav_item_scratch.text,
+				wrap = set.Wrap(.NONE),
+			},
+		},
+	)
+}
+
+@(private)
+nav_item_on_click :: proc(_: ui.Button_Event) {
+	g.app.Route = nav_item_scratch.route
+}
+
+Nav_item :: proc(id: string, route: g.Routes, text: string) {
+	nav_item_scratch = {
+		id    = id,
+		text  = text,
+		route = route,
+	}
+
+	ui.Button(
+		{
+			id = id,
+			radius = set.Radius(5),
+			variant = .GHOST,
+			width = set.Width(o.Width_Mode.FIT),
+			on_click = nav_item_on_click,
+			child = nav_item_child,
+		},
+	)
+}
 
 Nav :: proc() {
 	w.Rectangle({
@@ -16,89 +59,8 @@ Nav :: proc() {
 			justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
 		},
 		child = proc(state: w.Rectangle_State) {
-			ui.Button({
-				id = "nav-home-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Home
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "home-nav-button", text = "Home"}})
-				},
-			})
+			Nav_item("nav-docs-button", .Docs, "Docs")
 
-			ui.Button({
-				id = "nav-about-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .About
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "about-nav-button", text = "About"}})
-				},
-			})
-
-			ui.Button({
-				id = "nav-artboard-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Artboard
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "artboard-nav-button", text = "Artboard"}})
-				},
-			})
-
-			ui.Button({
-				id = "nav-layout-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Layout
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "layout-nav-button", text = "Layout"}})
-				},
-			})
-
-			ui.Button({
-				id = "nav-widgets-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Widgets
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "widgets-nav-button", text = "Widgets"}})
-				},
-			})
-
-			ui.Button({
-				id = "nav-Components-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Components
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "Components-nav-button", text = "Components"}})
-				},
-			})
-
-			ui.Button({
-				id = "nav-shortcuts-button",
-				radius = set.Radius(5),
-				variant = .GHOST,
-				on_click = proc(_: ui.Button_Event) {
-					g.app.Route = .Shortcuts
-				},
-				child = proc(_: ui.Button_state) {
-					w.Text({config = {id = "shortcuts-nav-button", text = "Shortcuts"}})
-				},
-			})
 		},
 	})
 }

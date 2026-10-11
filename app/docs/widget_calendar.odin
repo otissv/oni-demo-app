@@ -228,38 +228,44 @@ calendar_demo_set_range :: proc(_: w.Button_Event) {
 
 @(private)
 calendar_demo_mode_child_single :: proc(_: w.Button_State) {
-	w.Text({
-		config = {
-			id = "calendar_docs_mode_single_label",
-			text = "Single",
-			font_size = set.F32(13),
-			tabbable = set.Tabbable(false),
+	w.Text(
+		{
+			config = {
+				id = "calendar_docs_mode_single_label",
+				text = "Single",
+				font_size = set.F32(13),
+				tabbable = set.Tabbable(false),
+			},
 		},
-	})
+	)
 }
 
 @(private)
 calendar_demo_mode_child_multiple :: proc(_: w.Button_State) {
-	w.Text({
-		config = {
-			id = "calendar_docs_mode_multiple_label",
-			text = "Multiple",
-			font_size = set.F32(13),
-			tabbable = set.Tabbable(false),
+	w.Text(
+		{
+			config = {
+				id = "calendar_docs_mode_multiple_label",
+				text = "Multiple",
+				font_size = set.F32(13),
+				tabbable = set.Tabbable(false),
+			},
 		},
-	})
+	)
 }
 
 @(private)
 calendar_demo_mode_child_range :: proc(_: w.Button_State) {
-	w.Text({
-		config = {
-			id = "calendar_docs_mode_range_label",
-			text = "Range",
-			font_size = set.F32(13),
-			tabbable = set.Tabbable(false),
+	w.Text(
+		{
+			config = {
+				id = "calendar_docs_mode_range_label",
+				text = "Range",
+				font_size = set.F32(13),
+				tabbable = set.Tabbable(false),
+			},
 		},
-	})
+	)
 }
 
 @(private)
@@ -271,19 +277,21 @@ calendar_demo_mode_button :: proc(
 ) {
 	active := calendar_demo_mode == mode
 
-	w.Button({
-		config = {
-			id = id,
-			padding = set.Padding(o.Pd_struct{x = 10, y = 6}),
-			radius = set.Radius(f32(6)),
-			background = set.Background(active ? o.Color.PRIMARY : o.Color.SECONDARY),
-			color = set.Colors(
-				active ? o.Color.PRIMARY_FOREGROUND : o.Color.SECONDARY_FOREGROUND,
-			),
+	w.Button(
+		{
+			config = {
+				id = id,
+				padding = set.Padding(o.Pd_struct{x = 10, y = 6}),
+				radius = set.Radius(f32(6)),
+				background = set.Background(active ? o.Color.PRIMARY : o.Color.SECONDARY),
+				color = set.Colors(
+					active ? o.Color.PRIMARY_FOREGROUND : o.Color.SECONDARY_FOREGROUND,
+				),
+			},
+			on_click = on_click,
+			child = child,
 		},
-		on_click = on_click,
-		child = child,
-	})
+	)
 }
 
 @(private)
@@ -330,15 +338,17 @@ calendar_docs_mode_row :: proc(_: w.Rectangle_State) {
 
 @(private)
 calendar_docs_hero :: proc(_: w.Rectangle_State) {
-	w.Calendar({
-		config = {id = "calendar_docs_hero", width = set.Width(f32(320))},
-		mode = .SINGLE,
-		default_month = {year = 2024, month = 6, day = 1},
-		today = {year = 2024, month = 6, day = 15},
-		selected = {year = 2024, month = 6, day = 10},
-		has_selected = true,
-		child = calendar_docs_basic_child,
-	})
+	w.Calendar(
+		{
+			config = {id = "calendar_docs_hero", width = set.Width(f32(320))},
+			mode = .SINGLE,
+			default_month = {year = 2024, month = 6, day = 1},
+			today = {year = 2024, month = 6, day = 15},
+			selected = {year = 2024, month = 6, day = 10},
+			has_selected = true,
+			child = calendar_docs_basic_child,
+		},
+	)
 }
 
 @(private)
@@ -351,68 +361,78 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 			justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .START}),
 		},
 		child = proc(_: w.Rectangle_State) {
-			w.Rectangle({
-				config = {
-					id = "calendar_docs_mode_row",
-					direction = set.Direction(.HORIZONTAL),
-					gap_x = set.Gap_X(u16(8)),
-					justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .CENTER}),
+			w.Rectangle(
+				{
+					config = {
+						id = "calendar_docs_mode_row",
+						direction = set.Direction(.HORIZONTAL),
+						gap_x = set.Gap_X(u16(8)),
+						justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .CENTER}),
+					},
+					child = calendar_docs_mode_row,
 				},
-				child = calendar_docs_mode_row,
-			})
-			w.Text({
-				config = {
-					id = "calendar_docs_status",
-					text = calendar_demo_status_text(),
-					font_size = set.F32(13),
-					color = set.Colors(o.Color.MUTED_FOREGROUND),
+			)
+			w.Text(
+				{
+					config = {
+						id = "calendar_docs_status",
+						text = calendar_demo_status_text(),
+						font_size = set.F32(13),
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
 				},
-			})
-			w.Calendar({
-				config = {id = "calendar_docs_main", width = set.Width(f32(320))},
-				mode = calendar_demo_mode,
-				selected = calendar_demo_selected,
-				has_selected = calendar_demo_has_selected,
-				selected_dates = calendar_demo_dates[:calendar_demo_date_count],
-				selected_range = calendar_demo_range,
-				month = calendar_demo_month,
-				on_month_change = calendar_demo_on_month,
-				on_select = calendar_demo_on_select,
-				today = {year = 2024, month = 6, day = 15},
-				show_week_numbers = true,
-				required = calendar_demo_mode == .SINGLE,
-				max = calendar_demo_mode == .MULTIPLE ? 5 : 0,
-				child = calendar_docs_month_child,
-			})
+			)
+			w.Calendar(
+				{
+					config = {id = "calendar_docs_main", width = set.Width(f32(320))},
+					mode = calendar_demo_mode,
+					selected = calendar_demo_selected,
+					has_selected = calendar_demo_has_selected,
+					selected_dates = calendar_demo_dates[:calendar_demo_date_count],
+					selected_range = calendar_demo_range,
+					month = calendar_demo_month,
+					on_month_change = calendar_demo_on_month,
+					on_select = calendar_demo_on_select,
+					today = {year = 2024, month = 6, day = 15},
+					show_week_numbers = true,
+					required = calendar_demo_mode == .SINGLE,
+					max = calendar_demo_mode == .MULTIPLE ? 5 : 0,
+					child = calendar_docs_month_child,
+				},
+			)
 		},
 	})
 }
 
 @(private)
 calendar_docs_weekends_preview :: proc(_: w.Rectangle_State) {
-	w.Calendar({
-		config = {id = "calendar_docs_weekends", width = set.Width(f32(320))},
-		mode = .SINGLE,
-		default_month = {year = 2024, month = 6, day = 1},
-		today = {year = 2024, month = 6, day = 15},
-		disabled_matcher = calendar_demo_weekend_disabled,
-		hide_outside_days = true,
-		child = calendar_docs_weekends_child,
-	})
+	w.Calendar(
+		{
+			config = {id = "calendar_docs_weekends", width = set.Width(f32(320))},
+			mode = .SINGLE,
+			default_month = {year = 2024, month = 6, day = 1},
+			today = {year = 2024, month = 6, day = 15},
+			disabled_matcher = calendar_demo_weekend_disabled,
+			hide_outside_days = true,
+			child = calendar_docs_weekends_child,
+		},
+	)
 }
 
 @(private)
 calendar_docs_disabled_preview :: proc(_: w.Rectangle_State) {
-	w.Calendar({
-		config = {id = "calendar_docs_disabled", width = set.Width(f32(320))},
-		mode = .SINGLE,
-		default_month = {year = 2024, month = 6, day = 1},
-		today = {year = 2024, month = 6, day = 15},
-		selected = {year = 2024, month = 6, day = 10},
-		has_selected = true,
-		disabled = true,
-		child = calendar_docs_disabled_child,
-	})
+	w.Calendar(
+		{
+			config = {id = "calendar_docs_disabled", width = set.Width(f32(320))},
+			mode = .SINGLE,
+			default_month = {year = 2024, month = 6, day = 1},
+			today = {year = 2024, month = 6, day = 15},
+			selected = {year = 2024, month = 6, day = 10},
+			has_selected = true,
+			disabled = true,
+			child = calendar_docs_disabled_child,
+		},
+	)
 }
 
 @(private)

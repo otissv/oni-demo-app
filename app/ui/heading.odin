@@ -39,8 +39,10 @@ Heading :: proc(props: Heading_Props) {
 		font_size = set.F32(16)
 	}
 
+	theme := props.theme != nil ? props.theme : o.theme
+
 	base := w.Text_Config {
-		font        = set.Font(props.theme.font_heading),
+		font        = set.Font(theme.font_heading),
 		color       = set.Colors(o.theme.palette[.FOREGROUND]),
 		font_size   = font_size,
 		line_height = set.F32(1),

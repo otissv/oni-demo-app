@@ -11,9 +11,11 @@ Paragraph_Props :: struct {
 }
 
 Paragraph :: proc(props: Paragraph_Props) {
+	theme := props.theme != nil ? props.theme : o.theme
+
 	base := w.Text_Config {
-		font        = set.Font(props.theme.font_body),
-		font_size   = set.F32(props.theme.font_body.size_px),
+		font        = set.Font(theme.font_body),
+		font_size   = set.F32(theme.font_body.size_px),
 		line_height = set.F32(1.5),
 		color       = set.Colors(o.theme.palette[.FOREGROUND]),
 	}
