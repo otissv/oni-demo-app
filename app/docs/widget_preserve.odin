@@ -70,7 +70,6 @@ preserve_docs_whitespace_preview :: proc(_: w.Rectangle_State) {
 		{
 			config = {
 				id = "preserve_docs_whitespace_port",
-				width = set.Width(DOC_CONTENT_WIDTH - 48),
 				height = set.Height(240),
 				padding = set.Padding(12),
 				background = set.Colors(o.Color.MUTED),

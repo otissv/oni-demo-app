@@ -1,5 +1,6 @@
 package components
 
+import o "../../oni"
 import set "../../oni/set"
 import w "../../oni/widgets"
 import g "../globlas"
@@ -8,7 +9,12 @@ import ui "../ui"
 
 Nav :: proc() {
 	w.Rectangle({
-		config = {id = "nav", x = set.F32(16), y = set.F32(16), gap_x = set.Gap_X(10)},
+		config = {
+			id = "nav",
+			direction = set.Direction(.HORIZONTAL),
+			gap_x = set.Gap_X(10),
+			justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
+		},
 		child = proc(state: w.Rectangle_State) {
 			ui.Button({
 				id = "nav-home-button",

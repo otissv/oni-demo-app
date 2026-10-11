@@ -108,9 +108,14 @@ text_input_multiline_on_change :: proc(_: w.Text_Input_Event, text: string) {
 
 @(private)
 text_input_docs_single_preview :: proc(_: w.Rectangle_State) {
+	text_input_docs_single_field("text_input_docs_single")
+}
+
+@(private)
+text_input_docs_single_field :: proc(id: string) {
 	w.Text_Input({
 		config = {
-			id = "text_input_docs_single",
+			id = id,
 			text = text_input_demo_value,
 			placeholder = "Type here…",
 			width = set.Width(420),
@@ -186,8 +191,13 @@ text_input_docs_hero_inner :: proc(_: w.Rectangle_State) {
 	})
 	w.Rectangle({
 		config = {id = "text_input_docs_hero_field_wrap"},
-		child = text_input_docs_single_preview,
+		child = text_input_docs_hero_field,
 	})
+}
+
+@(private)
+text_input_docs_hero_field :: proc(_: w.Rectangle_State) {
+	text_input_docs_single_field("text_input_docs_hero_field")
 }
 
 @(private)

@@ -6,8 +6,6 @@ import w "../../oni/widgets"
 import ui "../ui"
 import "core:fmt"
 
-DOC_CONTENT_WIDTH :: f32(720)
-
 @(private)
 doc_code_scratch: struct {
 	id, text: string,
@@ -117,7 +115,6 @@ doc_section_inner :: proc(_: w.Rectangle_State) {
 					id = fmt.tprintf("%s_body", doc_section_scratch.id),
 					direction = set.Direction(.VERTICAL),
 					gap_y = set.Gap_Y(u16(12)),
-					width = set.Width(DOC_CONTENT_WIDTH),
 					justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .START}),
 				},
 				child = doc_section_scratch.child,
@@ -141,19 +138,17 @@ doc_ui_button_child :: proc(_: ui.Button_state) {
 }
 
 /*
-Scrollable docs page shell sized to the window below the nav bar.
+Scrollable docs page shell that fills the View content column below the nav bar.
 */
 doc_page :: proc(id: string, child: proc(state: w.Rectangle_State)) {
-	settings := o.Settings_Get()
-	page_h := max(f32(200), f32(settings.window_height) - 80)
-
 	w.Rectangle(
 		{
 			config = {
 				id = id,
 				direction = set.Direction(.VERTICAL),
 				gap_y = set.Gap_Y(u16(28)),
-				height = set.Height(page_h),
+				width = set.Width(o.Dim_struct{percent = 100}),
+				height = set.Height(o.Dim_struct{percent = 100}),
 				overflow_y = set.Overflow_Y(.AUTO),
 				padding = set.Padding(o.Pd_struct{r = 24, b = 48}),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .START}),
@@ -175,7 +170,6 @@ doc_lede :: proc(id, text: string) {
 			theme = o.theme,
 			wrap = set.Wrap(.BALANCE),
 			font_size = set.F32(14),
-			width = set.Width(DOC_CONTENT_WIDTH),
 		},
 	)
 }
@@ -198,15 +192,7 @@ doc_h3 :: proc(id, text: string) {
 }
 
 doc_p :: proc(id, text: string) {
-	ui.Paragraph(
-		{
-			id = id,
-			text = text,
-			theme = o.theme,
-			line_height = set.F32(1.55),
-			width = set.Width(DOC_CONTENT_WIDTH),
-		},
-	)
+	ui.Paragraph({id = id, text = text, theme = o.theme, line_height = set.F32(1.55)})
 }
 
 doc_muted :: proc(id, text: string) {
@@ -233,7 +219,6 @@ doc_code :: proc(id, code: string) {
 			config = {
 				id = id,
 				direction = set.Direction(.VERTICAL),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				padding = set.Padding(16),
 				background = set.Colors(o.Color.MUTED),
 				radius = set.Radius(8),
@@ -251,7 +236,6 @@ doc_preview :: proc(id: string, child: proc(state: w.Rectangle_State)) {
 				id = id,
 				direction = set.Direction(.HORIZONTAL),
 				gap_x = set.Gap_X(u16(12)),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				padding = set.Padding(24),
 				border = set.Border(1),
 				border_color = set.Border_color(o.Color.BORDER),
@@ -270,7 +254,6 @@ doc_row :: proc(id: string, child: proc(state: w.Rectangle_State)) {
 				id = id,
 				direction = set.Direction(.HORIZONTAL),
 				gap_x = set.Gap_X(u16(12)),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
 			},
 			child = child,
@@ -292,7 +275,6 @@ doc_section :: proc(id, title, body: string, child: proc(state: w.Rectangle_Stat
 				id = id,
 				direction = set.Direction(.VERTICAL),
 				gap_y = set.Gap_Y(u16(12)),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .START}),
 			},
 			child = doc_section_inner,
@@ -452,7 +434,6 @@ doc_table :: proc(id: string, rows: []Doc_Prop_Row) {
 			config = {
 				id = id,
 				direction = set.Direction(.VERTICAL),
-				width = set.Width(DOC_CONTENT_WIDTH),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .START}),
 				border = set.Border(1),
 				border_color = set.Border_color(o.Color.BORDER),
