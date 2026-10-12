@@ -40,6 +40,8 @@ CALENDAR_DOCS_USAGE_CALL :: `w.Calendar({
 	mode = .SINGLE,
 	selected = selected,
 	has_selected = has_selected,
+	month = month,
+	on_month_change = proc(next: w.Calendar_Date) { month = next },
 	on_select = proc(selection: w.Calendar_Selection) {
 		selected = selection.single
 		has_selected = selection.has_single
@@ -58,7 +60,6 @@ CALENDAR_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"selected_dates", "[]Calendar_Date", "nil"},
 	{"selected_range", "Calendar_Range", "{}"},
 	{"month", "Calendar_Date", "{}"},
-	{"default_month", "Calendar_Date", "{}"},
 	{"on_month_change", "proc(month: Calendar_Date)", "nil"},
 	{"on_select", "proc(selection: Calendar_Selection)", "nil"},
 	{"on_day_click", "proc(date: Calendar_Date)", "nil"},
@@ -283,6 +284,7 @@ calendar_demo_mode_button :: proc(
 				id = id,
 				padding = set.Padding(o.Pd_struct{x = 10, y = 6}),
 				radius = set.Radius(f32(6)),
+				width = set.Width(.FIT),
 				background = set.Background(active ? o.Color.PRIMARY : o.Color.SECONDARY),
 				color = set.Colors(
 					active ? o.Color.PRIMARY_FOREGROUND : o.Color.SECONDARY_FOREGROUND,
@@ -342,7 +344,7 @@ calendar_docs_hero :: proc(_: w.Rectangle_State) {
 		{
 			config = {id = "calendar_docs_hero", width = set.Width(f32(320))},
 			mode = .SINGLE,
-			default_month = {year = 2024, month = 6, day = 1},
+			month = {year = 2024, month = 6, day = 1},
 			today = {year = 2024, month = 6, day = 15},
 			selected = {year = 2024, month = 6, day = 10},
 			has_selected = true,
@@ -358,15 +360,16 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 			id = "calendar_docs_modes_col",
 			direction = set.Direction(.VERTICAL),
 			gap_y = set.Gap_Y(u16(12)),
-			justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .START}),
+			width = set.Width(.GROW),
+			justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .CENTER}),
 		},
 		child = proc(_: w.Rectangle_State) {
 			w.Rectangle(
 				{
 					config = {
 						id = "calendar_docs_mode_row",
-						direction = set.Direction(.HORIZONTAL),
 						gap_x = set.Gap_X(u16(8)),
+						width = set.Width(.GROW),
 						justify = set.Justify(o.Justify_Pos{x = .CENTER, y = .CENTER}),
 					},
 					child = calendar_docs_mode_row,
@@ -379,6 +382,7 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 						text = calendar_demo_status_text(),
 						font_size = set.F32(13),
 						color = set.Colors(o.Color.MUTED_FOREGROUND),
+						width = set.Width(.FIT),
 					},
 				},
 			)
@@ -410,7 +414,7 @@ calendar_docs_weekends_preview :: proc(_: w.Rectangle_State) {
 		{
 			config = {id = "calendar_docs_weekends", width = set.Width(f32(320))},
 			mode = .SINGLE,
-			default_month = {year = 2024, month = 6, day = 1},
+			month = {year = 2024, month = 6, day = 1},
 			today = {year = 2024, month = 6, day = 15},
 			disabled_matcher = calendar_demo_weekend_disabled,
 			hide_outside_days = true,
@@ -425,7 +429,7 @@ calendar_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 		{
 			config = {id = "calendar_docs_disabled", width = set.Width(f32(320))},
 			mode = .SINGLE,
-			default_month = {year = 2024, month = 6, day = 1},
+			month = {year = 2024, month = 6, day = 1},
 			today = {year = 2024, month = 6, day = 15},
 			selected = {year = 2024, month = 6, day = 10},
 			has_selected = true,
@@ -457,7 +461,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_usage",
 		"Usage",
-		"Selection is caller-owned. Pass the current selection every frame and update it from on_select. Month navigation is uncontrolled unless you pass on_month_change and month.",
+		"Selection and displayed month are caller-owned. Pass the current selection and month every frame, then update them from on_select and on_month_change.",
 		proc(_: w.Rectangle_State) {
 			doc_code("calendar_docs_usage_call", CALENDAR_DOCS_USAGE_CALL)
 		},

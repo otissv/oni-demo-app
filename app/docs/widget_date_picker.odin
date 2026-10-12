@@ -15,10 +15,16 @@ date_picker_demo_has_selected: bool
 date_picker_demo_open: bool
 
 @(private)
+date_picker_demo_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
+
+@(private)
 date_picker_demo_range: w.Calendar_Range
 
 @(private)
 date_picker_demo_range_open: bool
+
+@(private)
+date_picker_demo_range_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
 
 @(private)
 date_picker_demo_input_selected: w.Calendar_Date
@@ -28,6 +34,9 @@ date_picker_demo_input_has_selected: bool
 
 @(private)
 date_picker_demo_input_open: bool
+
+@(private)
+date_picker_demo_input_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
 
 @(private)
 DATE_PICKER_DOCS_USAGE_IMPORT :: `import w "oni/widgets"
@@ -40,11 +49,13 @@ DATE_PICKER_DOCS_USAGE_CALL :: `w.Date_Picker({
 	selected = selected,
 	has_selected = has_selected,
 	open = open,
+	month = month,
 	on_select = proc(selection: w.Calendar_Selection) {
 		selected = selection.single
 		has_selected = selection.has_single
 	},
 	on_open_change = proc(o: bool) { open = o },
+	on_month_change = proc(next: w.Calendar_Date) { month = next },
 	child = proc(_: w.Date_Picker_State) {
 		w.Date_Picker_Trigger({
 			config = {id = "event_trigger"},
@@ -69,7 +80,6 @@ DATE_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"open", "bool", "false"},
 	{"keep_open", "bool", "false"},
 	{"month", "Calendar_Date", "{}"},
-	{"default_month", "Calendar_Date", "{}"},
 	{"on_month_change", "proc(month: Calendar_Date)", "nil"},
 	{"on_select", "proc(selection: Calendar_Selection)", "nil"},
 	{"on_day_click", "proc(date: Calendar_Date)", "nil"},
@@ -129,6 +139,11 @@ date_picker_demo_on_open :: proc(open: bool) {
 }
 
 @(private)
+date_picker_demo_on_month :: proc(month: w.Calendar_Date) {
+	date_picker_demo_month = month
+}
+
+@(private)
 date_picker_demo_on_range_select :: proc(selection: w.Calendar_Selection) {
 	date_picker_demo_range = selection.range
 }
@@ -136,6 +151,11 @@ date_picker_demo_on_range_select :: proc(selection: w.Calendar_Selection) {
 @(private)
 date_picker_demo_on_range_open :: proc(open: bool) {
 	date_picker_demo_range_open = open
+}
+
+@(private)
+date_picker_demo_on_range_month :: proc(month: w.Calendar_Date) {
+	date_picker_demo_range_month = month
 }
 
 @(private)
@@ -147,6 +167,11 @@ date_picker_demo_on_input_select :: proc(selection: w.Calendar_Selection) {
 @(private)
 date_picker_demo_on_input_open :: proc(open: bool) {
 	date_picker_demo_input_open = open
+}
+
+@(private)
+date_picker_demo_on_input_month :: proc(month: w.Calendar_Date) {
+	date_picker_demo_input_month = month
 }
 
 @(private)
@@ -223,8 +248,10 @@ date_picker_docs_basic_inner :: proc(_: w.Rectangle_State) {
 		selected = date_picker_demo_selected,
 		has_selected = date_picker_demo_has_selected,
 		open = date_picker_demo_open,
+		month = date_picker_demo_month,
 		on_select = date_picker_demo_on_select,
 		on_open_change = date_picker_demo_on_open,
+		on_month_change = date_picker_demo_on_month,
 		child = date_picker_demo_basic_child,
 	})
 	w.Text({
@@ -262,9 +289,11 @@ date_picker_docs_range_inner :: proc(_: w.Rectangle_State) {
 		mode = .RANGE,
 		selected_range = date_picker_demo_range,
 		open = date_picker_demo_range_open,
+		month = date_picker_demo_range_month,
 		number_of_months = 2,
 		on_select = date_picker_demo_on_range_select,
 		on_open_change = date_picker_demo_on_range_open,
+		on_month_change = date_picker_demo_on_range_month,
 		child = date_picker_demo_range_child,
 	})
 	w.Text({
@@ -297,8 +326,10 @@ date_picker_docs_input_inner :: proc(_: w.Rectangle_State) {
 		selected = date_picker_demo_input_selected,
 		has_selected = date_picker_demo_input_has_selected,
 		open = date_picker_demo_input_open,
+		month = date_picker_demo_input_month,
 		on_select = date_picker_demo_on_input_select,
 		on_open_change = date_picker_demo_on_input_open,
+		on_month_change = date_picker_demo_on_input_month,
 		child = date_picker_demo_input_child,
 	})
 	w.Text({
@@ -334,7 +365,7 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("date_picker_docs_title", "Date Picker")
 	doc_lede(
 		"date_picker_docs_lede",
-		"Composable date input: Date_Picker_Trigger + Date_Picker_Value (or Date_Picker_Input) with a Popover Calendar. Selection is caller-owned; open is uncontrolled unless on_open_change is set.",
+		"Composable date input: Date_Picker_Trigger + Date_Picker_Value (or Date_Picker_Input) with a Popover Calendar. Selection, open, and month are caller-owned.",
 	)
 
 	doc_preview("date_picker_docs_hero_preview", date_picker_docs_basic_preview)
@@ -351,7 +382,7 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"date_picker_docs_usage",
 		"Usage",
-		"selected / has_selected (or range / dates) and open are caller-owned when controlled. Omit content to get the default Calendar panel.",
+		"selected / has_selected (or range / dates), open, and month are caller-owned. Omit content to get the default Calendar panel.",
 		proc(_: w.Rectangle_State) {
 			doc_code("date_picker_docs_usage_call", DATE_PICKER_DOCS_USAGE_CALL)
 		},

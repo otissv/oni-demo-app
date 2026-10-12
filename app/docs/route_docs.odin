@@ -11,7 +11,7 @@ Docs_Section :: enum {
 	Shortcuts,
 }
 
-active_docs_section: Docs_Section = .Layout
+active_docs_section: Docs_Section = .Widgets
 
 
 docs_route :: proc() {

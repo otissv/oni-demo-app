@@ -15,6 +15,9 @@ color_picker_demo_previous: o.RGBA = {59, 130, 246, 255}
 color_picker_demo_channel: o.Color_Picker_Channel = .H
 
 @(private)
+color_picker_demo_web_only: bool
+
+@(private)
 COLOR_PICKER_DOCS_USAGE_IMPORT :: `import o "oni"
 import w "oni/widgets"
 import set "oni/set"`
@@ -25,9 +28,11 @@ COLOR_PICKER_DOCS_USAGE_CALL :: `w.Color_Picker({
 	value = value,
 	channel = channel,
 	previous = previous,
+	web_only = web_only,
 	on_value_change = proc(v: o.RGBA) { value = v },
 	on_value_commit = proc(v: o.RGBA) { previous = v },
 	on_channel_change = proc(c: o.Color_Picker_Channel) { channel = c },
+	on_web_only_change = proc(enabled: bool) { web_only = enabled },
 	child = proc(_: w.Color_Picker_State) {
 		w.Color_Picker_Field({config = {id = "accent_field"}})
 		w.Color_Picker_Slider({config = {id = "accent_slider"}})
@@ -40,12 +45,14 @@ COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"value", "RGBA", "{0,0,0,255}"},
 	{"channel", "Color_Picker_Channel", ".H"},
 	{"previous", "RGBA", "{0,0,0,255}"},
+	{"web_only", "bool", "false"},
 	{"disabled", "bool", "false"},
 	{"style", "Color_Picker_Style", "{}"},
 	{"child", "proc(Color_Picker_State)", "nil"},
 	{"on_value_change", "proc(value: RGBA)", "nil"},
 	{"on_value_commit", "proc(value: RGBA)", "nil"},
 	{"on_channel_change", "proc(channel: Color_Picker_Channel)", "nil"},
+	{"on_web_only_change", "proc(web_only: bool)", "nil"},
 	{"on_mount", "proc(Color_Picker_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Color_Picker_State) -> Mount", "nil"},
 	{"unmount", "bool", "false"},
@@ -251,6 +258,7 @@ color_picker_docs_hero :: proc(_: w.Rectangle_State) {
 		value = color_picker_demo_value,
 		channel = color_picker_demo_channel,
 		previous = color_picker_demo_previous,
+		web_only = color_picker_demo_web_only,
 		on_value_change = proc(value: o.RGBA) {
 			color_picker_demo_value = value
 		},
@@ -259,6 +267,9 @@ color_picker_docs_hero :: proc(_: w.Rectangle_State) {
 		},
 		on_channel_change = proc(channel: o.Color_Picker_Channel) {
 			color_picker_demo_channel = channel
+		},
+		on_web_only_change = proc(web_only: bool) {
+			color_picker_demo_web_only = web_only
 		},
 		child = color_picker_docs_compact_child,
 	})
@@ -271,6 +282,7 @@ color_picker_docs_full_preview :: proc(_: w.Rectangle_State) {
 		value = color_picker_demo_value,
 		channel = color_picker_demo_channel,
 		previous = color_picker_demo_previous,
+		web_only = color_picker_demo_web_only,
 		on_value_change = proc(value: o.RGBA) {
 			color_picker_demo_value = value
 		},
@@ -279,6 +291,9 @@ color_picker_docs_full_preview :: proc(_: w.Rectangle_State) {
 		},
 		on_channel_change = proc(channel: o.Color_Picker_Channel) {
 			color_picker_demo_channel = channel
+		},
+		on_web_only_change = proc(web_only: bool) {
+			color_picker_demo_web_only = web_only
 		},
 		child = color_picker_docs_full_child,
 	})
@@ -318,7 +333,7 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"color_picker_docs_usage",
 		"Usage",
-		"value, channel, and previous are caller-owned. Pass them every frame. Drag updates fire on_value_change; release commits through on_value_commit.",
+		"value, channel, previous, and web_only are caller-owned. Pass them every frame. Drag updates fire on_value_change; release commits through on_value_commit.",
 		proc(_: w.Rectangle_State) {
 			doc_code("color_picker_docs_usage_call", COLOR_PICKER_DOCS_USAGE_CALL)
 		},
@@ -327,7 +342,7 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"color_picker_docs_composition",
 		"Composition",
-		"Build the layout you need from Field, Slider, Alpha, Swatch, Channels, Hex, Type, and Web_Only parts inside child.",
+		"Build the layout you need from Field, Slider, Alpha, Swatch, Channels, Hex, Type, and Web_Only parts inside child. Wire web_only through the root when you render the Web_Only checkbox.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("color_picker_docs_full_preview", color_picker_docs_full_preview)
 			doc_code(
@@ -337,9 +352,11 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 	value = value,
 	channel = channel,
 	previous = previous,
+	web_only = web_only,
 	on_value_change = ...,
 	on_value_commit = ...,
 	on_channel_change = ...,
+	on_web_only_change = ...,
 	child = proc(_: w.Color_Picker_State) {
 		w.Color_Picker_Field({config = {id = "picker_field"}})
 		w.Color_Picker_Slider({config = {id = "picker_slider"}})
