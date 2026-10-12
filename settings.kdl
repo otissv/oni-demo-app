@@ -6,7 +6,10 @@ window {
     min-width 320
     min-height 180
 }
-dpi scale=1.299999952316284
+dpi {
+    scale 1.5
+    subpixel auto
+}
 fonts {
     body-size 14
     heading-size 20

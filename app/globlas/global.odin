@@ -28,7 +28,7 @@ App_Type :: enum {
 APP_TYPE :: App_Type.Application
 
 // Engine-wide pacing (required). Continuous | On_Demand | Focused
-FRAME_MODE :: o.Frame_Mode.Continuous
+FRAME_MODE :: o.Frame_Mode.On_Demand
 
 /*
 App-local state kept in Persistent and rebound for leaf packages.

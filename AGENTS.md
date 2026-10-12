@@ -43,7 +43,7 @@ From the consumer project (or anywhere; the script resolves the project as the p
 
 Override project root if needed: `ONI_PROJECT_ROOT=/path/to/project ./oni/scripts/build_hot_reload.sh run`.
 
-Flags used by the build: `-vet -strict-style -debug`. Needs `odin`, `glslc`, SDL3, SDL3_image, FreeType, HarfBuzz; Linux watch needs `inotify-tools`.
+Flags used by the build: `-vet -strict-style -debug`. Needs `odin`, `glslc`, SDL3 (dual-source GPU; see `oni/third_party/sdl3/`), SDL3_image, FreeType, HarfBuzz; Linux watch needs `inotify-tools`. Build the pinned patched SDL into `oni/build/sdl3` with `./oni/third_party/sdl3/build_sdl3.sh` (auto-linked via `odin_collections.sh`).
 
 In-app: **F5** force reload, **F6** force restart.
 
