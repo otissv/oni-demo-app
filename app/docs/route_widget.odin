@@ -12,6 +12,8 @@ Sidebar_Widgets_options :: enum {
 	WIDGET_DATE_PICKER,
 	WIDGET_IMAGE,
 	WIDGET_LINK,
+	WIDGET_POPOVER,
+	WIDGET_DIALOG,
 	WIDGET_PRESERVE,
 	WIDGET_RADIO,
 	WIDGET_RECTANGLE,
@@ -26,7 +28,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_CALENDAR
+active_widget_option: Sidebar_Widgets_options = .WIDGET_BUTTON
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -45,6 +47,10 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Image()
 	case .WIDGET_LINK:
 		Widget_Link()
+	case .WIDGET_POPOVER:
+		Widget_Popover()
+	case .WIDGET_DIALOG:
+		Widget_Dialog()
 	case .WIDGET_PRESERVE:
 		Widget_Preserve()
 	case .WIDGET_RADIO:
@@ -104,6 +110,16 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 	c.sidebar_item("widget-link", "Link", proc() {
 		active_docs_section = .Widgets
 		active_widget_option = .WIDGET_LINK
+	})
+
+	c.sidebar_item("widget-popover", "Popover", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_POPOVER
+	})
+
+	c.sidebar_item("widget-dialog", "Dialog", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_DIALOG
 	})
 
 	c.sidebar_item("widget-preserve", "Preserve", proc() {

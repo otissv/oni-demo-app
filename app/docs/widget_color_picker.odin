@@ -77,7 +77,7 @@ COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 @(private)
 COLOR_PICKER_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"id", "string", `""`},
-	{"width", "Width", "unset"},
+	{"width", "Width", ".GROW"},
 	{"height", "Height", "unset"},
 	{"padding", "Cfg(Padding)", "unset"},
 	{"radius", "Cfg(Radius)", "unset"},

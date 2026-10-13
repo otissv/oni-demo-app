@@ -1,12 +1,11 @@
 package oni_docs
 
-import ui "../../app/ui"
 import o "../../oni"
 import set "../../oni/set"
 import w "../../oni/widgets"
 
 @(private)
-layout_popover_open := true
+layout_popover_open := false
 
 Layout_Popover :: proc() {
 	w.Rectangle({
@@ -30,16 +29,48 @@ Layout_Popover :: proc() {
 					},
 				},
 			)
-			ui.Button({
-				id = "layout-popover-toggle",
-				variant = .DEFAULT,
-				radius = set.Radius(5),
-				on_click = proc(_: ui.Button_Event) {
-					layout_popover_open = !layout_popover_open
+			w.Popover({
+				config = {id = "layout-popover"},
+				open = layout_popover_open,
+				on_open_change = proc(open: bool) {
+					layout_popover_open = open
 				},
-				child = proc(_: ui.Button_state) {
-					label := layout_popover_open ? "Hide popover" : "Show popover"
-					w.Text({config = {id = "layout-popover-toggle-label", text = label}})
+				child = proc(_: w.Popover_State) {
+					w.Popover_Trigger({
+						config = {id = "layout-popover-trigger"},
+						child = proc(_: w.Popover_Trigger_State) {
+							label := layout_popover_open ? "Hide popover" : "Show popover"
+							w.Text({config = {id = "layout-popover-trigger-label", text = label}})
+						},
+					})
+					w.Popover_Content({
+						config = {
+							id = "layout-popover-panel",
+							width = set.Width(f32(220)),
+							height = set.Height(f32(140)),
+							direction = set.Direction(.VERTICAL),
+							gap_y = set.Gap_Y(u16(8)),
+							padding = set.Padding(f32(12)),
+							background = set.Colors(o.theme.palette[.BACKGROUND]),
+							radius = set.Radius(10),
+							border = set.Border(f32(1)),
+							border_color = set.Colors(o.Color.SKY_500),
+							justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
+						},
+						child = proc(_: w.Popover_Content_Props_State) {
+							w.Text(
+								{config = {id = "layout-popover-panel-title", text = "Popover panel"}},
+							)
+							w.Text(
+								{
+									config = {
+										id = "layout-popover-panel-body",
+										text = "Anchored content in .POPOVER space",
+									},
+								},
+							)
+						},
+					})
 				},
 			})
 			w.Rectangle({
@@ -56,40 +87,6 @@ Layout_Popover :: proc() {
 					w.Text({config = {id = "layout-popover-underlay-label", text = "underlay"}})
 				},
 			})
-
-			if layout_popover_open {
-				w.Popover({
-					config = {
-						id = "layout-popover-panel",
-						position = set.Position(.ABSOLUTE),
-						x = set.F32(140),
-						y = set.F32(90),
-						width = set.Width(f32(220)),
-						height = set.Height(f32(140)),
-						direction = set.Direction(.VERTICAL),
-						gap_y = set.Gap_Y(u16(8)),
-						padding = set.Padding(f32(12)),
-						background = set.Colors(o.theme.palette[.BACKGROUND]),
-						radius = set.Radius(10),
-						border = set.Border(f32(1)),
-						border_color = set.Colors(o.Color.SKY_500),
-						justify = set.Justify(o.Justify_Pos{x = .START, y = .START}),
-					},
-					child = proc(_: w.Popover_State) {
-						w.Text(
-							{config = {id = "layout-popover-panel-title", text = "Popover panel"}},
-						)
-						w.Text(
-							{
-								config = {
-									id = "layout-popover-panel-body",
-									text = "Always space=.POPOVER",
-								},
-							},
-						)
-					},
-				})
-			}
 		},
 	})
 }

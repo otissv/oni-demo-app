@@ -57,6 +57,7 @@ Nav :: proc() {
 			direction = set.Direction(.HORIZONTAL),
 			gap_x = set.Gap_X(10),
 			justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
+			padding = set.Padding(o.Pd_struct{x = 10}),
 		},
 		child = proc(state: w.Rectangle_State) {
 			Nav_item("nav-docs-button", .Docs, "Docs")

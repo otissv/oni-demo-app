@@ -35,7 +35,7 @@ Shared Widget_Config rows for API config tables (Config = Widget_Config widgets)
 */
 DOC_WIDGET_CONFIG := [?]Doc_Prop_Row {
 	{"id", "string", `""`},
-	{"width", "Width", "unset"},
+	{"width", "Width", ".GROW"},
 	{"height", "Height", "unset"},
 	{"padding", "Cfg(Padding)", "unset"},
 	{"radius", "Cfg(Radius)", "unset"},
@@ -148,9 +148,10 @@ doc_page :: proc(id: string, child: proc(state: w.Rectangle_State)) {
 				direction = set.Direction(.VERTICAL),
 				gap_y = set.Gap_Y(u16(28)),
 				width = set.Width(o.Dim_struct{percent = 100}),
-				height = set.Height(o.Dim_struct{percent = 100}),
+				height = set.Height(.AUTO),
 				overflow_y = set.Overflow_Y(.AUTO),
-				padding = set.Padding(o.Pd_struct{r = 24, b = 48}),
+				overflow_x = set.Overflow_X(.AUTO),
+				padding = set.Padding(o.Pd_pos{x = 24, y = 24}),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .START}),
 			},
 			child = child,

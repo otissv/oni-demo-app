@@ -107,7 +107,7 @@ CALENDAR_DOCS_PROPS := [?]Doc_Prop_Row {
 @(private)
 CALENDAR_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"id", "string", `""`},
-	{"width", "Width", "unset"},
+	{"width", "Width", ".GROW"},
 	{"height", "Height", "unset"},
 	{"padding", "Cfg(Padding)", "unset"},
 	{"radius", "Cfg(Radius)", "unset"},

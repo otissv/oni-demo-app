@@ -23,7 +23,6 @@ view_child :: proc(state: w.Rectangle_State) {
 				flex = set.Flex(1),
 				height = set.Height(o.Dim_struct{percent = 100}),
 				direction = set.Direction(.VERTICAL),
-				padding = set.Padding(o.Pd_struct{l = 20}),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .STRETCH}),
 			},
 			child = view_children.container,

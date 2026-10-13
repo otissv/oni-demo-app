@@ -365,7 +365,7 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("date_picker_docs_title", "Date Picker")
 	doc_lede(
 		"date_picker_docs_lede",
-		"Composable date input: Date_Picker_Trigger + Date_Picker_Value (or Date_Picker_Input) with a Popover Calendar. Selection, open, and month are caller-owned.",
+		"Composable date input: Date_Picker_Trigger + Date_Picker_Value (or Date_Picker_Input) with anchored calendar content. Selection, open, and month are caller-owned.",
 	)
 
 	doc_preview("date_picker_docs_hero_preview", date_picker_docs_basic_preview)
@@ -373,7 +373,7 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"date_picker_docs_installation",
 		"Installation",
-		"Date_Picker composes Popover and Calendar. Use Date_Picker_Trigger / Date_Picker_Value, or Date_Picker_Input for typed ISO dates.",
+		"Date_Picker uses the shared popover panel primitive plus Calendar. Use Date_Picker_Trigger / Date_Picker_Value, or Date_Picker_Input for typed ISO dates.",
 		proc(_: w.Rectangle_State) {
 			doc_code("date_picker_docs_installation_code", DATE_PICKER_DOCS_USAGE_IMPORT)
 		},
@@ -391,15 +391,14 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"date_picker_docs_composition",
 		"Composition",
-		"Date_Picker → Trigger → Value, with Popover content holding Calendar (default).",
+		"Date_Picker → Trigger → Value, with floating content holding Calendar (default).",
 		proc(_: w.Rectangle_State) {
 			doc_code(
 				"date_picker_docs_composition_code",
 				`Date_Picker
 ├── Date_Picker_Trigger
 │   └── Date_Picker_Value
-└── Popover
-    └── Calendar (default content)`,
+└── Calendar panel (default content)`,
 			)
 		},
 	)

@@ -206,8 +206,6 @@ Button :: proc(props: Button_props) {
 	defer button_border_width_fallback = prev_border_width
 
 	base := w.Button_Config {
-		width    = set.Width(.AUTO),
-		wrap     = set.Wrap(.NONE),
 		justify  = set.Justify(o.Justify_Pos{x = .CENTER, y = .CENTER}),
 		tabbable = set.Bool(true),
 	}

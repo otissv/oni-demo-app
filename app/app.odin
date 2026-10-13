@@ -34,7 +34,6 @@ app_root_child :: proc(_: w.Rectangle_State) {
 			width = set.Width(o.Dim_struct{percent = 100}),
 			direction = set.Direction(.HORIZONTAL),
 			justify = set.Justify(o.Justify_Pos{x = .START, y = .CENTER}),
-			padding = set.Padding(o.Pd_struct{l = 16, r = 16}),
 		},
 		child = proc(_: w.Rectangle_State) {
 			c.Nav()
@@ -48,7 +47,6 @@ app_root_child :: proc(_: w.Rectangle_State) {
 				flex = set.Flex(1),
 				width = set.Width(o.Dim_struct{percent = 100}),
 				direction = set.Direction(.VERTICAL),
-				padding = set.Padding(o.Pd_struct{x = 10}),
 				justify = set.Justify(o.Justify_Pos{x = .STRETCH, y = .STRETCH}),
 			},
 			child = main_route_child,

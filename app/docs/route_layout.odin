@@ -34,7 +34,7 @@ active_layout_option: Sidebar_Layout_options = .LAYOUT_HORIZONTAL
 
 direction: o.Direction_Layout = .HORIZONTAL
 layout_width: o.Width = .AUTO
-layout_height: o.Height = .AUTO
+layout_height: o.Height
 content_align_x: o.Justify_Align = .MAX_CONTENT
 content_align_y: o.Justify_Align = .START
 
@@ -91,7 +91,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_HORIZONTAL
 		direction = .HORIZONTAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("horizontal-reverse", "Horizontal Reverse", proc() {
@@ -99,7 +99,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_HORIZONTAL_REVERSE
 		direction = .HORIZONTAL_REVERSE
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("horizontal-wrap", "Horizontal Wrap", proc() {
@@ -107,7 +107,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_HORIZONTAL_WRAP
 		direction = .HORIZONTAL_WRAP
 		layout_width = 400
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("horizontal-wrap-reverse", "Horizontal Wrap Reverse", proc() {
@@ -115,7 +115,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_HORIZONTAL_WRAP_REVERSE
 		direction = .HORIZONTAL_WRAP_REVERSE
 		layout_width = 400
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("vertical", "Vertical", proc() {
@@ -123,7 +123,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_VERTICAL
 		direction = .VERTICAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("vertical-reverse", "Vertical Reverse", proc() {
@@ -131,7 +131,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		active_layout_option = .LAYOUT_VERTICAL_REVERSE
 		direction = .VERTICAL_REVERSE
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("vertical-wrap", "Vertical Wrap", proc() {
@@ -157,7 +157,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		content_align_y = .START
 		direction = .HORIZONTAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("min-content-x", "Min Content X", proc() {
@@ -167,7 +167,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		content_align_y = .START
 		direction = .HORIZONTAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("max-content-y", "Max Content Y", proc() {
@@ -177,7 +177,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		content_align_y = .MAX_CONTENT
 		direction = .VERTICAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("min-content-y", "Min Content Y", proc() {
@@ -187,7 +187,7 @@ layout_sidebar := proc(state: w.Rectangle_State) {
 		content_align_y = .MIN_CONTENT
 		direction = .VERTICAL
 		layout_width = .AUTO
-		layout_height = .AUTO
+		layout_height = {}
 	})
 
 	c.sidebar_item("order", "Order", proc() {
