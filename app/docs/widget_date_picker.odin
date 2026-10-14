@@ -250,8 +250,12 @@ date_picker_demo_range_child :: proc(_: w.Date_Picker_State) {
 date_picker_demo_input_child :: proc(_: w.Date_Picker_State) {
 	w.Date_Picker_Input(
 		{
-			config = {id = "date_picker_docs_input", width = set.Width(f32(260))},
-			placeholder = "YYYY-MM-DD",
+			config = {
+				id = "date_picker_docs_input",
+				width = set.Width(f32(260)),
+				format = "YYYY-MM-DD",
+				placeholder = "YYYY-MM-DD",
+			},
 		},
 	)
 }
@@ -533,7 +537,7 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"date_picker_docs_input",
 		"Input",
-		"Date_Picker_Input accepts YYYY-MM-DD and opens the calendar on focus/click.",
+		"Date_Picker_Input composes Text_Input; accepts config.format (default YYYY-MM-DD) and opens the calendar on focus/click.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("date_picker_docs_input_preview_wrap", date_picker_docs_input_preview)
 		},
