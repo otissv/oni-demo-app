@@ -5,6 +5,9 @@ import set "../../oni/set"
 import w "../../oni/widgets"
 
 @(private)
+popover_hero_open := false
+
+@(private)
 popover_demo_open := false
 
 @(private)
@@ -62,9 +65,51 @@ POPOVER_CONTENT_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
+popover_hero_child :: proc(_: w.Popover_State) {
+	w.Popover_Trigger({
+		config = {
+			id = "popover-hero-trigger",
+			border = set.Border(f32(1)),
+			width = set.Width(.FIT),
+			padding = set.Padding(o.Pd_struct{x = 8, y = 6}),
+		},
+		child = proc(_: w.Popover_Trigger_State) {
+			label := popover_hero_open ? "Close" : "Open popover"
+			w.Text({config = {id = "popover-demo-hero-trigger-label", text = label}})
+		},
+	})
+	w.Popover_Content({
+		config = {
+			width = set.Width(f32(260)),
+			padding = set.Padding(f32(12)),
+			gap_y = set.Gap_Y(u16(8)),
+			direction = set.Direction(.VERTICAL),
+			border = set.Border(f32(1)),
+		},
+		child = proc(_: w.Popover_Content_Props_State) {
+			w.Text({config = {id = "popover-demo-title", text = "Dimensions"}})
+			w.Text(
+				{
+					config = {
+						id = "popover-hero-body",
+						text = "Set the dimensions for the layer.",
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
+				},
+			)
+		},
+	})
+}
+
+@(private)
 popover_demo_basic_child :: proc(_: w.Popover_State) {
 	w.Popover_Trigger({
-		config = {id = "popover-demo-trigger"},
+		config = {
+			id = "popover-demo-trigger",
+			border = set.Border(f32(1)),
+			width = set.Width(.FIT),
+			padding = set.Padding(o.Pd_struct{x = 8, y = 6}),
+		},
 		child = proc(_: w.Popover_Trigger_State) {
 			label := popover_demo_open ? "Close" : "Open popover"
 			w.Text({config = {id = "popover-demo-trigger-label", text = label}})
@@ -76,6 +121,7 @@ popover_demo_basic_child :: proc(_: w.Popover_State) {
 			padding = set.Padding(f32(12)),
 			gap_y = set.Gap_Y(u16(8)),
 			direction = set.Direction(.VERTICAL),
+			border = set.Border(f32(1)),
 		},
 		child = proc(_: w.Popover_Content_Props_State) {
 			w.Text({config = {id = "popover-demo-title", text = "Dimensions"}})
@@ -95,13 +141,22 @@ popover_demo_basic_child :: proc(_: w.Popover_State) {
 @(private)
 popover_demo_align_child :: proc(_: w.Popover_State) {
 	w.Popover_Trigger({
-		config = {id = "popover-align-trigger", width = set.Width(f32(200))},
+		config = {
+			id = "popover-align-trigger",
+			border = set.Border(f32(1)),
+			width = set.Width(.FIT),
+			padding = set.Padding(o.Pd_struct{x = 8, y = 6}),
+		},
 		child = proc(_: w.Popover_Trigger_State) {
 			w.Text({config = {id = "popover-align-trigger-label", text = "Align end"}})
 		},
 	})
 	w.Popover_Content({
-		config = {width = set.Width(f32(120)), padding = set.Padding(f32(10))},
+		config = {
+			width = set.Width(f32(120)),
+			padding = set.Padding(f32(10)),
+			border = set.Border(f32(1)),
+		},
 		align = .END,
 		child = proc(_: w.Popover_Content_Props_State) {
 			w.Text(
@@ -115,6 +170,19 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 			)
 		},
 	})
+}
+
+@(private)
+popover_docs_hero_preview :: proc(_: w.Rectangle_State) {
+	w.Popover({
+		config = {id = "popover-hero-demo"},
+		open = popover_hero_open,
+		on_open_change = proc(open: bool) {
+			popover_hero_open = open
+		},
+		child = popover_hero_child,
+	})
+
 }
 
 @(private)
@@ -148,6 +216,8 @@ popover_docs_body :: proc(_: w.Rectangle_State) {
 		"popover_docs_lede",
 		"Floating panel: controlled open state, Popover_Trigger, and viewport-aware Popover_Content.",
 	)
+
+	doc_preview("popover_docs_hero_preview_wrap", popover_docs_hero_preview)
 
 	doc_section(
 		"popover_docs_usage",

@@ -18,7 +18,11 @@ date_picker_demo_hero_open: bool
 date_picker_demo_open: bool
 
 @(private)
-date_picker_demo_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
+date_picker_demo_month: w.Calendar_Date = {
+	year  = 2024,
+	month = 6,
+	day   = 1,
+}
 
 @(private)
 date_picker_demo_range: w.Calendar_Range
@@ -27,7 +31,11 @@ date_picker_demo_range: w.Calendar_Range
 date_picker_demo_range_open: bool
 
 @(private)
-date_picker_demo_range_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
+date_picker_demo_range_month: w.Calendar_Date = {
+	year  = 2024,
+	month = 6,
+	day   = 1,
+}
 
 @(private)
 date_picker_demo_input_selected: w.Calendar_Date
@@ -39,7 +47,11 @@ date_picker_demo_input_has_selected: bool
 date_picker_demo_input_open: bool
 
 @(private)
-date_picker_demo_input_month: w.Calendar_Date = {year = 2024, month = 6, day = 1}
+date_picker_demo_input_month: w.Calendar_Date = {
+	year  = 2024,
+	month = 6,
+	day   = 1,
+}
 
 @(private)
 DATE_PICKER_DOCS_USAGE_IMPORT :: `import w "oni/widgets"
@@ -185,58 +197,63 @@ date_picker_demo_on_input_month :: proc(month: w.Calendar_Date) {
 
 @(private)
 date_picker_demo_hero_trigger :: proc(_: w.Date_Picker_Trigger_State) {
-	w.Date_Picker_Value({
-		config = {id = "date_picker_docs_hero_value"},
-		placeholder = "Pick a date",
-	})
+	w.Date_Picker_Value(
+		{config = {id = "date_picker_docs_hero_value"}, placeholder = "Pick a date"},
+	)
 }
 
 @(private)
 date_picker_demo_hero_child :: proc(_: w.Date_Picker_State) {
-	w.Date_Picker_Trigger({
-		config = {id = "date_picker_docs_hero_trigger", width = set.Width(f32(260))},
-		child = date_picker_demo_hero_trigger,
-	})
+	w.Date_Picker_Trigger(
+		{
+			config = {id = "date_picker_docs_hero_trigger", width = set.Width(f32(260))},
+			child = date_picker_demo_hero_trigger,
+		},
+	)
 }
 
 @(private)
 date_picker_demo_basic_trigger :: proc(_: w.Date_Picker_Trigger_State) {
-	w.Date_Picker_Value({
-		config = {id = "date_picker_docs_basic_value"},
-		placeholder = "Pick a date",
-	})
+	w.Date_Picker_Value(
+		{config = {id = "date_picker_docs_basic_value"}, placeholder = "Pick a date"},
+	)
 }
 
 @(private)
 date_picker_demo_basic_child :: proc(_: w.Date_Picker_State) {
-	w.Date_Picker_Trigger({
-		config = {id = "date_picker_docs_basic_trigger", width = set.Width(f32(260))},
-		child = date_picker_demo_basic_trigger,
-	})
+	w.Date_Picker_Trigger(
+		{
+			config = {id = "date_picker_docs_basic_trigger", width = set.Width(f32(260))},
+			child = date_picker_demo_basic_trigger,
+		},
+	)
 }
 
 @(private)
 date_picker_demo_range_trigger :: proc(_: w.Date_Picker_Trigger_State) {
-	w.Date_Picker_Value({
-		config = {id = "date_picker_docs_range_value"},
-		placeholder = "Pick a date range",
-	})
+	w.Date_Picker_Value(
+		{config = {id = "date_picker_docs_range_value"}, placeholder = "Pick a date range"},
+	)
 }
 
 @(private)
 date_picker_demo_range_child :: proc(_: w.Date_Picker_State) {
-	w.Date_Picker_Trigger({
-		config = {id = "date_picker_docs_range_trigger", width = set.Width(f32(280))},
-		child = date_picker_demo_range_trigger,
-	})
+	w.Date_Picker_Trigger(
+		{
+			config = {id = "date_picker_docs_range_trigger", width = set.Width(f32(280))},
+			child = date_picker_demo_range_trigger,
+		},
+	)
 }
 
 @(private)
 date_picker_demo_input_child :: proc(_: w.Date_Picker_State) {
-	w.Date_Picker_Input({
-		config = {id = "date_picker_docs_input", width = set.Width(f32(260))},
-		placeholder = "YYYY-MM-DD",
-	})
+	w.Date_Picker_Input(
+		{
+			config = {id = "date_picker_docs_input", width = set.Width(f32(260))},
+			placeholder = "YYYY-MM-DD",
+		},
+	)
 }
 
 @(private)
@@ -267,164 +284,188 @@ date_picker_docs_range_status :: proc() -> string {
 
 @(private)
 date_picker_docs_hero_inner :: proc(_: w.Rectangle_State) {
-	w.Date_Picker({
-		config = {id = "date_picker_docs_hero"},
-		mode = .SINGLE,
-		selected = date_picker_demo_selected,
-		has_selected = date_picker_demo_has_selected,
-		open = date_picker_demo_hero_open,
-		month = date_picker_demo_month,
-		on_select = date_picker_demo_on_select,
-		on_open_change = date_picker_demo_on_hero_open,
-		on_month_change = date_picker_demo_on_month,
-		child = date_picker_demo_hero_child,
-	})
-	w.Text({
-		config = {
-			id = "date_picker_docs_hero_status",
-			text = fmt.tprintf(
-				"Selected: %s",
-				date_picker_docs_status_text(
-					date_picker_demo_selected,
-					date_picker_demo_has_selected,
-				),
-			),
-			font_size = set.F32(13),
-			color = set.Colors(o.Color.MUTED_FOREGROUND),
+	w.Date_Picker(
+		{
+			config = {id = "date_picker_docs_hero"},
+			mode = .SINGLE,
+			selected = date_picker_demo_selected,
+			has_selected = date_picker_demo_has_selected,
+			open = date_picker_demo_hero_open,
+			month = date_picker_demo_month,
+			on_select = date_picker_demo_on_select,
+			on_open_change = date_picker_demo_on_hero_open,
+			on_month_change = date_picker_demo_on_month,
+			child = date_picker_demo_hero_child,
 		},
-	})
+	)
+	w.Text(
+		{
+			config = {
+				id = "date_picker_docs_hero_status",
+				text = fmt.tprintf(
+					"Selected: %s",
+					date_picker_docs_status_text(
+						date_picker_demo_selected,
+						date_picker_demo_has_selected,
+					),
+				),
+				font_size = set.F32(13),
+				color = set.Colors(o.Color.MUTED_FOREGROUND),
+			},
+		},
+	)
 }
 
 @(private)
 date_picker_docs_hero_preview :: proc(_: w.Rectangle_State) {
-	w.Rectangle({
-		config = {
-			id = "date_picker_docs_hero_col",
-			direction = set.Direction(.VERTICAL),
-			gap_y = set.Gap_Y(u16(8)),
+	w.Rectangle(
+		{
+			config = {
+				id = "date_picker_docs_hero_col",
+				direction = set.Direction(.VERTICAL),
+				gap_y = set.Gap_Y(u16(8)),
+			},
+			child = date_picker_docs_hero_inner,
 		},
-		child = date_picker_docs_hero_inner,
-	})
+	)
 }
 
 @(private)
 date_picker_docs_basic_inner :: proc(_: w.Rectangle_State) {
-	w.Date_Picker({
-		config = {id = "date_picker_docs_basic"},
-		mode = .SINGLE,
-		selected = date_picker_demo_selected,
-		has_selected = date_picker_demo_has_selected,
-		open = date_picker_demo_open,
-		month = date_picker_demo_month,
-		on_select = date_picker_demo_on_select,
-		on_open_change = date_picker_demo_on_open,
-		on_month_change = date_picker_demo_on_month,
-		child = date_picker_demo_basic_child,
-	})
-	w.Text({
-		config = {
-			id = "date_picker_docs_basic_status",
-			text = fmt.tprintf(
-				"Selected: %s",
-				date_picker_docs_status_text(
-					date_picker_demo_selected,
-					date_picker_demo_has_selected,
-				),
-			),
-			font_size = set.F32(13),
-			color = set.Colors(o.Color.MUTED_FOREGROUND),
+	w.Date_Picker(
+		{
+			config = {id = "date_picker_docs_basic"},
+			mode = .SINGLE,
+			selected = date_picker_demo_selected,
+			has_selected = date_picker_demo_has_selected,
+			open = date_picker_demo_open,
+			month = date_picker_demo_month,
+			on_select = date_picker_demo_on_select,
+			on_open_change = date_picker_demo_on_open,
+			on_month_change = date_picker_demo_on_month,
+			child = date_picker_demo_basic_child,
 		},
-	})
+	)
+	w.Text(
+		{
+			config = {
+				id = "date_picker_docs_basic_status",
+				text = fmt.tprintf(
+					"Selected: %s",
+					date_picker_docs_status_text(
+						date_picker_demo_selected,
+						date_picker_demo_has_selected,
+					),
+				),
+				font_size = set.F32(13),
+				color = set.Colors(o.Color.MUTED_FOREGROUND),
+			},
+		},
+	)
 }
 
 @(private)
 date_picker_docs_basic_preview :: proc(_: w.Rectangle_State) {
-	w.Rectangle({
-		config = {
-			id = "date_picker_docs_basic_col",
-			direction = set.Direction(.VERTICAL),
-			gap_y = set.Gap_Y(u16(8)),
+	w.Rectangle(
+		{
+			config = {
+				id = "date_picker_docs_basic_col",
+				direction = set.Direction(.VERTICAL),
+				gap_y = set.Gap_Y(u16(8)),
+			},
+			child = date_picker_docs_basic_inner,
 		},
-		child = date_picker_docs_basic_inner,
-	})
+	)
 }
 
 @(private)
 date_picker_docs_range_inner :: proc(_: w.Rectangle_State) {
-	w.Date_Picker({
-		config = {id = "date_picker_docs_range"},
-		mode = .RANGE,
-		selected_range = date_picker_demo_range,
-		open = date_picker_demo_range_open,
-		month = date_picker_demo_range_month,
-		number_of_months = 2,
-		on_select = date_picker_demo_on_range_select,
-		on_open_change = date_picker_demo_on_range_open,
-		on_month_change = date_picker_demo_on_range_month,
-		child = date_picker_demo_range_child,
-	})
-	w.Text({
-		config = {
-			id = "date_picker_docs_range_status",
-			text = fmt.tprintf("Selected: %s", date_picker_docs_range_status()),
-			font_size = set.F32(13),
-			color = set.Colors(o.Color.MUTED_FOREGROUND),
+	w.Date_Picker(
+		{
+			config = {id = "date_picker_docs_range"},
+			mode = .RANGE,
+			selected_range = date_picker_demo_range,
+			open = date_picker_demo_range_open,
+			month = date_picker_demo_range_month,
+			number_of_months = 2,
+			on_select = date_picker_demo_on_range_select,
+			on_open_change = date_picker_demo_on_range_open,
+			on_month_change = date_picker_demo_on_range_month,
+			child = date_picker_demo_range_child,
 		},
-	})
+	)
+	w.Text(
+		{
+			config = {
+				id = "date_picker_docs_range_status",
+				text = fmt.tprintf("Selected: %s", date_picker_docs_range_status()),
+				font_size = set.F32(13),
+				color = set.Colors(o.Color.MUTED_FOREGROUND),
+			},
+		},
+	)
 }
 
 @(private)
 date_picker_docs_range_preview :: proc(_: w.Rectangle_State) {
-	w.Rectangle({
-		config = {
-			id = "date_picker_docs_range_col",
-			direction = set.Direction(.VERTICAL),
-			gap_y = set.Gap_Y(u16(8)),
+	w.Rectangle(
+		{
+			config = {
+				id = "date_picker_docs_range_col",
+				direction = set.Direction(.VERTICAL),
+				gap_y = set.Gap_Y(u16(8)),
+			},
+			child = date_picker_docs_range_inner,
 		},
-		child = date_picker_docs_range_inner,
-	})
+	)
 }
 
 @(private)
 date_picker_docs_input_inner :: proc(_: w.Rectangle_State) {
-	w.Date_Picker({
-		config = {id = "date_picker_docs_input_root"},
-		mode = .SINGLE,
-		selected = date_picker_demo_input_selected,
-		has_selected = date_picker_demo_input_has_selected,
-		open = date_picker_demo_input_open,
-		month = date_picker_demo_input_month,
-		on_select = date_picker_demo_on_input_select,
-		on_open_change = date_picker_demo_on_input_open,
-		on_month_change = date_picker_demo_on_input_month,
-		child = date_picker_demo_input_child,
-	})
-	w.Text({
-		config = {
-			id = "date_picker_docs_input_status",
-			text = fmt.tprintf(
-				"Selected: %s",
-				date_picker_docs_status_text(
-					date_picker_demo_input_selected,
-					date_picker_demo_input_has_selected,
-				),
-			),
-			font_size = set.F32(13),
-			color = set.Colors(o.Color.MUTED_FOREGROUND),
+	w.Date_Picker(
+		{
+			config = {id = "date_picker_docs_input_root"},
+			mode = .SINGLE,
+			selected = date_picker_demo_input_selected,
+			has_selected = date_picker_demo_input_has_selected,
+			open = date_picker_demo_input_open,
+			month = date_picker_demo_input_month,
+			on_select = date_picker_demo_on_input_select,
+			on_open_change = date_picker_demo_on_input_open,
+			on_month_change = date_picker_demo_on_input_month,
+			child = date_picker_demo_input_child,
 		},
-	})
+	)
+	w.Text(
+		{
+			config = {
+				id = "date_picker_docs_input_status",
+				text = fmt.tprintf(
+					"Selected: %s",
+					date_picker_docs_status_text(
+						date_picker_demo_input_selected,
+						date_picker_demo_input_has_selected,
+					),
+				),
+				font_size = set.F32(13),
+				color = set.Colors(o.Color.MUTED_FOREGROUND),
+			},
+		},
+	)
 }
 
 @(private)
 date_picker_docs_input_preview :: proc(_: w.Rectangle_State) {
-	w.Rectangle({
-		config = {
-			id = "date_picker_docs_input_col",
-			direction = set.Direction(.VERTICAL),
-			gap_y = set.Gap_Y(u16(8)),
+	w.Rectangle(
+		{
+			config = {
+				id = "date_picker_docs_input_col",
+				direction = set.Direction(.VERTICAL),
+				gap_y = set.Gap_Y(u16(8)),
+			},
+			child = date_picker_docs_input_inner,
 		},
-		child = date_picker_docs_input_inner,
-	})
+	)
 }
 
 @(private)

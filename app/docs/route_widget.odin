@@ -28,7 +28,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_CALENDAR
+active_widget_option: Sidebar_Widgets_options = .WIDGET_DATE_PICKER
 
 
 widget_container := proc(state: w.Rectangle_State) {
