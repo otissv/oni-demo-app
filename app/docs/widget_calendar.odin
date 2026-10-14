@@ -31,6 +31,13 @@ calendar_demo_month: w.Calendar_Date = {
 }
 
 @(private)
+calendar_demo_weekends_month: w.Calendar_Date = {
+	year  = 2024,
+	month = 6,
+	day   = 1,
+}
+
+@(private)
 CALENDAR_DOCS_USAGE_IMPORT :: `import w "oni/widgets"
 import set "oni/set"`
 
@@ -68,8 +75,8 @@ CALENDAR_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"max", "int", "0"},
 	{"start_month", "Calendar_Date", "{}"},
 	{"end_month", "Calendar_Date", "{}"},
-	{"start_date", "Calendar_Date", "{}"},
-	{"end_date", "Calendar_Date", "{}"},
+	{"start_date", "Calendar_Date", "{} (also clamps month nav)"},
+	{"end_date", "Calendar_Date", "{} (also clamps month nav)"},
 	{"disabled_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
 	{"hidden_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
 	{"hide_outside_days", "bool", "false"},
@@ -78,17 +85,18 @@ CALENDAR_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"number_of_months", "int", "1"},
 	{"today", "Calendar_Date", "{} (system date)"},
 	{"disabled", "bool", "false"},
-	{"style", "Calendar_Style", "{}"},
+	{"day_size", "Cfg(Style_F32)", "unset → 36"},
+	{"gap", "Cfg(Style_F32)", "unset → 4"},
+	{"day", "proc(Calendar_Day_State)", "nil → Calendar_Day"},
 	{"format_month", "proc(date: Calendar_Date) -> string", "nil"},
 	{"format_weekday", "proc(weekday: Calendar_Weekday) -> string", "nil"},
 	{"format_day", "proc(date: Calendar_Date) -> string", "nil"},
-	{"child", "proc(Calendar_State)", "nil"},
+	{"child", "proc(Calendar_State)", "nil → Calendar_Default_Months"},
 	{"on_mount", "proc(Calendar_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Calendar_State) -> Mount", "nil"},
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Calendar_Event)", "nil"},
 	{"on_blur", "proc(Calendar_Event)", "nil"},
 	{"on_mouse_enter", "proc(Calendar_Event)", "nil"},
@@ -142,7 +150,7 @@ CALENDAR_DOCS_STYLE := [?]Doc_Prop_Row {
 	{"range_middle", "Cfg(Colors)", "theme range middle"},
 	{"day_hover", "Cfg(Colors)", "theme hover"},
 	{"nav_button", "Cfg(Colors)", "theme nav"},
-	{"radius", "Cfg(Radius)", "theme radius"},
+	{"radius", "Cfg(Radius)", "0 (square day highlights)"},
 }
 
 @(private)
@@ -201,6 +209,11 @@ calendar_demo_status_text :: proc() -> string {
 @(private)
 calendar_demo_on_month :: proc(month: w.Calendar_Date) {
 	calendar_demo_month = month
+}
+
+@(private)
+calendar_demo_weekends_on_month :: proc(month: w.Calendar_Date) {
+	calendar_demo_weekends_month = month
 }
 
 @(private)
@@ -346,7 +359,6 @@ calendar_docs_hero :: proc(_: w.Rectangle_State) {
 			mode = .SINGLE,
 			month = {year = 2024, month = 6, day = 1},
 			today = {year = 2024, month = 6, day = 15},
-			selected = {year = 2024, month = 6, day = 10},
 			has_selected = true,
 			child = calendar_docs_basic_child,
 		},
@@ -398,7 +410,6 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 					on_month_change = calendar_demo_on_month,
 					on_select = calendar_demo_on_select,
 					today = {year = 2024, month = 6, day = 15},
-					show_week_numbers = true,
 					required = calendar_demo_mode == .SINGLE,
 					max = calendar_demo_mode == .MULTIPLE ? 5 : 0,
 					child = calendar_docs_month_child,
@@ -414,7 +425,8 @@ calendar_docs_weekends_preview :: proc(_: w.Rectangle_State) {
 		{
 			config = {id = "calendar_docs_weekends", width = set.Width(f32(320))},
 			mode = .SINGLE,
-			month = {year = 2024, month = 6, day = 1},
+			month = calendar_demo_weekends_month,
+			on_month_change = calendar_demo_weekends_on_month,
 			today = {year = 2024, month = 6, day = 15},
 			disabled_matcher = calendar_demo_weekend_disabled,
 			hide_outside_days = true,
@@ -452,7 +464,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_installation",
 		"Installation",
-		"Calendar is an engine widget in oni/widgets. Compose day chrome with Calendar_Month (or finer parts) inside child.",
+		"Calendar is an engine widget in oni/widgets. Compose UI with Calendar_Month (or finer parts) inside child; omit child for Calendar_Default_Months.",
 		proc(_: w.Rectangle_State) {
 			doc_code("calendar_docs_installation_code", CALENDAR_DOCS_USAGE_IMPORT)
 		},
@@ -490,7 +502,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_disabled_days",
 		"Disabled days",
-		"disabled_matcher returns true for days that cannot be selected. hide_outside_days hides days from adjacent months. start_date / end_date clamp the selectable window.",
+		"disabled_matcher returns true for days that cannot be selected. hide_outside_days hides days from adjacent months. start_date / end_date clamp the selectable window and disable prev/next outside months that overlap it.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("calendar_docs_weekends_preview", calendar_docs_weekends_preview)
 			doc_code(
@@ -553,7 +565,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_composition",
 		"Composition",
-		"Put Calendar_Month inside child for the default layout (nav, caption, weekdays, optional week numbers, grid). Or compose Calendar_Navigation, Calendar_Caption, Calendar_Weekdays, Calendar_Week_Numbers, and Calendar_Grid yourself.",
+		"Omit child for Calendar_Default_Months. Or put Calendar_Month in child, or compose Navigation / Caption / Weekdays / Week_Numbers / Grid / Day. Day cells own chrome and clicks via Calendar_Day.",
 		proc(_: w.Rectangle_State) {
 			doc_code(
 				"calendar_docs_composition_code",
@@ -574,7 +586,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_api",
 		"API Reference",
-		"w.Calendar in oni/widgets/calendar.odin. Calendar_Config is Widget_Config. Day chrome colors and sizing go through style: Calendar_Style.",
+		"w.Calendar in oni/widgets/calendar.odin. Calendar_Config is Widget_Config. Compose months via child; override cells via day (Calendar_Grid.day). day_size/gap are layout metrics; day chrome uses theme tokens or a custom day builder.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("calendar_docs_api_props_h3", "Props")
 			doc_muted(

@@ -26,7 +26,6 @@ TABLE_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"on_mount", "proc(Table_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Table_State) -> Mount", "nil"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Table_Event)", "nil"},
 	{"on_blur", "proc(Table_Event)", "nil"},
 	{"on_mouse_enter", "proc(Table_Event)", "nil"},

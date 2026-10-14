@@ -28,7 +28,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_POPOVER
+active_widget_option: Sidebar_Widgets_options = .WIDGET_CALENDAR
 
 
 widget_container := proc(state: w.Rectangle_State) {

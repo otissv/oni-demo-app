@@ -48,8 +48,9 @@ SLIDER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"orientation", "Slider_Orientation", ".HORIZONTAL"},
 	{"inverted", "bool", "false"},
 	{"disabled", "bool", "false"},
-	{"style", "Slider_Style", "{}"},
-	{"thumb", "proc(Slider_Thumb_State)", "nil"},
+	{"thumb_size", "Cfg(Style_F32)", "unset → 16"},
+	{"track_thickness", "Cfg(Style_F32)", "unset → 6"},
+	{"child", "proc(Slider_State)", "nil → Slider_Default_Parts"},
 	{"on_value_change", "proc(values: []f32)", "nil"},
 	{"on_value_commit", "proc(values: []f32)", "nil"},
 	{"unmount", "bool", "false"},
@@ -57,7 +58,6 @@ SLIDER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"on_mount", "proc(Slider_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Slider_State) -> Mount", "nil"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Slider_Event)", "nil"},
 	{"on_blur", "proc(Slider_Event)", "nil"},
 	{"on_mouse_enter", "proc(Slider_Event)", "nil"},
@@ -74,14 +74,11 @@ SLIDER_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
-SLIDER_DOCS_STYLE := [?]Doc_Prop_Row {
-	{"track", "Cfg(Colors)", "theme track"},
-	{"range", "Cfg(Colors)", "theme range fill"},
-	{"thumb", "Cfg(Colors)", "theme thumb"},
-	{"thumb_border", "Cfg(Colors)", "theme thumb border"},
-	{"thumb_size", "Cfg(Style_F32)", "default thumb diameter"},
-	{"track_thickness", "Cfg(Style_F32)", "default track thickness"},
-	{"radius", "Cfg(Radius)", "track corners"},
+SLIDER_DOCS_PARTS := [?]Doc_Prop_Row {
+	{"Slider_Track", "Slider_Track_Props { config, child }", "Track bar (default Color.MUTED)"},
+	{"Slider_Range", "Slider_Range_Props { config }", "Filled span (default Color.PRIMARY)"},
+	{"Slider_Thumb", "Slider_Thumb_Props { config, index, child }", "Thumb handle for values[index]"},
+	{"Slider_Default_Parts", "proc(Slider_State)", "Default child: Track + Range + Thumbs"},
 }
 
 @(private)
@@ -121,7 +118,7 @@ slider_demo_on_custom :: proc(values: []f32) {
 }
 
 @(private)
-slider_demo_custom_thumb_inner :: proc(_: w.Rectangle_State) {
+slider_demo_custom_thumb_inner :: proc(_: w.Slider_Thumb_State) {
 	w.Text({
 		config = {
 			id = "slider_docs_custom_thumb_label",
@@ -133,26 +130,38 @@ slider_demo_custom_thumb_inner :: proc(_: w.Rectangle_State) {
 }
 
 @(private)
-slider_demo_custom_thumb :: proc(frame_state: w.Slider_Thumb_State) {
-	bg := o.Color.PRIMARY
-
-	if frame_state.is_active {
-		bg = o.Color.RING
-	}
-
-	w.Rectangle({
+slider_demo_custom_parts :: proc(frame_state: w.Slider_State) {
+	w.Slider_Track({
 		config = {
-			id = fmt.tprintf("slider_docs_custom_thumb_%d", frame_state.index),
-			width = set.Width(f32(18)),
-			height = set.Height(f32(18)),
-			radius = set.Radius(f32(9)),
-			background = set.Background(bg),
-			border = set.Border(f32(2)),
-			border_color = set.Border_color(o.Color.BACKGROUND),
-			justify = set.Justify(o.Justify_Align.CENTER),
+			id = "slider_docs_custom/track",
+			background = set.Background(o.Color.SECONDARY),
 		},
-		child = slider_demo_custom_thumb_inner,
 	})
+	w.Slider_Range({
+		config = {
+			id = "slider_docs_custom/range",
+			background = set.Background(o.Color.PRIMARY),
+		},
+	})
+
+	for i in 0 ..< frame_state.value_count {
+		bg := o.Color.PRIMARY
+
+		if frame_state.is_focused && i == frame_state.active_thumb {
+			bg = o.Color.RING
+		}
+
+		w.Slider_Thumb({
+			config = {
+				id = fmt.tprintf("slider_docs_custom/thumb-%d", i),
+				background = set.Background(bg),
+				border = set.Border(f32(2)),
+				border_color = set.Border_color(o.Color.BACKGROUND),
+			},
+			index = i,
+			child = slider_demo_custom_thumb_inner,
+		})
+	}
 }
 
 @(private)
@@ -262,7 +271,8 @@ slider_docs_custom_preview :: proc(_: w.Rectangle_State) {
 		min = 0,
 		max = 100,
 		step = 1,
-		thumb = slider_demo_custom_thumb,
+		thumb_size = set.F32(f32(18)),
+		child = slider_demo_custom_parts,
 		on_value_change = slider_demo_on_custom,
 	})
 }
@@ -272,7 +282,7 @@ slider_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("slider_docs_title", "Slider")
 	doc_lede(
 		"slider_docs_lede",
-		"Caller-owned values slice (one or two thumbs). Pointer and keyboard update via on_value_change; on_value_commit runs when a drag ends.",
+		"Caller-owned values slice (one or two thumbs). Compose Slider_Track, Slider_Range, and Slider_Thumb in child, or omit child for default parts.",
 	)
 
 	doc_preview("slider_docs_hero_preview", slider_docs_basic_preview)
@@ -356,15 +366,19 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 	)
 
 	doc_section(
-		"slider_docs_custom_thumb",
-		"Custom thumb",
-		"thumb replaces built-in thumb chrome per thumb index; track and range still use the default painter.",
+		"slider_docs_custom_parts",
+		"Composable parts",
+		"Customize track, range fill, and thumb chrome with Slider_Track, Slider_Range, and Slider_Thumb inside child.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_custom_preview_wrap", slider_docs_custom_preview)
 			doc_code(
 				"slider_docs_custom_code",
-				`thumb = proc(state: w.Slider_Thumb_State) {
-	w.Rectangle({ /* sized to hit rect */ })
+				`child = proc(state: w.Slider_State) {
+	w.Slider_Track({config = {background = set.Background(o.Color.SECONDARY)}})
+	w.Slider_Range({config = {background = set.Background(o.Color.PRIMARY)}})
+	for i in 0 ..< state.value_count {
+		w.Slider_Thumb({config = {background = set.Background(o.Color.PRIMARY)}, index = i})
+	}
 }`,
 			)
 		},
@@ -373,7 +387,7 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 	doc_section(
 		"slider_docs_api",
 		"API Reference",
-		"w.Slider. Slider_Config is Widget_Config.",
+		"w.Slider, w.Slider_Track, w.Slider_Range, w.Slider_Thumb.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("slider_docs_api_props_h3", "Props")
 			doc_muted(
@@ -382,11 +396,11 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 			)
 			doc_table("slider_docs_props_table", SLIDER_DOCS_PROPS[:])
 
+			doc_h3("slider_docs_api_parts_h3", "Parts")
+			doc_table("slider_docs_parts_table", SLIDER_DOCS_PARTS[:])
+
 			doc_h3("slider_docs_api_config_h3", "Config")
 			doc_table("slider_docs_config_table", DOC_WIDGET_CONFIG[:])
-
-			doc_h3("slider_docs_api_style_h3", "Style")
-			doc_table("slider_docs_style_table", SLIDER_DOCS_STYLE[:])
 		},
 	)
 }

@@ -47,7 +47,6 @@ COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"previous", "RGBA", "{0,0,0,255}"},
 	{"web_only", "bool", "false"},
 	{"disabled", "bool", "false"},
-	{"style", "Color_Picker_Style", "{}"},
 	{"child", "proc(Color_Picker_State)", "nil"},
 	{"on_value_change", "proc(value: RGBA)", "nil"},
 	{"on_value_commit", "proc(value: RGBA)", "nil"},
@@ -58,7 +57,6 @@ COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Color_Picker_Event)", "nil"},
 	{"on_blur", "proc(Color_Picker_Event)", "nil"},
 	{"on_mouse_enter", "proc(Color_Picker_Event)", "nil"},
@@ -102,24 +100,13 @@ COLOR_PICKER_DOCS_CONFIG := [?]Doc_Prop_Row {
 }
 
 @(private)
-COLOR_PICKER_DOCS_STYLE := [?]Doc_Prop_Row {
-	{"field_size", "Cfg(Style_F32)", "200"},
-	{"slider_width", "Cfg(Style_F32)", "20"},
-	{"alpha_height", "Cfg(Style_F32)", "16"},
-	{"swatch_height", "Cfg(Style_F32)", "28"},
-	{"radius", "Cfg(Radius)", "theme default"},
-	{"marker", "Cfg(Colors)", "theme marker"},
-	{"border", "Cfg(Colors)", "theme border"},
-}
-
-@(private)
 COLOR_PICKER_DOCS_PARTS := [?]Doc_Prop_Row {
-	{"Color_Picker_Field.config", "Widget_Config", "{}"},
-	{"Color_Picker_Slider.config", "Widget_Config", "{}"},
-	{"Color_Picker_Alpha.config", "Widget_Config", "{}"},
-	{"Color_Picker_Swatch.config", "Widget_Config", "{}"},
+	{"Color_Picker_Field.config", "Widget_Config", "{} (200x200)"},
+	{"Color_Picker_Slider.config", "Widget_Config", "{} (20x200)"},
+	{"Color_Picker_Alpha.config", "Widget_Config", "{} (220x16)"},
+	{"Color_Picker_Swatch.config", "Widget_Config", "{} (56x28)"},
 	{"Color_Picker_Swatch.role", "Color_Picker_Swatch_Role", ".CURRENT"},
-	{"Color_Picker_Channels.config", "Widget_Config", "{}"},
+	{"Color_Picker_Channels.config", "Widget_Config", "{} (120x132)"},
 	{"Color_Picker_Hex.config", "Widget_Config", "{}"},
 	{"Color_Picker_Hex.include_alpha", "bool", "false"},
 	{"Color_Picker_Type.config", "Widget_Config", "{}"},
@@ -459,12 +446,9 @@ w.Color_Picker_Swatch({config = {id = "previous"}, role = .PREVIOUS})`,
 			doc_h3("color_picker_docs_api_config_h3", "Config")
 			doc_muted(
 				"color_picker_docs_api_config_note",
-				"Color_Picker_Config is Widget_Config. Field / slider sizing uses the style prop.",
+				"Color_Picker_Config is Widget_Config. Part sizing and chrome are configured on each part's config.",
 			)
 			doc_table("color_picker_docs_config_table", COLOR_PICKER_DOCS_CONFIG[:])
-
-			doc_h3("color_picker_docs_api_style_h3", "Style")
-			doc_table("color_picker_docs_style_table", COLOR_PICKER_DOCS_STYLE[:])
 
 			doc_h3("color_picker_docs_api_parts_h3", "Parts")
 			doc_table("color_picker_docs_parts_table", COLOR_PICKER_DOCS_PARTS[:])

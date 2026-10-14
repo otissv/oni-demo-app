@@ -42,7 +42,6 @@ CHECKBOX_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Checkbox_Event)", "nil"},
 	{"on_blur", "proc(Checkbox_Event)", "nil"},
 	{"on_mouse_enter", "proc(Checkbox_Event)", "nil"},
@@ -114,14 +113,16 @@ checkbox_docs_hero :: proc(_: w.Rectangle_State) {
 					checkbox_demo_remember = checked
 				},
 			})
-			w.Text({
-				config = {
-					for_id = "checkbox_docs_hero",
-					id = "checkbox_docs_hero_text",
-					text = "Accept terms and conditions",
-					font_size = set.F32(14),
+			w.Text(
+				{
+					config = {
+						for_id = "checkbox_docs_hero",
+						id = "checkbox_docs_hero_text",
+						text = "Accept terms and conditions",
+						font_size = set.F32(14),
+					},
 				},
-			})
+			)
 		},
 	})
 }
@@ -151,27 +152,31 @@ checkbox_docs_basic_preview :: proc(_: w.Rectangle_State) {
 							checkbox_demo_remember = checked
 						},
 					})
-					w.Text({
-						config = {
-							for_id = "checkbox_docs_remember",
-							id = "checkbox_docs_remember_text",
-							text = "Remember me",
-							font_size = set.F32(14),
+					w.Text(
+						{
+							config = {
+								for_id = "checkbox_docs_remember",
+								id = "checkbox_docs_remember_text",
+								text = "Remember me",
+								font_size = set.F32(14),
+							},
 						},
-					})
+					)
 				},
 			})
-			w.Text({
-				config = {
-					id = "checkbox_docs_remember_status",
-					text = fmt.tprintf(
-						"Checked: %s",
-						checkbox_demo_value_label(checkbox_demo_remember),
-					),
-					font_size = set.F32(13),
-					color = set.Colors(o.Color.MUTED_FOREGROUND),
+			w.Text(
+				{
+					config = {
+						id = "checkbox_docs_remember_status",
+						text = fmt.tprintf(
+							"Checked: %s",
+							checkbox_demo_value_label(checkbox_demo_remember),
+						),
+						font_size = set.F32(13),
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
 				},
-			})
+			)
 		},
 	})
 }
@@ -201,27 +206,31 @@ checkbox_docs_form_preview :: proc(_: w.Rectangle_State) {
 							checkbox_demo_terms = checked
 						},
 					})
-					w.Text({
-						config = {
-							for_id = "checkbox_docs_terms",
-							id = "checkbox_docs_terms_text",
-							text = "Accept terms",
-							font_size = set.F32(14),
+					w.Text(
+						{
+							config = {
+								for_id = "checkbox_docs_terms",
+								id = "checkbox_docs_terms_text",
+								text = "Accept terms",
+								font_size = set.F32(14),
+							},
 						},
-					})
+					)
 				},
 			})
-			w.Text({
-				config = {
-					id = "checkbox_docs_terms_status",
-					text = fmt.tprintf(
-						"Checked: %s",
-						checkbox_demo_value_label(checkbox_demo_terms),
-					),
-					font_size = set.F32(13),
-					color = set.Colors(o.Color.MUTED_FOREGROUND),
+			w.Text(
+				{
+					config = {
+						id = "checkbox_docs_terms_status",
+						text = fmt.tprintf(
+							"Checked: %s",
+							checkbox_demo_value_label(checkbox_demo_terms),
+						),
+						font_size = set.F32(13),
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
 				},
-			})
+			)
 		},
 	})
 }
@@ -251,27 +260,31 @@ checkbox_docs_indeterminate_preview :: proc(_: w.Rectangle_State) {
 							checkbox_demo_partial = checked
 						},
 					})
-					w.Text({
-						config = {
-							for_id = "checkbox_docs_partial",
-							id = "checkbox_docs_partial_text",
-							text = "Select all",
-							font_size = set.F32(14),
+					w.Text(
+						{
+							config = {
+								for_id = "checkbox_docs_partial",
+								id = "checkbox_docs_partial_text",
+								text = "Select all",
+								font_size = set.F32(14),
+							},
 						},
-					})
+					)
 				},
 			})
-			w.Text({
-				config = {
-					id = "checkbox_docs_partial_status",
-					text = fmt.tprintf(
-						"Checked: %s",
-						checkbox_demo_value_label(checkbox_demo_partial),
-					),
-					font_size = set.F32(13),
-					color = set.Colors(o.Color.MUTED_FOREGROUND),
+			w.Text(
+				{
+					config = {
+						id = "checkbox_docs_partial_status",
+						text = fmt.tprintf(
+							"Checked: %s",
+							checkbox_demo_value_label(checkbox_demo_partial),
+						),
+						font_size = set.F32(13),
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
 				},
-			})
+			)
 		},
 	})
 }
@@ -286,18 +299,22 @@ checkbox_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 			gap_x = set.Gap_X(u16(10)),
 		},
 		child = proc(_: w.Rectangle_State) {
-			w.Checkbox({
-				config = {id = "checkbox_docs_disabled"},
-				checked = checkbox_demo_disabled,
-				disabled = true,
-			})
-			w.Text({
-				config = {
-					id = "checkbox_docs_disabled_text",
-					text = "Notifications (locked)",
-					font_size = set.F32(14),
+			w.Checkbox(
+				{
+					config = {id = "checkbox_docs_disabled"},
+					checked = checkbox_demo_disabled,
+					disabled = true,
 				},
-			})
+			)
+			w.Text(
+				{
+					config = {
+						id = "checkbox_docs_disabled_text",
+						text = "Notifications (locked)",
+						font_size = set.F32(14),
+					},
+				},
+			)
 		},
 	})
 }
@@ -378,7 +395,7 @@ w.Text({
 	doc_section(
 		"checkbox_docs_indeterminate",
 		"Indeterminate",
-		"Pass checked = .INDETERMINATE for a mixed state (for example Select all). Activation moves indeterminate to true, matching Radix checkbox behavior.",
+		"Pass checked = .INDETERMINATE for a mixed state (for example Select all). Activation moves indeterminate to true",
 		proc(_: w.Rectangle_State) {
 			doc_preview("checkbox_docs_indeterminate_preview", checkbox_docs_indeterminate_preview)
 			doc_code(

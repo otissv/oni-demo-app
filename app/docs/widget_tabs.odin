@@ -52,7 +52,6 @@ TABS_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Tabs_Event)", "nil"},
 	{"on_blur", "proc(Tabs_Event)", "nil"},
 	{"on_mouse_enter", "proc(Tabs_Event)", "nil"},
@@ -79,7 +78,6 @@ TABS_LIST_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Tabs_List_Event)", "nil"},
 	{"on_blur", "proc(Tabs_List_Event)", "nil"},
 	{"on_mouse_enter", "proc(Tabs_List_Event)", "nil"},
@@ -106,7 +104,6 @@ TABS_TRIGGER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Tabs_Trigger_Event)", "nil"},
 	{"on_blur", "proc(Tabs_Trigger_Event)", "nil"},
 	{"on_mouse_enter", "proc(Tabs_Trigger_Event)", "nil"},
@@ -133,7 +130,6 @@ TABS_CONTENT_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Tabs_Content_Event)", "nil"},
 	{"on_blur", "proc(Tabs_Content_Event)", "nil"},
 	{"on_mouse_enter", "proc(Tabs_Content_Event)", "nil"},
@@ -503,7 +499,7 @@ tabs_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("tabs_docs_title", "Tabs")
 	doc_lede(
 		"tabs_docs_lede",
-		"Composable layered panels (shadcn / Base UI Tabs): Tabs + Tabs_List + Tabs_Trigger + Tabs_Content with caller-owned value and roving focus.",
+		"Composable layered panels: Tabs + Tabs_List + Tabs_Trigger + Tabs_Content with caller-owned value and roving focus.",
 	)
 
 	doc_preview("tabs_docs_hero_preview", tabs_docs_hero)

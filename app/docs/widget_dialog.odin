@@ -166,7 +166,9 @@ dialog_demo_child :: proc(_: w.Dialog_State) {
 							dialog_demo_open = false
 						},
 						child = proc(_: w.Dialog_Action_State) {
-							w.Text({config = {id = "dialog-demo-save-label", text = "Save changes"}})
+							w.Text(
+								{config = {id = "dialog-demo-save-label", text = "Save changes"}},
+							)
 						},
 					})
 				},
@@ -230,7 +232,7 @@ dialog_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("dialog_docs_title", "Dialog")
 	doc_lede(
 		"dialog_docs_lede",
-		"shadcn-style modal: controlled open state, viewport-fixed Dialog_Scrim in .OVERLAY space, and centered Dialog_Content.",
+		"Modal: controlled open state, viewport-fixed Dialog_Scrim in .OVERLAY space, and centered Dialog_Content.",
 	)
 
 	doc_section(

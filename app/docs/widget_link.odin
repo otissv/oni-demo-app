@@ -47,7 +47,6 @@ LINK_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Link_Event)", "nil"},
 	{"on_blur", "proc(Link_Event)", "nil"},
 	{"on_mouse_enter", "proc(Link_Event)", "nil"},

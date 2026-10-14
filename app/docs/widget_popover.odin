@@ -146,7 +146,7 @@ popover_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("popover_docs_title", "Popover")
 	doc_lede(
 		"popover_docs_lede",
-		"shadcn-style floating panel: controlled open state, Popover_Trigger, and viewport-aware Popover_Content.",
+		"Floating panel: controlled open state, Popover_Trigger, and viewport-aware Popover_Content.",
 	)
 
 	doc_section(

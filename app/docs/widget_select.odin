@@ -72,7 +72,6 @@ SELECT_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"on_mount", "proc(Select_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Select_State) -> Mount", "nil"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Select_Event)", "nil"},
 	{"on_blur", "proc(Select_Event)", "nil"},
 	{"on_mouse_enter", "proc(Select_Event)", "nil"},
@@ -174,7 +173,9 @@ select_demo_fruit_content :: proc(_: w.Select_State) {
 
 @(private)
 select_demo_fruit_hero_trigger :: proc(_: w.Select_Trigger_State) {
-	w.Select_Value({config = {id = "select_docs_hero_fruit_value"}, placeholder = "Pick a fruit…"})
+	w.Select_Value(
+		{config = {id = "select_docs_hero_fruit_value"}, placeholder = "Pick a fruit…"},
+	)
 }
 
 @(private)
@@ -390,7 +391,7 @@ select_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("select_docs_title", "Select")
 	doc_lede(
 		"select_docs_lede",
-		"Radix-style select root: controlled-only value and open state, trigger + popover content for single choice, or an inline listbox when multiple or size > 1.",
+		"Select root: controlled-only value and open state, trigger + popover content for single choice, or an inline listbox when multiple or size > 1.",
 	)
 
 	doc_preview("select_docs_hero_preview", select_docs_hero_preview)

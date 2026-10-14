@@ -49,7 +49,6 @@ RADIO_GROUP_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Radio_Group_Event)", "nil"},
 	{"on_blur", "proc(Radio_Group_Event)", "nil"},
 	{"on_mouse_enter", "proc(Radio_Group_Event)", "nil"},
@@ -76,7 +75,6 @@ RADIO_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"unmount", "bool", "false"},
 	{"can_interactive_during_mount", "bool", "false"},
 	{"on_scroll", "proc(scroll_x, scroll_y: f32)", "nil"},
-	{"scroll_bar", "Scroll_Bar_Style", "{}"},
 	{"on_focus", "proc(Radio_Event)", "nil"},
 	{"on_blur", "proc(Radio_Event)", "nil"},
 	{"on_mouse_enter", "proc(Radio_Event)", "nil"},
@@ -191,17 +189,15 @@ radio_docs_vertical_preview :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_docs_vertical_inner :: proc(_: w.Rectangle_State) {
-	w.Radio_Group(
-		{
-			config = {id = "radio_docs_plan"},
-			value = radio_demo_plan,
-			name = "plan",
-			on_value_change = proc(value: string) {
-				radio_demo_plan = value
-			},
-			child = radio_demo_plan_child,
+	w.Radio_Group({
+		config = {id = "radio_docs_plan"},
+		value = radio_demo_plan,
+		name = "plan",
+		on_value_change = proc(value: string) {
+			radio_demo_plan = value
 		},
-	)
+		child = radio_demo_plan_child,
+	})
 	w.Text(
 		{
 			config = {
@@ -312,17 +308,15 @@ radio_docs_horizontal_preview :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_docs_horizontal_inner :: proc(_: w.Rectangle_State) {
-	w.Radio_Group(
-		{
-			config = {id = "radio_docs_density"},
-			value = radio_demo_density,
-			orientation = .HORIZONTAL,
-			on_value_change = proc(value: string) {
-				radio_demo_density = value
-			},
-			child = radio_demo_density_child,
+	w.Radio_Group({
+		config = {id = "radio_docs_density"},
+		value = radio_demo_density,
+		orientation = .HORIZONTAL,
+		on_value_change = proc(value: string) {
+			radio_demo_density = value
 		},
-	)
+		child = radio_demo_density_child,
+	})
 	w.Text(
 		{
 			config = {
@@ -369,13 +363,7 @@ radio_demo_notify_email :: proc(_: w.Rectangle_State) {
 radio_demo_notify_none :: proc(_: w.Rectangle_State) {
 	w.Radio({config = {id = "radio_docs_notify_none"}, value = "none", disabled = true})
 	w.Text(
-		{
-			config = {
-				id = "radio_docs_notify_none_text",
-				text = "Muted",
-				font_size = set.F32(14),
-			},
-		},
+		{config = {id = "radio_docs_notify_none_text", text = "Muted", font_size = set.F32(14)}},
 	)
 }
 
@@ -432,18 +420,16 @@ radio_docs_disabled_item_preview :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_docs_disabled_item_inner :: proc(_: w.Rectangle_State) {
-	w.Radio_Group(
-		{
-			config = {id = "radio_docs_notify"},
-			value = radio_demo_notify,
-			name = "notify",
-			required = true,
-			on_value_change = proc(value: string) {
-				radio_demo_notify = value
-			},
-			child = radio_demo_notify_child,
+	w.Radio_Group({
+		config = {id = "radio_docs_notify"},
+		value = radio_demo_notify,
+		name = "notify",
+		required = true,
+		on_value_change = proc(value: string) {
+			radio_demo_notify = value
 		},
-	)
+		child = radio_demo_notify_child,
+	})
 	w.Text(
 		{
 			config = {
@@ -526,16 +512,14 @@ radio_docs_disabled_group_preview :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_docs_hero :: proc(_: w.Rectangle_State) {
-	w.Radio_Group(
-		{
-			config = {id = "radio_docs_hero"},
-			value = radio_demo_plan,
-			on_value_change = proc(value: string) {
-				radio_demo_plan = value
-			},
-			child = radio_demo_plan_child,
+	w.Radio_Group({
+		config = {id = "radio_docs_hero"},
+		value = radio_demo_plan,
+		on_value_change = proc(value: string) {
+			radio_demo_plan = value
 		},
-	)
+		child = radio_demo_plan_child,
+	})
 }
 
 @(private)
@@ -543,7 +527,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 	doc_title("radio_docs_title", "Radio")
 	doc_lede(
 		"radio_docs_lede",
-		"Single-choice groups (Radix RadioGroup): caller-owned value, arrow-key navigation, and labeled items via Text for_id.",
+		"Single-choice radio groups: caller-owned value, arrow-key navigation, and labeled items via Text for_id.",
 	)
 
 	doc_preview("radio_docs_hero_preview", radio_docs_hero)
@@ -626,7 +610,10 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 		"Disabled group",
 		"disabled on Radio_Group disables every item without double opacity on each Radio.",
 		proc(_: w.Rectangle_State) {
-			doc_preview("radio_docs_disabled_group_preview_wrap", radio_docs_disabled_group_preview)
+			doc_preview(
+				"radio_docs_disabled_group_preview_wrap",
+				radio_docs_disabled_group_preview,
+			)
 			doc_code(
 				"radio_docs_disabled_group_code",
 				`w.Radio_Group({
