@@ -79,13 +79,15 @@ popover_demo_basic_child :: proc(_: w.Popover_State) {
 		},
 		child = proc(_: w.Popover_Content_Props_State) {
 			w.Text({config = {id = "popover-demo-title", text = "Dimensions"}})
-			w.Text({
-				config = {
-					id = "popover-demo-body",
-					text = "Set the dimensions for the layer.",
-					color = set.Colors(o.Color.MUTED_FOREGROUND),
+			w.Text(
+				{
+					config = {
+						id = "popover-demo-body",
+						text = "Set the dimensions for the layer.",
+						color = set.Colors(o.Color.MUTED_FOREGROUND),
+					},
 				},
-			})
+			)
 		},
 	})
 }
@@ -103,7 +105,16 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 		align = .END,
 		match_trigger_width = true,
 		child = proc(_: w.Popover_Content_Props_State) {
-			w.Text({config = {id = "popover-align-body", text = "align=.END"}})
+			w.Text(
+				{
+					config = {
+						id = "popover-align-body",
+						text = "align=.END",
+						width = set.Width(.FIT),
+						background = set.Background(.RED_500),
+					},
+				},
+			)
 		},
 	})
 }

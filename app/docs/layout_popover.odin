@@ -59,7 +59,12 @@ Layout_Popover :: proc() {
 						},
 						child = proc(_: w.Popover_Content_Props_State) {
 							w.Text(
-								{config = {id = "layout-popover-panel-title", text = "Popover panel"}},
+								{
+									config = {
+										id = "layout-popover-panel-title",
+										text = "Popover panel",
+									},
+								},
 							)
 							w.Text(
 								{
