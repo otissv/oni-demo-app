@@ -10,10 +10,10 @@ Sidebar_Widgets_options :: enum {
 	WIDGET_CHECKBOX,
 	WIDGET_COLOR_PICKER,
 	WIDGET_DATE_PICKER,
+	WIDGET_DIALOG,
 	WIDGET_IMAGE,
 	WIDGET_LINK,
 	WIDGET_POPOVER,
-	WIDGET_DIALOG,
 	WIDGET_PRESERVE,
 	WIDGET_RADIO,
 	WIDGET_RECTANGLE,
@@ -28,7 +28,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_BUTTON
+active_widget_option: Sidebar_Widgets_options = .WIDGET_POPOVER
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -43,14 +43,14 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Color_Picker()
 	case .WIDGET_DATE_PICKER:
 		Widget_Date_Picker()
+	case .WIDGET_DIALOG:
+		Widget_Dialog()
 	case .WIDGET_IMAGE:
 		Widget_Image()
 	case .WIDGET_LINK:
 		Widget_Link()
 	case .WIDGET_POPOVER:
 		Widget_Popover()
-	case .WIDGET_DIALOG:
-		Widget_Dialog()
 	case .WIDGET_PRESERVE:
 		Widget_Preserve()
 	case .WIDGET_RADIO:

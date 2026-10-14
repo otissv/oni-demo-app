@@ -101,9 +101,8 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 		},
 	})
 	w.Popover_Content({
-		config = {width = set.Width(f32(160)), padding = set.Padding(f32(10))},
+		config = {width = set.Width(f32(120)), padding = set.Padding(f32(10))},
 		align = .END,
-		match_trigger_width = true,
 		child = proc(_: w.Popover_Content_Props_State) {
 			w.Text(
 				{
@@ -111,7 +110,6 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 						id = "popover-align-body",
 						text = "align=.END",
 						width = set.Width(.FIT),
-						background = set.Background(.RED_500),
 					},
 				},
 			)
@@ -187,7 +185,7 @@ popover_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"popover_docs_align",
 		"Align",
-		"Popover_Content align mirrors shadcn horizontal alignment; match_trigger_width sizes to the trigger.",
+		"align positions the panel against the trigger (.START / .CENTER / .END). Use a narrower panel than the trigger to see .END; match_trigger_width makes widths equal so align is a no-op.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("popover_docs_align_preview_wrap", popover_docs_align_preview)
 		},
