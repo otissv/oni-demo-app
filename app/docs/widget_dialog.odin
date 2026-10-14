@@ -79,17 +79,34 @@ DIALOG_CONTENT_DOCS_PROPS := [?]Doc_Prop_Row {
 
 @(private)
 DIALOG_ACTION_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Dialog_Action_Config (= Button_Config)", "{}"},
+	{"config", "Dialog_Action_Config (= Button_Config)", "width defaults .FIT"},
 	{"child", "proc(Dialog_Action_State)", "nil"},
-	{"on_click", "proc(Dialog_Action_Event)", "nil"},
+	{"on_click", "proc(Dialog_Action_Event)", "nil — does not close"},
 }
 
 @(private)
 DIALOG_CANCEL_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Dialog_Cancel_Config (= Button_Config)", "{}"},
+	{"config", "Dialog_Cancel_Config (= Button_Config)", "width defaults .FIT"},
 	{"child", "proc(Dialog_Cancel_State)", "nil"},
-	{"on_click", "proc(Dialog_Cancel_Event)", "nil — closes dialog"},
+	{"on_click", "proc(Dialog_Cancel_Event)", "nil — closes; non-nil replaces close"},
 }
+
+@(private)
+DIALOG_DOCS_ACTIONS_CALL :: `w.Dialog_Cancel({
+	config = {id = "profile_cancel"},
+	child = proc(_: w.Dialog_Cancel_State) {
+		w.Text({config = {id = "profile_cancel_label", text = "Cancel"}})
+	},
+})
+w.Dialog_Action({
+	config = {id = "profile_save"},
+	on_click = proc(_: w.Dialog_Action_Event) {
+		/* save... then set open = false */
+	},
+	child = proc(_: w.Dialog_Action_State) {
+		w.Text({config = {id = "profile_save_label", text = "Save"}})
+	},
+})`
 
 @(private)
 dialog_demo_child :: proc(_: w.Dialog_State) {
@@ -253,6 +270,15 @@ dialog_docs_body :: proc(_: w.Rectangle_State) {
 	)
 
 	doc_section(
+		"dialog_docs_actions",
+		"Actions",
+		"Dialog_Cancel and Dialog_Action (oni/widgets/dialog_actions.odin) wrap Button under Dialog. Both default width to .FIT and inherit Dialog.disabled. Cancel closes when on_click is nil; a non-nil on_click replaces that close. Action never dismisses — update open from app state in on_click.",
+		proc(_: w.Rectangle_State) {
+			doc_code("dialog_docs_actions_call", DIALOG_DOCS_ACTIONS_CALL)
+		},
+	)
+
+	doc_section(
 		"dialog_docs_custom_scrim",
 		"Custom scrim",
 		"Override config (background, layout) or pass child to paint on top of the default full-viewport scrim.",
@@ -277,7 +303,7 @@ dialog_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"dialog_docs_api",
 		"API Reference",
-		"w.Dialog, w.Dialog_Trigger, w.Dialog_Scrim, w.Dialog_Content, w.Dialog_Cancel, and w.Dialog_Action in oni/widgets/dialog*.odin.",
+		"Root and parts in oni/widgets/dialog*.odin. Dialog_Cancel / Dialog_Action live in dialog_actions.odin; Config/State/Event/Props alias Button_*.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("dialog_docs_api_root_h3", "Dialog props")
 			doc_table("dialog_docs_root_props", DIALOG_DOCS_PROPS[:])
