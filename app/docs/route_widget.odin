@@ -8,13 +8,16 @@ Sidebar_Widgets_options :: enum {
 	WIDGET_BUTTON,
 	WIDGET_CALENDAR,
 	WIDGET_CHECKBOX,
+	WIDGET_COLLAPSIBLE,
 	WIDGET_COLOR_PICKER,
+	WIDGET_CONTEXT_MENU,
 	WIDGET_DATE_PICKER,
 	WIDGET_DIALOG,
 	WIDGET_IMAGE,
 	WIDGET_LINK,
 	WIDGET_POPOVER,
 	WIDGET_PRESERVE,
+	WIDGET_PROGRESS,
 	WIDGET_RADIO,
 	WIDGET_RECTANGLE,
 	WIDGET_RICH_TEXT,
@@ -28,7 +31,7 @@ Sidebar_Widgets_options :: enum {
 }
 
 @(private)
-active_widget_option: Sidebar_Widgets_options = .WIDGET_DATE_PICKER
+active_widget_option: Sidebar_Widgets_options = .WIDGET_CONTEXT_MENU
 
 
 widget_container := proc(state: w.Rectangle_State) {
@@ -39,8 +42,12 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Calendar()
 	case .WIDGET_CHECKBOX:
 		Widget_Checkbox()
+	case .WIDGET_COLLAPSIBLE:
+		Widget_Collapsible()
 	case .WIDGET_COLOR_PICKER:
 		Widget_Color_Picker()
+	case .WIDGET_CONTEXT_MENU:
+		Widget_Context_Menu()
 	case .WIDGET_DATE_PICKER:
 		Widget_Date_Picker()
 	case .WIDGET_DIALOG:
@@ -53,6 +60,8 @@ widget_container := proc(state: w.Rectangle_State) {
 		Widget_Popover()
 	case .WIDGET_PRESERVE:
 		Widget_Preserve()
+	case .WIDGET_PROGRESS:
+		Widget_Progress()
 	case .WIDGET_RADIO:
 		Widget_Radio()
 	case .WIDGET_RECTANGLE:
@@ -92,9 +101,19 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 		active_widget_option = .WIDGET_CHECKBOX
 	})
 
+	c.sidebar_item("widget-collapsible", "Collapsible", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_COLLAPSIBLE
+	})
+
 	c.sidebar_item("widget-color-picker", "Color Picker", proc() {
 		active_docs_section = .Widgets
 		active_widget_option = .WIDGET_COLOR_PICKER
+	})
+
+	c.sidebar_item("widget-context-menu", "Context Menu", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_CONTEXT_MENU
 	})
 
 	c.sidebar_item("widget-date-picker", "Date Picker", proc() {
@@ -125,6 +144,11 @@ widget_sidebar := proc(state: w.Rectangle_State) {
 	c.sidebar_item("widget-preserve", "Preserve", proc() {
 		active_docs_section = .Widgets
 		active_widget_option = .WIDGET_PRESERVE
+	})
+
+	c.sidebar_item("widget-progress", "Progress", proc() {
+		active_docs_section = .Widgets
+		active_widget_option = .WIDGET_PROGRESS
 	})
 
 	c.sidebar_item("widget-radio", "Radio", proc() {
