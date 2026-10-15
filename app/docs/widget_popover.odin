@@ -19,8 +19,7 @@ import set "oni/set"`
 
 @(private)
 POPOVER_DOCS_USAGE_CALL :: `w.Popover({
-	config = {id = "dimensions"},
-	open = open,
+	config = {id = "dimensions", open = open},
 	on_open_change = proc(next: bool) { open = next },
 	child = proc(_: w.Popover_State) {
 		w.Popover_Trigger({
@@ -40,9 +39,9 @@ POPOVER_DOCS_USAGE_CALL :: `w.Popover({
 
 @(private)
 POPOVER_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Popover_Config (= Widget_Config)", "{}"},
-	{"open", "bool", "false"},
-	{"disabled", "bool", "false"},
+	{"config", "Popover_Config (Widget_Config + open)", "{}"},
+	{"config.open", "bool", "false"},
+	{"config.disabled", "Cfg(Style_Bool)", "unset"},
 	{"on_open_change", "proc(open: bool)", "nil"},
 	{"child", "proc(Popover_State)", "nil"},
 }
@@ -56,11 +55,11 @@ POPOVER_TRIGGER_DOCS_PROPS := [?]Doc_Prop_Row {
 
 @(private)
 POPOVER_CONTENT_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Popover_Content_Props_Config (= Widget_Config)", "{}"},
-	{"align", "Popover_Align", ".START"},
-	{"match_trigger_width", "bool", "false"},
-	{"gap", "f32", "4"},
-	{"side_margin", "f32", "8"},
+	{"config", "Popover_Content_Props_Config (Widget_Config + placement)", "{}"},
+	{"config.anchor_align", "Popover_Align", ".START"},
+	{"config.match_trigger_width", "bool", "false"},
+	{"config.anchor_gap", "f32", "4"},
+	{"config.viewport_margin", "f32", "8"},
 	{"child", "proc(Popover_Content_Props_State)", "nil"},
 }
 
@@ -153,17 +152,17 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 	})
 	w.Popover_Content({
 		config = {
-			width = set.Width(f32(120)),
+			width = set.Width(.FIT),
 			padding = set.Padding(f32(10)),
 			border = set.Border(f32(1)),
+			anchor_align = .END,
 		},
-		align = .END,
 		child = proc(_: w.Popover_Content_Props_State) {
 			w.Text(
 				{
 					config = {
 						id = "popover-align-body",
-						text = "align=.END",
+						text = "anchor_align=.END",
 						width = set.Width(.FIT),
 					},
 				},
@@ -175,8 +174,7 @@ popover_demo_align_child :: proc(_: w.Popover_State) {
 @(private)
 popover_docs_hero_preview :: proc(_: w.Rectangle_State) {
 	w.Popover({
-		config = {id = "popover-hero-demo"},
-		open = popover_hero_open,
+		config = {id = "popover-hero-demo", open = popover_hero_open},
 		on_open_change = proc(open: bool) {
 			popover_hero_open = open
 		},
@@ -188,8 +186,7 @@ popover_docs_hero_preview :: proc(_: w.Rectangle_State) {
 @(private)
 popover_docs_basic_preview :: proc(_: w.Rectangle_State) {
 	w.Popover({
-		config = {id = "popover-demo"},
-		open = popover_demo_open,
+		config = {id = "popover-demo", open = popover_demo_open},
 		on_open_change = proc(open: bool) {
 			popover_demo_open = open
 		},
@@ -200,8 +197,7 @@ popover_docs_basic_preview :: proc(_: w.Rectangle_State) {
 @(private)
 popover_docs_align_preview :: proc(_: w.Rectangle_State) {
 	w.Popover({
-		config = {id = "popover-align-demo"},
-		open = popover_demo_align_open,
+		config = {id = "popover-align-demo", open = popover_demo_align_open},
 		on_open_change = proc(open: bool) {
 			popover_demo_align_open = open
 		},
@@ -255,7 +251,7 @@ popover_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"popover_docs_align",
 		"Align",
-		"align positions the panel against the trigger (.START / .CENTER / .END). Use a narrower panel than the trigger to see .END; match_trigger_width makes widths equal so align is a no-op.",
+		"config.anchor_align positions the panel against the trigger (.START / .CENTER / .END). Use a narrower panel than the trigger to see .END; match_trigger_width makes widths equal so anchor_align is a no-op.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("popover_docs_align_preview_wrap", popover_docs_align_preview)
 		},

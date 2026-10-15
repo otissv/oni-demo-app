@@ -16,8 +16,7 @@ import set "oni/set"`
 
 @(private)
 DIALOG_DOCS_USAGE_CALL :: `w.Dialog({
-	config = {id = "profile"},
-	open = open,
+	config = {id = "profile", open = open},
 	on_open_change = proc(next: bool) { open = next },
 	child = proc(_: w.Dialog_State) {
 		w.Dialog_Trigger({
@@ -51,11 +50,15 @@ DIALOG_DOCS_USAGE_CALL :: `w.Dialog({
 
 @(private)
 DIALOG_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Dialog_Config (= Widget_Config)", "{}"},
-	{"open", "bool", "false"},
-	{"disabled", "bool", "false"},
+	{"config", "Dialog_Config (open + Widget_Config)", "{}"},
 	{"on_open_change", "proc(open: bool)", "nil"},
 	{"child", "proc(Dialog_State)", "nil"},
+}
+
+@(private)
+DIALOG_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"open", "bool", "false"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
 }
 
 @(private)
@@ -206,8 +209,7 @@ dialog_demo_custom_scrim_child :: proc(_: w.Dialog_State) {
 @(private)
 dialog_docs_basic_preview :: proc(_: w.Rectangle_State) {
 	w.Dialog({
-		config = {id = "dialog-demo"},
-		open = dialog_demo_open,
+		config = {id = "dialog-demo", open = dialog_demo_open},
 		on_open_change = proc(open: bool) {
 			dialog_demo_open = open
 		},
@@ -218,8 +220,7 @@ dialog_docs_basic_preview :: proc(_: w.Rectangle_State) {
 @(private)
 dialog_docs_custom_scrim_preview :: proc(_: w.Rectangle_State) {
 	w.Dialog({
-		config = {id = "dialog-custom-scrim-demo"},
-		open = dialog_demo_custom_scrim_open,
+		config = {id = "dialog-custom-scrim-demo", open = dialog_demo_custom_scrim_open},
 		on_open_change = proc(open: bool) {
 			dialog_demo_custom_scrim_open = open
 		},
@@ -309,6 +310,8 @@ dialog_docs_body :: proc(_: w.Rectangle_State) {
 		proc(_: w.Rectangle_State) {
 			doc_h3("dialog_docs_api_root_h3", "Dialog props")
 			doc_table("dialog_docs_root_props", DIALOG_DOCS_PROPS[:])
+			doc_h3("dialog_docs_api_root_config_h3", "Dialog config")
+			doc_table("dialog_docs_root_config", DIALOG_DOCS_CONFIG[:])
 			doc_h3("dialog_docs_api_trigger_h3", "Dialog_Trigger props")
 			doc_table("dialog_docs_trigger_props", DIALOG_TRIGGER_DOCS_PROPS[:])
 			doc_h3("dialog_docs_api_scrim_h3", "Dialog_Scrim props")

@@ -30,8 +30,7 @@ Layout_Popover :: proc() {
 				},
 			)
 			w.Popover({
-				config = {id = "layout-popover"},
-				open = layout_popover_open,
+				config = {id = "layout-popover", open = layout_popover_open},
 				on_open_change = proc(open: bool) {
 					layout_popover_open = open
 				},

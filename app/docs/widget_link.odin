@@ -23,10 +23,12 @@ import set "oni/set"`
 
 @(private)
 LINK_DOCS_USAGE_CALL :: `w.Link({
-	config = {id = "docs"},
-	href = "/docs/widgets",
-	text = "Widget reference",
-	suppress_open_url = true,
+	config = {
+		id = "docs",
+		href = "/docs/widgets",
+		text = "Widget reference",
+		suppress_open_url = true,
+	},
 	on_navigate = proc(event: w.Link_Event) {
 		// route or log event.frame_state.href
 	},
@@ -34,12 +36,7 @@ LINK_DOCS_USAGE_CALL :: `w.Link({
 
 @(private)
 LINK_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Link_Config (= Widget_Config)", "{}"},
-	{"href", "string", `""`},
-	{"text", "string", `""`},
-	{"mod", "Link_Mod", ".NONE"},
-	{"suppress_open_url", "bool", "false"},
-	{"disabled", "bool", "false"},
+	{"config", "Link_Config (href/text + Widget_Config)", "{}"},
 	{"child", "proc(Link_State)", "nil"},
 	{"on_navigate", "proc(Link_Event)", "nil"},
 	{"on_mount", "proc(Link_State) -> Mount", "nil"},
@@ -63,13 +60,24 @@ LINK_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
+LINK_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"href", "string", `""`},
+	{"text", "string", `""`},
+	{"mod", "Link_Mod", ".NONE"},
+	{"suppress_open_url", "bool", "false"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
+}
+
+@(private)
 link_docs_hero :: proc(_: w.Rectangle_State) {
 	w.Link(
 		{
-			config = {id = "link_docs_hero"},
-			href = "/docs/widgets",
-			text = "Open widgets docs",
-			suppress_open_url = true,
+			config = {
+				id = "link_docs_hero",
+				href = "/docs/widgets",
+				text = "Open widgets docs",
+				suppress_open_url = true,
+			},
 			on_navigate = link_demo_on_navigate,
 		},
 	)
@@ -79,10 +87,12 @@ link_docs_hero :: proc(_: w.Rectangle_State) {
 link_docs_basic_preview :: proc(_: w.Rectangle_State) {
 	w.Link(
 		{
-			config = {id = "link_docs_basic"},
-			href = "/docs/widgets",
-			text = "Open widgets docs",
-			suppress_open_url = true,
+			config = {
+				id = "link_docs_basic",
+				href = "/docs/widgets",
+				text = "Open widgets docs",
+				suppress_open_url = true,
+			},
 			on_navigate = link_demo_on_navigate,
 		},
 	)
@@ -92,10 +102,12 @@ link_docs_basic_preview :: proc(_: w.Rectangle_State) {
 link_docs_mod_preview :: proc(_: w.Rectangle_State) {
 	w.Link(
 		{
-			config = {id = "link_docs_mod"},
-			href = "https://example.com",
-			text = "MOD+click external example.com",
-			mod = .PRIMARY,
+			config = {
+				id = "link_docs_mod",
+				href = "https://example.com",
+				text = "MOD+click external example.com",
+				mod = .PRIMARY,
+			},
 			on_navigate = link_demo_on_navigate,
 		},
 	)
@@ -105,11 +117,13 @@ link_docs_mod_preview :: proc(_: w.Rectangle_State) {
 link_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 	w.Link(
 		{
-			config = {id = "link_docs_disabled"},
-			href = "/locked",
-			text = "Unavailable destination",
-			disabled = true,
-			suppress_open_url = true,
+			config = {
+				id = "link_docs_disabled",
+				href = "/locked",
+				text = "Unavailable destination",
+				disabled = set.Disabled(true),
+				suppress_open_url = true,
+			},
 		},
 	)
 }
@@ -169,10 +183,12 @@ link_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"link_docs_basic_code",
 				`w.Link({
-	config = {id = "docs"},
-	href = "/docs/widgets",
-	text = "Open widgets docs",
-	suppress_open_url = true,
+	config = {
+		id = "docs",
+		href = "/docs/widgets",
+		text = "Open widgets docs",
+		suppress_open_url = true,
+	},
 	on_navigate = on_navigate,
 })`,
 			)
@@ -188,10 +204,12 @@ link_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"link_docs_mod_code",
 				`w.Link({
-	config = {id = "external"},
-	href = "https://example.com",
-	text = "Open in browser",
-	mod = .PRIMARY,
+	config = {
+		id = "external",
+		href = "https://example.com",
+		text = "Open in browser",
+		mod = .PRIMARY,
+	},
 	on_navigate = on_navigate,
 })`,
 			)
@@ -201,16 +219,18 @@ link_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"link_docs_disabled",
 		"Disabled",
-		"disabled suppresses interaction and lowers opacity. href is still exposed on state for screen readers.",
+		"config.disabled suppresses interaction and lowers opacity. href is still exposed on state for screen readers.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("link_docs_disabled_preview_wrap", link_docs_disabled_preview)
 			doc_code(
 				"link_docs_disabled_code",
 				`w.Link({
-	config = {id = "locked"},
-	href = "/locked",
-	text = "Unavailable",
-	disabled = true,
+	config = {
+		id = "locked",
+		href = "/locked",
+		text = "Unavailable",
+		disabled = set.Disabled(true),
+	},
 })`,
 			)
 		},
@@ -249,7 +269,7 @@ link_docs_body :: proc(_: w.Rectangle_State) {
 				"link_docs_api_config_note",
 				"Theme defaults include underline, primary color, and tabbable true.",
 			)
-			doc_table("link_docs_config_table", DOC_WIDGET_CONFIG[:])
+			doc_table("link_docs_config_table", LINK_DOCS_CONFIG[:])
 		},
 	)
 }

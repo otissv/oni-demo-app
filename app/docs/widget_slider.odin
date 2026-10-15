@@ -29,27 +29,19 @@ import set "oni/set"`
 
 @(private)
 SLIDER_DOCS_USAGE_CALL :: `w.Slider({
-	config = {id = "volume"},
-	values = volume[:],
-	min = 0,
-	max = 100,
-	step = 1,
+	config = {
+		id = "volume",
+		values = volume[:],
+		min = 0,
+		max = 100,
+		step = 1,
+	},
 	on_value_change = proc(vals: []f32) { volume[0] = vals[0] },
 })`
 
 @(private)
 SLIDER_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Slider_Config (= Widget_Config)", "{}"},
-	{"values", "[]f32", "required (len 1 or 2)"},
-	{"min", "f32", "0"},
-	{"max", "f32", "100"},
-	{"step", "f32", "1"},
-	{"min_steps_between_thumbs", "f32", "0"},
-	{"orientation", "Slider_Orientation", ".HORIZONTAL"},
-	{"inverted", "bool", "false"},
-	{"disabled", "bool", "false"},
-	{"thumb_size", "Cfg(Style_F32)", "unset → 16"},
-	{"track_thickness", "Cfg(Style_F32)", "unset → 6"},
+	{"config", "Slider_Config (values, min, max, step, … + Widget_Config)", "{}"},
 	{"child", "proc(Slider_State)", "nil → Slider_Default_Parts"},
 	{"on_value_change", "proc(values: []f32)", "nil"},
 	{"on_value_commit", "proc(values: []f32)", "nil"},
@@ -74,10 +66,24 @@ SLIDER_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
+SLIDER_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"values", "[]f32", "nil (length 1 or 2)"},
+	{"min", "f32", "0"},
+	{"max", "f32", "100"},
+	{"step", "f32", "1"},
+	{"min_steps_between_thumbs", "f32", "0"},
+	{"orientation", "Slider_Orientation", ".HORIZONTAL"},
+	{"inverted", "bool", "false"},
+	{"thumb_size", "Cfg(Style_F32)", "unset"},
+	{"track_thickness", "Cfg(Style_F32)", "unset"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
+}
+
+@(private)
 SLIDER_DOCS_PARTS := [?]Doc_Prop_Row {
 	{"Slider_Track", "Slider_Track_Props { config, child }", "Track bar (default Color.MUTED)"},
 	{"Slider_Range", "Slider_Range_Props { config }", "Filled span (default Color.PRIMARY)"},
-	{"Slider_Thumb", "Slider_Thumb_Props { config, index, child }", "Thumb handle for values[index]"},
+	{"Slider_Thumb", "Slider_Thumb_Props { config.index, child }", "Thumb handle for values[config.index]"},
 	{"Slider_Default_Parts", "proc(Slider_State)", "Default child: Track + Range + Thumbs"},
 }
 
@@ -154,11 +160,11 @@ slider_demo_custom_parts :: proc(frame_state: w.Slider_State) {
 		w.Slider_Thumb({
 			config = {
 				id = fmt.tprintf("slider_docs_custom/thumb-%d", i),
+				index = i,
 				background = set.Background(bg),
 				border = set.Border(f32(2)),
 				border_color = set.Border_color(o.Color.BACKGROUND),
 			},
-			index = i,
 			child = slider_demo_custom_thumb_inner,
 		})
 	}
@@ -180,11 +186,13 @@ slider_docs_basic_preview :: proc(_: w.Rectangle_State) {
 @(private)
 slider_docs_basic_inner :: proc(_: w.Rectangle_State) {
 	w.Slider({
-		config = {id = "slider_docs_basic"},
-		values = slider_demo_volume[:],
-		min = 0,
-		max = 100,
-		step = 1,
+		config = {
+			id = "slider_docs_basic",
+			values = slider_demo_volume[:],
+			min = 0,
+			max = 100,
+			step = 1,
+		},
 		on_value_change = slider_demo_on_volume,
 	})
 	w.Text({
@@ -200,11 +208,13 @@ slider_docs_basic_inner :: proc(_: w.Rectangle_State) {
 @(private)
 slider_docs_step_preview :: proc(_: w.Rectangle_State) {
 	w.Slider({
-		config = {id = "slider_docs_step"},
-		values = slider_demo_step[:],
-		min = 0,
-		max = 100,
-		step = 10,
+		config = {
+			id = "slider_docs_step",
+			values = slider_demo_step[:],
+			min = 0,
+			max = 100,
+			step = 10,
+		},
 		on_value_change = slider_demo_on_step,
 	})
 }
@@ -212,12 +222,14 @@ slider_docs_step_preview :: proc(_: w.Rectangle_State) {
 @(private)
 slider_docs_range_preview :: proc(_: w.Rectangle_State) {
 	w.Slider({
-		config = {id = "slider_docs_range"},
-		values = slider_demo_range[:],
-		min = 0,
-		max = 100,
-		step = 1,
-		min_steps_between_thumbs = 1,
+		config = {
+			id = "slider_docs_range",
+			values = slider_demo_range[:],
+			min = 0,
+			max = 100,
+			step = 1,
+			min_steps_between_thumbs = 1,
+		},
 		on_value_change = slider_demo_on_range,
 	})
 }
@@ -229,12 +241,12 @@ slider_docs_vertical_row :: proc(_: w.Rectangle_State) {
 			id = "slider_docs_vertical",
 			width = set.Width(f32(20)),
 			height = set.Height(f32(120)),
+			values = slider_demo_vertical[:],
+			min = 0,
+			max = 100,
+			step = 1,
+			orientation = .VERTICAL,
 		},
-		values = slider_demo_vertical[:],
-		min = 0,
-		max = 100,
-		step = 1,
-		orientation = .VERTICAL,
 		on_value_change = slider_demo_on_vertical,
 	})
 }
@@ -254,24 +266,28 @@ slider_docs_vertical_preview :: proc(_: w.Rectangle_State) {
 @(private)
 slider_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 	w.Slider({
-		config = {id = "slider_docs_disabled"},
-		values = slider_demo_disabled[:],
-		min = 0,
-		max = 100,
-		step = 1,
-		disabled = true,
+		config = {
+			id = "slider_docs_disabled",
+			values = slider_demo_disabled[:],
+			min = 0,
+			max = 100,
+			step = 1,
+			disabled = set.Disabled(true),
+		},
 	})
 }
 
 @(private)
 slider_docs_custom_preview :: proc(_: w.Rectangle_State) {
 	w.Slider({
-		config = {id = "slider_docs_custom"},
-		values = slider_demo_custom[:],
-		min = 0,
-		max = 100,
-		step = 1,
-		thumb_size = set.F32(f32(18)),
+		config = {
+			id = "slider_docs_custom",
+			values = slider_demo_custom[:],
+			min = 0,
+			max = 100,
+			step = 1,
+			thumb_size = set.F32(f32(18)),
+		},
 		child = slider_demo_custom_parts,
 		on_value_change = slider_demo_on_custom,
 	})
@@ -313,7 +329,7 @@ slider_docs_body :: proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_basic_preview_wrap", slider_docs_basic_preview)
 			doc_code(
 				"slider_docs_basic_code",
-				`values = volume[:], min = 0, max = 100, step = 1`,
+				`config = { values = volume[:], min = 0, max = 100, step = 1 }`,
 			)
 		},
 	)
@@ -324,7 +340,7 @@ slider_docs_body :: proc(_: w.Rectangle_State) {
 		"Larger step snaps keyboard and pointer moves to discrete increments.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_step_preview_wrap", slider_docs_step_preview)
-			doc_code("slider_docs_step_code", `step = 10`)
+			doc_code("slider_docs_step_code", `config = { step = 10 }`)
 		},
 	)
 
@@ -336,7 +352,7 @@ slider_docs_body :: proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_range_preview_wrap", slider_docs_range_preview)
 			doc_code(
 				"slider_docs_range_code",
-				`values = range[:], min_steps_between_thumbs = 1`,
+				`config = { values = range[:], min_steps_between_thumbs = 1 }`,
 			)
 		},
 	)
@@ -349,8 +365,11 @@ slider_docs_body :: proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_vertical_preview_wrap", slider_docs_vertical_preview)
 			doc_code(
 				"slider_docs_vertical_code",
-				`orientation = .VERTICAL,
-config = { width = set.Width(20), height = set.Height(140) }`,
+				`config = {
+	orientation = .VERTICAL,
+	width = set.Width(20),
+	height = set.Height(140),
+}`,
 			)
 		},
 	)
@@ -361,7 +380,7 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 		"disabled suppresses pointer and keyboard interaction.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("slider_docs_disabled_preview_wrap", slider_docs_disabled_preview)
-			doc_code("slider_docs_disabled_code", `disabled = true`)
+			doc_code("slider_docs_disabled_code", `config = { disabled = set.Disabled(true) }`)
 		},
 	)
 
@@ -377,7 +396,7 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 	w.Slider_Track({config = {background = set.Background(o.Color.SECONDARY)}})
 	w.Slider_Range({config = {background = set.Background(o.Color.PRIMARY)}})
 	for i in 0 ..< state.value_count {
-		w.Slider_Thumb({config = {background = set.Background(o.Color.PRIMARY)}, index = i})
+		w.Slider_Thumb({config = {background = set.Background(o.Color.PRIMARY), index = i}})
 	}
 }`,
 			)
@@ -400,7 +419,11 @@ config = { width = set.Width(20), height = set.Height(140) }`,
 			doc_table("slider_docs_parts_table", SLIDER_DOCS_PARTS[:])
 
 			doc_h3("slider_docs_api_config_h3", "Config")
-			doc_table("slider_docs_config_table", DOC_WIDGET_CONFIG[:])
+			doc_muted(
+				"slider_docs_api_config_note",
+				"Slider_Config embeds Widget_Config plus values/min/max/step. Slider_Thumb_Config adds index.",
+			)
+			doc_table("slider_docs_config_table", SLIDER_DOCS_CONFIG[:])
 		},
 	)
 }

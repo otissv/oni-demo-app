@@ -24,11 +24,14 @@ import set "oni/set"`
 
 @(private)
 COLOR_PICKER_DOCS_USAGE_CALL :: `w.Color_Picker({
-	config = {id = "accent", width = set.Width(f32(480))},
-	value = value,
-	channel = channel,
-	previous = previous,
-	web_only = web_only,
+	config = {
+		id = "accent",
+		width = set.Width(f32(480)),
+		value = value,
+		channel = channel,
+		previous = previous,
+		web_only = web_only,
+	},
 	on_value_change = proc(v: o.RGBA) { value = v },
 	on_value_commit = proc(v: o.RGBA) { previous = v },
 	on_channel_change = proc(c: o.Color_Picker_Channel) { channel = c },
@@ -41,12 +44,7 @@ COLOR_PICKER_DOCS_USAGE_CALL :: `w.Color_Picker({
 
 @(private)
 COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Color_Picker_Config (= Widget_Config)", "{}"},
-	{"value", "RGBA", "{0,0,0,255}"},
-	{"channel", "Color_Picker_Channel", ".H"},
-	{"previous", "RGBA", "{0,0,0,255}"},
-	{"web_only", "bool", "false"},
-	{"disabled", "bool", "false"},
+	{"config", "Color_Picker_Config", "{}"},
 	{"child", "proc(Color_Picker_State)", "nil"},
 	{"on_value_change", "proc(value: RGBA)", "nil"},
 	{"on_value_commit", "proc(value: RGBA)", "nil"},
@@ -74,6 +72,10 @@ COLOR_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 
 @(private)
 COLOR_PICKER_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"value", "RGBA", "{0,0,0,255}"},
+	{"channel", "Color_Picker_Channel", ".H"},
+	{"previous", "RGBA", "{0,0,0,255}"},
+	{"web_only", "bool", "false"},
 	{"id", "string", `""`},
 	{"width", "Width", ".GROW"},
 	{"height", "Height", "unset"},
@@ -82,7 +84,7 @@ COLOR_PICKER_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"border", "Cfg(Border)", "unset"},
 	{"border_color", "Cfg(Colors)", "unset"},
 	{"background", "Cfg(Colors)", "unset"},
-	{"disabled", "Cfg(Style_Bool)", "unset (prefer props.disabled)"},
+	{"disabled", "Cfg(Style_Bool)", "unset"},
 	{"tabbable", "Cfg(Style_Bool)", "unset"},
 	{"opacity", "Cfg(Style_F32)", "unset"},
 	{"direction", "Cfg(Widget_Direction)", "unset"},
@@ -104,13 +106,13 @@ COLOR_PICKER_DOCS_PARTS := [?]Doc_Prop_Row {
 	{"Color_Picker_Field.config", "Widget_Config", "{} (200x200)"},
 	{"Color_Picker_Slider.config", "Widget_Config", "{} (20x200)"},
 	{"Color_Picker_Alpha.config", "Widget_Config", "{} (220x16)"},
-	{"Color_Picker_Swatch.config", "Widget_Config", "{} (56x28)"},
-	{"Color_Picker_Swatch.role", "Color_Picker_Swatch_Role", ".CURRENT"},
+	{"Color_Picker_Swatch.config", "Color_Picker_Swatch_Config", "{} (56x28)"},
+	{"Color_Picker_Swatch.config.role", "Color_Picker_Swatch_Role", ".CURRENT"},
 	{"Color_Picker_Channels.config", "Widget_Config", "{} (120x132)"},
-	{"Color_Picker_Hex.config", "Widget_Config", "{}"},
-	{"Color_Picker_Hex.include_alpha", "bool", "false"},
-	{"Color_Picker_Type.config", "Widget_Config", "{}"},
-	{"Color_Picker_Type.color_type", "Color_Picker_Color_Type", ".RGB"},
+	{"Color_Picker_Hex.config", "Color_Picker_Hex_Config", "{}"},
+	{"Color_Picker_Hex.config.include_alpha", "bool", "false"},
+	{"Color_Picker_Type.config", "Color_Picker_Type_Config", "{}"},
+	{"Color_Picker_Type.config.color_type", "Color_Picker_Color_Type", ".RGB"},
 	{"Color_Picker_Web_Only.config", "Widget_Config", "{}"},
 }
 
@@ -136,8 +138,7 @@ color_picker_docs_compact_child :: proc(_: w.Color_Picker_State) {
 				},
 				child = proc(_: w.Rectangle_State) {
 					w.Color_Picker_Swatch({
-						config = {id = "color_picker_docs_compact_swatch"},
-						role = .CURRENT,
+						config = {id = "color_picker_docs_compact_swatch", role = .CURRENT},
 					})
 					w.Color_Picker_Channels({config = {id = "color_picker_docs_compact_channels"}})
 				},
@@ -180,12 +181,10 @@ color_picker_docs_full_child :: proc(_: w.Color_Picker_State) {
 				},
 				child = proc(_: w.Rectangle_State) {
 					w.Color_Picker_Swatch({
-						config = {id = "color_picker_docs_swatch_new"},
-						role = .CURRENT,
+						config = {id = "color_picker_docs_swatch_new", role = .CURRENT},
 					})
 					w.Color_Picker_Swatch({
-						config = {id = "color_picker_docs_swatch_prev"},
-						role = .PREVIOUS,
+						config = {id = "color_picker_docs_swatch_prev", role = .PREVIOUS},
 					})
 					w.Color_Picker_Channels({config = {id = "color_picker_docs_channels"}})
 				},
@@ -202,15 +201,14 @@ color_picker_docs_full_child :: proc(_: w.Color_Picker_State) {
 		},
 		child = proc(_: w.Rectangle_State) {
 			w.Color_Picker_Hex({
-				config = {id = "color_picker_docs_hex"},
-				include_alpha = true,
+				config = {id = "color_picker_docs_hex", include_alpha = true},
 			})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_rgb"}, color_type = .RGB})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_hsb"}, color_type = .HSB})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_hsl"}, color_type = .HSL})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_lab"}, color_type = .LAB})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_cmyk"}, color_type = .CMYK})
-			w.Color_Picker_Type({config = {id = "color_picker_docs_web"}, color_type = .WEB})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_rgb", color_type = .RGB}})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_hsb", color_type = .HSB}})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_hsl", color_type = .HSL}})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_lab", color_type = .LAB}})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_cmyk", color_type = .CMYK}})
+			w.Color_Picker_Type({config = {id = "color_picker_docs_web", color_type = .WEB}})
 			w.Text({
 				config = {
 					id = "color_picker_docs_status",
@@ -241,11 +239,14 @@ color_picker_docs_disabled_child :: proc(_: w.Color_Picker_State) {
 @(private)
 color_picker_docs_hero :: proc(_: w.Rectangle_State) {
 	w.Color_Picker({
-		config = {id = "color_picker_docs_hero", width = set.Width(f32(420))},
-		value = color_picker_demo_value,
-		channel = color_picker_demo_channel,
-		previous = color_picker_demo_previous,
-		web_only = color_picker_demo_web_only,
+		config = {
+			id = "color_picker_docs_hero",
+			width = set.Width(f32(420)),
+			value = color_picker_demo_value,
+			channel = color_picker_demo_channel,
+			previous = color_picker_demo_previous,
+			web_only = color_picker_demo_web_only,
+		},
 		on_value_change = proc(value: o.RGBA) {
 			color_picker_demo_value = value
 		},
@@ -265,11 +266,14 @@ color_picker_docs_hero :: proc(_: w.Rectangle_State) {
 @(private)
 color_picker_docs_full_preview :: proc(_: w.Rectangle_State) {
 	w.Color_Picker({
-		config = {id = "color_picker_docs_full", width = set.Width(f32(480))},
-		value = color_picker_demo_value,
-		channel = color_picker_demo_channel,
-		previous = color_picker_demo_previous,
-		web_only = color_picker_demo_web_only,
+		config = {
+			id = "color_picker_docs_full",
+			width = set.Width(f32(480)),
+			value = color_picker_demo_value,
+			channel = color_picker_demo_channel,
+			previous = color_picker_demo_previous,
+			web_only = color_picker_demo_web_only,
+		},
 		on_value_change = proc(value: o.RGBA) {
 			color_picker_demo_value = value
 		},
@@ -289,11 +293,13 @@ color_picker_docs_full_preview :: proc(_: w.Rectangle_State) {
 @(private)
 color_picker_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 	w.Color_Picker({
-		config = {id = "color_picker_docs_disabled"},
-		value = {239, 68, 68, 255},
-		channel = .H,
-		previous = {239, 68, 68, 255},
-		disabled = true,
+		config = {
+			id = "color_picker_docs_disabled",
+			value = {239, 68, 68, 255},
+			channel = .H,
+			previous = {239, 68, 68, 255},
+			disabled = set.Disabled(true),
+		},
 		child = color_picker_docs_disabled_child,
 	})
 }
@@ -320,7 +326,7 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"color_picker_docs_usage",
 		"Usage",
-		"value, channel, previous, and web_only are caller-owned. Pass them every frame. Drag updates fire on_value_change; release commits through on_value_commit.",
+		"config.value, config.channel, config.previous, and config.web_only are caller-owned. Pass them every frame. Drag updates fire on_value_change; release commits through on_value_commit.",
 		proc(_: w.Rectangle_State) {
 			doc_code("color_picker_docs_usage_call", COLOR_PICKER_DOCS_USAGE_CALL)
 		},
@@ -335,11 +341,13 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"color_picker_docs_composition_code",
 				`w.Color_Picker({
-	config = {id = "picker"},
-	value = value,
-	channel = channel,
-	previous = previous,
-	web_only = web_only,
+	config = {
+		id = "picker",
+		value = value,
+		channel = channel,
+		previous = previous,
+		web_only = web_only,
+	},
 	on_value_change = ...,
 	on_value_commit = ...,
 	on_channel_change = ...,
@@ -348,10 +356,10 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 		w.Color_Picker_Field({config = {id = "picker_field"}})
 		w.Color_Picker_Slider({config = {id = "picker_slider"}})
 		w.Color_Picker_Alpha({config = {id = "picker_alpha"}})
-		w.Color_Picker_Swatch({config = {id = "picker_swatch"}, role = .CURRENT})
+		w.Color_Picker_Swatch({config = {id = "picker_swatch", role = .CURRENT}})
 		w.Color_Picker_Channels({config = {id = "picker_channels"}})
-		w.Color_Picker_Hex({config = {id = "picker_hex"}, include_alpha = true})
-		w.Color_Picker_Type({config = {id = "picker_rgb"}, color_type = .RGB})
+		w.Color_Picker_Hex({config = {id = "picker_hex", include_alpha = true}})
+		w.Color_Picker_Type({config = {id = "picker_rgb", color_type = .RGB}})
 	},
 })`,
 			)
@@ -370,8 +378,7 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"color_picker_docs_channels_code",
 				`w.Color_Picker({
-	config = {id = "picker"},
-	channel = .H,
+	config = {id = "picker", channel = .H},
 	on_channel_change = proc(channel: o.Color_Picker_Channel) {
 		active_channel = channel
 	},
@@ -391,9 +398,9 @@ color_picker_docs_body :: proc(_: w.Rectangle_State) {
 		proc(_: w.Rectangle_State) {
 			doc_code(
 				"color_picker_docs_types_code",
-				`w.Color_Picker_Hex({config = {id = "hex"}, include_alpha = true})
-w.Color_Picker_Type({config = {id = "rgb"}, color_type = .RGB})
-w.Color_Picker_Type({config = {id = "hsl"}, color_type = .HSL})`,
+				`w.Color_Picker_Hex({config = {id = "hex", include_alpha = true}})
+w.Color_Picker_Type({config = {id = "rgb", color_type = .RGB}})
+w.Color_Picker_Type({config = {id = "hsl", color_type = .HSL}})`,
 			)
 		},
 	)
@@ -401,12 +408,12 @@ w.Color_Picker_Type({config = {id = "hsl"}, color_type = .HSL})`,
 	doc_section(
 		"color_picker_docs_swatches",
 		"Swatches",
-		"Color_Picker_Swatch paints the current or previous color. role is CURRENT or PREVIOUS. Commit previous from on_value_commit.",
+		"Color_Picker_Swatch paints the current or previous color. config.role is CURRENT or PREVIOUS. Commit previous from on_value_commit.",
 		proc(_: w.Rectangle_State) {
 			doc_code(
 				"color_picker_docs_swatches_code",
-				`w.Color_Picker_Swatch({config = {id = "current"}, role = .CURRENT})
-w.Color_Picker_Swatch({config = {id = "previous"}, role = .PREVIOUS})`,
+				`w.Color_Picker_Swatch({config = {id = "current", role = .CURRENT}})
+w.Color_Picker_Swatch({config = {id = "previous", role = .PREVIOUS}})`,
 			)
 		},
 	)
@@ -414,17 +421,19 @@ w.Color_Picker_Swatch({config = {id = "previous"}, role = .PREVIOUS})`,
 	doc_section(
 		"color_picker_docs_disabled",
 		"Disabled",
-		"Set disabled on the root to block field and slider interaction while still showing the color.",
+		"Set config.disabled on the root to block field and slider interaction while still showing the color.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("color_picker_docs_disabled_preview", color_picker_docs_disabled_preview)
 			doc_code(
 				"color_picker_docs_disabled_code",
 				`w.Color_Picker({
-	config = {id = "locked"},
-	value = {239, 68, 68, 255},
-	channel = .H,
-	previous = {239, 68, 68, 255},
-	disabled = true,
+	config = {
+		id = "locked",
+		value = {239, 68, 68, 255},
+		channel = .H,
+		previous = {239, 68, 68, 255},
+		disabled = set.Disabled(true),
+	},
 	child = ...,
 })`,
 			)
@@ -446,7 +455,7 @@ w.Color_Picker_Swatch({config = {id = "previous"}, role = .PREVIOUS})`,
 			doc_h3("color_picker_docs_api_config_h3", "Config")
 			doc_muted(
 				"color_picker_docs_api_config_note",
-				"Color_Picker_Config is Widget_Config. Part sizing and chrome are configured on each part's config.",
+				"Color_Picker_Config embeds Widget_Config. Part sizing and chrome are configured on each part's config.",
 			)
 			doc_table("color_picker_docs_config_table", COLOR_PICKER_DOCS_CONFIG[:])
 

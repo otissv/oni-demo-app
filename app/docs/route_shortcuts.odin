@@ -23,9 +23,11 @@ shortcuts_container :: proc(state: w.Rectangle_State) {
 
 			w.Shortcuts_Table(
 				{
-					config = {id = "shortcuts_settings"},
-					session = &g.app.shortcuts_table,
-					bindings_path = g.app.settings_path,
+					config = {
+						id = "shortcuts_settings",
+						session = &g.app.shortcuts_table,
+						bindings_path = g.app.settings_path,
+					},
 				},
 			)
 		},

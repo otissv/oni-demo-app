@@ -43,50 +43,32 @@ import set "oni/set"`
 
 @(private)
 CALENDAR_DOCS_USAGE_CALL :: `w.Calendar({
-	config = {id = "event_date", width = set.Width(f32(320))},
-	mode = .SINGLE,
-	selected = selected,
-	has_selected = has_selected,
-	month = month,
+	config = {
+		id = "event_date",
+		width = set.Width(f32(320)),
+		mode = .SINGLE,
+		selected = selected,
+		has_selected = has_selected,
+		month = month,
+	},
 	on_month_change = proc(next: w.Calendar_Date) { month = next },
 	on_select = proc(selection: w.Calendar_Selection) {
 		selected = selection.single
 		has_selected = selection.has_single
 	},
 	child = proc(_: w.Calendar_State) {
-		w.Calendar_Month({config = {id = "event_date/month"}, month_index = 0})
+		w.Calendar_Month({config = {id = "event_date/month", month_index = 0}})
 	},
 })`
 
 @(private)
 CALENDAR_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Calendar_Config (= Widget_Config)", "{}"},
-	{"mode", "Calendar_Mode", ".NONE"},
-	{"selected", "Calendar_Date", "{}"},
-	{"has_selected", "bool", "false"},
-	{"selected_dates", "[]Calendar_Date", "nil"},
-	{"selected_range", "Calendar_Range", "{}"},
-	{"month", "Calendar_Date", "{}"},
+	{"config", "Calendar_Config (Widget_Config + domain)", "{}"},
 	{"on_month_change", "proc(month: Calendar_Date)", "nil"},
 	{"on_select", "proc(selection: Calendar_Selection)", "nil"},
 	{"on_day_click", "proc(date: Calendar_Date)", "nil"},
-	{"required", "bool", "false"},
-	{"min", "int", "0"},
-	{"max", "int", "0"},
-	{"start_month", "Calendar_Date", "{}"},
-	{"end_month", "Calendar_Date", "{}"},
-	{"start_date", "Calendar_Date", "{} (also clamps month nav)"},
-	{"end_date", "Calendar_Date", "{} (also clamps month nav)"},
 	{"disabled_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
 	{"hidden_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
-	{"hide_outside_days", "bool", "false"},
-	{"show_week_numbers", "bool", "false"},
-	{"week_starts_on", "Calendar_Weekday", ".SUNDAY"},
-	{"number_of_months", "int", "1"},
-	{"today", "Calendar_Date", "{} (system date)"},
-	{"disabled", "bool", "false"},
-	{"day_size", "Cfg(Style_F32)", "unset → 36"},
-	{"gap", "Cfg(Style_F32)", "unset → 4"},
 	{"day", "proc(Calendar_Day_State)", "nil → Calendar_Day"},
 	{"format_month", "proc(date: Calendar_Date) -> string", "nil"},
 	{"format_weekday", "proc(weekday: Calendar_Weekday) -> string", "nil"},
@@ -122,7 +104,7 @@ CALENDAR_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"border", "Cfg(Border)", "unset"},
 	{"border_color", "Cfg(Colors)", "unset"},
 	{"background", "Cfg(Colors)", "unset"},
-	{"disabled", "Cfg(Style_Bool)", "unset (prefer props.disabled)"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
 	{"tabbable", "Cfg(Style_Bool)", "unset"},
 	{"opacity", "Cfg(Style_F32)", "unset"},
 	{"overflow_x", "Cfg(Overflow)", "unset"},
@@ -137,6 +119,26 @@ CALENDAR_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"max_h", "Cfg(Style_F32)", "unset"},
 	{"visibility", "Cfg(Visibility)", "unset"},
 	{"pointer_events", "Cfg(Pointer_Events)", "unset"},
+	{"mode", "Calendar_Mode", ".NONE"},
+	{"selected", "Calendar_Date", "{}"},
+	{"has_selected", "bool", "false"},
+	{"selected_dates", "[]Calendar_Date", "nil"},
+	{"selected_range", "Calendar_Range", "{}"},
+	{"month", "Calendar_Date", "{}"},
+	{"required", "bool", "false"},
+	{"min", "int", "0"},
+	{"max", "int", "0"},
+	{"start_month", "Calendar_Date", "{}"},
+	{"end_month", "Calendar_Date", "{}"},
+	{"start_date", "Calendar_Date", "{} (also clamps month nav)"},
+	{"end_date", "Calendar_Date", "{} (also clamps month nav)"},
+	{"hide_outside_days", "bool", "false"},
+	{"show_week_numbers", "bool", "false"},
+	{"week_starts_on", "Calendar_Weekday", ".SUNDAY"},
+	{"number_of_months", "int", "1"},
+	{"today", "Calendar_Date", "{} (system date)"},
+	{"day_size", "Cfg(Style_F32)", "unset → 36"},
+	{"gap", "Cfg(Style_F32)", "day-cell gap (not gap_x/gap_y)"},
 }
 
 @(private)
@@ -311,22 +313,22 @@ calendar_demo_mode_button :: proc(
 
 @(private)
 calendar_docs_month_child :: proc(_: w.Calendar_State) {
-	w.Calendar_Month({config = {id = "calendar_docs_main/month"}, month_index = 0})
+	w.Calendar_Month({config = {id = "calendar_docs_main/month", month_index = 0}})
 }
 
 @(private)
 calendar_docs_weekends_child :: proc(_: w.Calendar_State) {
-	w.Calendar_Month({config = {id = "calendar_docs_weekends/month"}, month_index = 0})
+	w.Calendar_Month({config = {id = "calendar_docs_weekends/month", month_index = 0}})
 }
 
 @(private)
 calendar_docs_disabled_child :: proc(_: w.Calendar_State) {
-	w.Calendar_Month({config = {id = "calendar_docs_disabled/month"}, month_index = 0})
+	w.Calendar_Month({config = {id = "calendar_docs_disabled/month", month_index = 0}})
 }
 
 @(private)
 calendar_docs_basic_child :: proc(_: w.Calendar_State) {
-	w.Calendar_Month({config = {id = "calendar_docs_basic/month"}, month_index = 0})
+	w.Calendar_Month({config = {id = "calendar_docs_basic/month", month_index = 0}})
 }
 
 @(private)
@@ -355,11 +357,14 @@ calendar_docs_mode_row :: proc(_: w.Rectangle_State) {
 calendar_docs_hero :: proc(_: w.Rectangle_State) {
 	w.Calendar(
 		{
-			config = {id = "calendar_docs_hero", width = set.Width(f32(320))},
-			mode = .SINGLE,
-			month = {year = 2024, month = 6, day = 1},
-			today = {year = 2024, month = 6, day = 15},
-			has_selected = true,
+			config = {
+				id = "calendar_docs_hero",
+				width = set.Width(f32(320)),
+				mode = .SINGLE,
+				month = {year = 2024, month = 6, day = 1},
+				today = {year = 2024, month = 6, day = 15},
+				has_selected = true,
+			},
 			child = calendar_docs_basic_child,
 		},
 	)
@@ -400,18 +405,21 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 			)
 			w.Calendar(
 				{
-					config = {id = "calendar_docs_main", width = set.Width(f32(320))},
-					mode = calendar_demo_mode,
-					selected = calendar_demo_selected,
-					has_selected = calendar_demo_has_selected,
-					selected_dates = calendar_demo_dates[:calendar_demo_date_count],
-					selected_range = calendar_demo_range,
-					month = calendar_demo_month,
-					on_month_change = calendar_demo_on_month,
+					config = {
+						id = "calendar_docs_main",
+						width = set.Width(f32(320)),
+						mode = calendar_demo_mode,
+						selected = calendar_demo_selected,
+						has_selected = calendar_demo_has_selected,
+						selected_dates = calendar_demo_dates[:calendar_demo_date_count],
+						selected_range = calendar_demo_range,
+						month = calendar_demo_month,
+						today = {year = 2024, month = 6, day = 15},
+						required = calendar_demo_mode == .SINGLE,
+						max = calendar_demo_mode == .MULTIPLE ? 5 : 0,
+					},
 					on_select = calendar_demo_on_select,
-					today = {year = 2024, month = 6, day = 15},
-					required = calendar_demo_mode == .SINGLE,
-					max = calendar_demo_mode == .MULTIPLE ? 5 : 0,
+					on_month_change = calendar_demo_on_month,
 					child = calendar_docs_month_child,
 				},
 			)
@@ -423,13 +431,16 @@ calendar_docs_modes_preview :: proc(_: w.Rectangle_State) {
 calendar_docs_weekends_preview :: proc(_: w.Rectangle_State) {
 	w.Calendar(
 		{
-			config = {id = "calendar_docs_weekends", width = set.Width(f32(320))},
-			mode = .SINGLE,
-			month = calendar_demo_weekends_month,
+			config = {
+				id = "calendar_docs_weekends",
+				width = set.Width(f32(320)),
+				mode = .SINGLE,
+				month = calendar_demo_weekends_month,
+				today = {year = 2024, month = 6, day = 15},
+				hide_outside_days = true,
+			},
 			on_month_change = calendar_demo_weekends_on_month,
-			today = {year = 2024, month = 6, day = 15},
 			disabled_matcher = calendar_demo_weekend_disabled,
-			hide_outside_days = true,
 			child = calendar_docs_weekends_child,
 		},
 	)
@@ -439,13 +450,16 @@ calendar_docs_weekends_preview :: proc(_: w.Rectangle_State) {
 calendar_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 	w.Calendar(
 		{
-			config = {id = "calendar_docs_disabled", width = set.Width(f32(320))},
-			mode = .SINGLE,
-			month = {year = 2024, month = 6, day = 1},
-			today = {year = 2024, month = 6, day = 15},
-			selected = {year = 2024, month = 6, day = 10},
-			has_selected = true,
-			disabled = true,
+			config = {
+				id = "calendar_docs_disabled",
+				width = set.Width(f32(320)),
+				mode = .SINGLE,
+				month = {year = 2024, month = 6, day = 1},
+				today = {year = 2024, month = 6, day = 15},
+				selected = {year = 2024, month = 6, day = 10},
+				has_selected = true,
+				disabled = set.Disabled(true),
+			},
 			child = calendar_docs_disabled_child,
 		},
 	)
@@ -488,10 +502,12 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"calendar_docs_modes_code",
 				`w.Calendar({
-	config = {id = "dates"},
-	mode = .MULTIPLE,
-	selected_dates = dates[:count],
-	max = 5,
+	config = {
+		id = "dates",
+		mode = .MULTIPLE,
+		selected_dates = dates[:count],
+		max = 5,
+	},
 	on_select = proc(selection: w.Calendar_Selection) { /* copy selection.multiple */ },
 	child = ...,
 })`,
@@ -508,13 +524,15 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"calendar_docs_weekends_code",
 				`w.Calendar({
-	config = {id = "weekdays_only"},
-	mode = .SINGLE,
-	disabled_matcher = proc(date: w.Calendar_Date) -> bool {
-		weekday, ok := w.Calendar_Date_Weekday(date)
-		return ok && (weekday == .SATURDAY || weekday == .SUNDAY)
+	config = {
+		id = "weekdays_only",
+		mode = .SINGLE,
+		disabled_matcher = proc(date: w.Calendar_Date) -> bool {
+			weekday, ok := w.Calendar_Date_Weekday(date)
+			return ok && (weekday == .SATURDAY || weekday == .SUNDAY)
+		},
+		hide_outside_days = true,
 	},
-	hide_outside_days = true,
 	child = ...,
 })`,
 			)
@@ -533,9 +551,11 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"calendar_docs_week_numbers_code",
 				`w.Calendar({
-	config = {id = "with_weeks"},
-	mode = .SINGLE,
-	show_week_numbers = true,
+	config = {
+		id = "with_weeks",
+		mode = .SINGLE,
+		show_week_numbers = true,
+	},
 	child = ...,
 })`,
 			)
@@ -545,17 +565,19 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_disabled_widget",
 		"Disabled",
-		"Set disabled on the props to block all interaction while still rendering the current selection.",
+		"Set config.disabled with set.Disabled(true) to block all interaction while still rendering the current selection.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("calendar_docs_disabled_preview", calendar_docs_disabled_preview)
 			doc_code(
 				"calendar_docs_disabled_code",
 				`w.Calendar({
-	config = {id = "locked"},
-	mode = .SINGLE,
-	selected = {year = 2024, month = 6, day = 10},
-	has_selected = true,
-	disabled = true,
+	config = {
+		id = "locked",
+		mode = .SINGLE,
+		selected = {year = 2024, month = 6, day = 10},
+		has_selected = true,
+		disabled = set.Disabled(true),
+	},
 	child = ...,
 })`,
 			)
@@ -570,13 +592,12 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"calendar_docs_composition_code",
 				`w.Calendar({
-	config = {id = "custom"},
-	mode = .SINGLE,
+	config = {id = "custom", mode = .SINGLE},
 	child = proc(_: w.Calendar_State) {
 		w.Calendar_Navigation({config = {id = "custom/nav"}})
-		w.Calendar_Caption({config = {id = "custom/caption"}, month_index = 0})
-		w.Calendar_Weekdays({config = {id = "custom/weekdays"}, month_index = 0})
-		w.Calendar_Grid({config = {id = "custom/grid"}, month_index = 0})
+		w.Calendar_Caption({config = {id = "custom/caption", month_index = 0}})
+		w.Calendar_Weekdays({config = {id = "custom/weekdays", month_index = 0}})
+		w.Calendar_Grid({config = {id = "custom/grid", month_index = 0}})
 	},
 })`,
 			)
@@ -586,7 +607,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"calendar_docs_api",
 		"API Reference",
-		"w.Calendar in oni/widgets/calendar.odin. Calendar_Config is Widget_Config. Compose months via child; override cells via day (Calendar_Grid.day). day_size/gap are layout metrics; day chrome uses theme tokens or a custom day builder.",
+		"w.Calendar in oni/widgets/calendar.odin. Calendar_Config embeds Widget_Config plus selection/month/domain fields. Compose months via child; override cells via config.day (Calendar_Grid config.day). day_size/gap are layout metrics on config; day chrome uses theme tokens or a custom day builder.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("calendar_docs_api_props_h3", "Props")
 			doc_muted(
@@ -598,7 +619,7 @@ calendar_docs_body :: proc(_: w.Rectangle_State) {
 			doc_h3("calendar_docs_api_config_h3", "Config")
 			doc_muted(
 				"calendar_docs_api_config_note",
-				"Calendar_Config is Widget_Config. Style chrome for days uses the separate style prop, not these fields.",
+				"Calendar_Config embeds Widget_Config plus domain fields (mode, month, matchers, day_size, gap, …). Style chrome for days uses the separate style prop, not these fields.",
 			)
 			doc_table("calendar_docs_config_table", CALENDAR_DOCS_CONFIG[:])
 

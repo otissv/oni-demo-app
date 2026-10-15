@@ -23,26 +23,18 @@ import set "oni/set"`
 
 @(private)
 RADIO_DOCS_USAGE_CALL :: `w.Radio_Group({
-	config = {id = "plan"},
-	value = plan,
-	name = "plan",
+	config = {id = "plan", value = plan, name = "plan"},
 	on_value_change = proc(value: string) { plan = value },
 	child = proc(_: w.Radio_Group_State) {
-		w.Radio({config = {id = "plan-free"}, value = "free"})
-		w.Radio({config = {id = "plan-pro"}, value = "pro"})
+		w.Radio({config = {id = "plan-free", value = "free"}})
+		w.Radio({config = {id = "plan-pro", value = "pro"}})
 	},
 })`
 
 @(private)
 RADIO_GROUP_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Radio_Group_Config (= Widget_Config)", "{}"},
-	{"value", "string", `""`},
-	{"name", "string", `""`},
-	{"required", "bool", "false"},
-	{"disabled", "bool", "false"},
+	{"config", "Radio_Group_Config (Widget_Config + domain)", "{}"},
 	{"on_value_change", "proc(value: string)", "nil"},
-	{"loop", "Radio_Loop", ".ON"},
-	{"orientation", "Radio_Orientation", ".VERTICAL"},
 	{"child", "proc(Radio_Group_State)", "nil"},
 	{"on_mount", "proc(Radio_Group_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Radio_Group_State) -> Mount", "nil"},
@@ -66,9 +58,7 @@ RADIO_GROUP_DOCS_PROPS := [?]Doc_Prop_Row {
 
 @(private)
 RADIO_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Radio_Config (= Widget_Config)", "{}"},
-	{"value", "string", `""`},
-	{"disabled", "bool", "false"},
+	{"config", "Radio_Config (value + Widget_Config)", "{}"},
 	{"child", "proc(Radio_State)", "nil"},
 	{"on_mount", "proc(Radio_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Radio_State) -> Mount", "nil"},
@@ -91,8 +81,24 @@ RADIO_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
+RADIO_GROUP_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"value", "string", `""`},
+	{"name", "string", `""`},
+	{"required", "bool", "false"},
+	{"loop", "Radio_Loop", ".ON"},
+	{"orientation", "Radio_Orientation", ".VERTICAL"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
+}
+
+@(private)
+RADIO_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"value", "string", `"" (required, unique in group)`},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
+}
+
+@(private)
 radio_demo_plan_free :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_plan_free"}, value = "free"})
+	w.Radio({config = {id = "radio_docs_plan_free", value = "free"}})
 	w.Text(
 		{
 			config = {
@@ -107,7 +113,7 @@ radio_demo_plan_free :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_plan_pro :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_plan_pro"}, value = "pro"})
+	w.Radio({config = {id = "radio_docs_plan_pro", value = "pro"}})
 	w.Text(
 		{
 			config = {
@@ -122,7 +128,7 @@ radio_demo_plan_pro :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_plan_team :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_plan_team"}, value = "team"})
+	w.Radio({config = {id = "radio_docs_plan_team", value = "team"}})
 	w.Text(
 		{
 			config = {
@@ -190,9 +196,7 @@ radio_docs_vertical_preview :: proc(_: w.Rectangle_State) {
 @(private)
 radio_docs_vertical_inner :: proc(_: w.Rectangle_State) {
 	w.Radio_Group({
-		config = {id = "radio_docs_plan"},
-		value = radio_demo_plan,
-		name = "plan",
+		config = {id = "radio_docs_plan", value = radio_demo_plan, name = "plan"},
 		on_value_change = proc(value: string) {
 			radio_demo_plan = value
 		},
@@ -212,7 +216,7 @@ radio_docs_vertical_inner :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_density_compact :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_density_compact"}, value = "compact"})
+	w.Radio({config = {id = "radio_docs_density_compact", value = "compact"}})
 	w.Text(
 		{
 			config = {
@@ -227,7 +231,7 @@ radio_demo_density_compact :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_density_comfortable :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_density_comfortable"}, value = "comfortable"})
+	w.Radio({config = {id = "radio_docs_density_comfortable", value = "comfortable"}})
 	w.Text(
 		{
 			config = {
@@ -242,7 +246,7 @@ radio_demo_density_comfortable :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_density_spacious :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_density_spacious"}, value = "spacious"})
+	w.Radio({config = {id = "radio_docs_density_spacious", value = "spacious"}})
 	w.Text(
 		{
 			config = {
@@ -309,9 +313,11 @@ radio_docs_horizontal_preview :: proc(_: w.Rectangle_State) {
 @(private)
 radio_docs_horizontal_inner :: proc(_: w.Rectangle_State) {
 	w.Radio_Group({
-		config = {id = "radio_docs_density"},
-		value = radio_demo_density,
-		orientation = .HORIZONTAL,
+		config = {
+			id = "radio_docs_density",
+			value = radio_demo_density,
+			orientation = .HORIZONTAL,
+		},
 		on_value_change = proc(value: string) {
 			radio_demo_density = value
 		},
@@ -331,7 +337,7 @@ radio_docs_horizontal_inner :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_notify_all :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_notify_all"}, value = "all"})
+	w.Radio({config = {id = "radio_docs_notify_all", value = "all"}})
 	w.Text(
 		{
 			config = {
@@ -346,7 +352,7 @@ radio_demo_notify_all :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_notify_email :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_notify_email"}, value = "email"})
+	w.Radio({config = {id = "radio_docs_notify_email", value = "email"}})
 	w.Text(
 		{
 			config = {
@@ -361,7 +367,9 @@ radio_demo_notify_email :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_notify_none :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_notify_none"}, value = "none", disabled = true})
+	w.Radio({
+		config = {id = "radio_docs_notify_none", value = "none", disabled = set.Disabled(true)},
+	})
 	w.Text(
 		{config = {id = "radio_docs_notify_none_text", text = "Muted", font_size = set.F32(14)}},
 	)
@@ -421,10 +429,12 @@ radio_docs_disabled_item_preview :: proc(_: w.Rectangle_State) {
 @(private)
 radio_docs_disabled_item_inner :: proc(_: w.Rectangle_State) {
 	w.Radio_Group({
-		config = {id = "radio_docs_notify"},
-		value = radio_demo_notify,
-		name = "notify",
-		required = true,
+		config = {
+			id = "radio_docs_notify",
+			value = radio_demo_notify,
+			name = "notify",
+			required = true,
+		},
 		on_value_change = proc(value: string) {
 			radio_demo_notify = value
 		},
@@ -444,7 +454,7 @@ radio_docs_disabled_item_inner :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_locked_all :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_locked_all"}, value = "all"})
+	w.Radio({config = {id = "radio_docs_locked_all", value = "all"}})
 	w.Text(
 		{
 			config = {
@@ -459,7 +469,7 @@ radio_demo_locked_all :: proc(_: w.Rectangle_State) {
 
 @(private)
 radio_demo_locked_team :: proc(_: w.Rectangle_State) {
-	w.Radio({config = {id = "radio_docs_locked_team"}, value = "team"})
+	w.Radio({config = {id = "radio_docs_locked_team", value = "team"}})
 	w.Text(
 		{
 			config = {
@@ -502,9 +512,11 @@ radio_demo_locked_child :: proc(_: w.Radio_Group_State) {
 radio_docs_disabled_group_preview :: proc(_: w.Rectangle_State) {
 	w.Radio_Group(
 		{
-			config = {id = "radio_docs_locked"},
-			value = radio_demo_locked,
-			disabled = true,
+			config = {
+				id = "radio_docs_locked",
+				value = radio_demo_locked,
+				disabled = set.Disabled(true),
+			},
 			child = radio_demo_locked_child,
 		},
 	)
@@ -513,8 +525,7 @@ radio_docs_disabled_group_preview :: proc(_: w.Rectangle_State) {
 @(private)
 radio_docs_hero :: proc(_: w.Rectangle_State) {
 	w.Radio_Group({
-		config = {id = "radio_docs_hero"},
-		value = radio_demo_plan,
+		config = {id = "radio_docs_hero", value = radio_demo_plan},
 		on_value_change = proc(value: string) {
 			radio_demo_plan = value
 		},
@@ -559,9 +570,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"radio_docs_vertical_code",
 				`w.Radio_Group({
-	config = {id = "plan"},
-	value = plan,
-	name = "plan",
+	config = {id = "plan", value = plan, name = "plan"},
 	on_value_change = proc(value: string) { plan = value },
 	child = ...,
 })`,
@@ -578,9 +587,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"radio_docs_horizontal_code",
 				`w.Radio_Group({
-	config = {id = "density"},
-	value = density,
-	orientation = .HORIZONTAL,
+	config = {id = "density", value = density, orientation = .HORIZONTAL},
 	on_value_change = proc(value: string) { density = value },
 	child = ...,
 })`,
@@ -591,15 +598,13 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"radio_docs_disabled_item",
 		"Disabled item",
-		"Set disabled on a single Radio to skip it in keyboard navigation. required on the group is exposed on state for form owners.",
+		"Set config.disabled on a single Radio to skip it in keyboard navigation. required on the group is exposed on state for form owners.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("radio_docs_disabled_item_preview_wrap", radio_docs_disabled_item_preview)
 			doc_code(
 				"radio_docs_disabled_item_code",
 				`w.Radio({
-	config = {id = "muted"},
-	value = "none",
-	disabled = true,
+	config = {id = "muted", value = "none", disabled = set.Disabled(true)},
 })`,
 			)
 		},
@@ -608,7 +613,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 	doc_section(
 		"radio_docs_disabled_group",
 		"Disabled group",
-		"disabled on Radio_Group disables every item without double opacity on each Radio.",
+		"config.disabled on Radio_Group disables every item without double opacity on each Radio.",
 		proc(_: w.Rectangle_State) {
 			doc_preview(
 				"radio_docs_disabled_group_preview_wrap",
@@ -617,9 +622,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"radio_docs_disabled_group_code",
 				`w.Radio_Group({
-	config = {id = "locked"},
-	value = value,
-	disabled = true,
+	config = {id = "locked", value = value, disabled = set.Disabled(true)},
 	child = ...,
 })`,
 			)
@@ -639,7 +642,7 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 			doc_table("radio_docs_group_props_table", RADIO_GROUP_DOCS_PROPS[:])
 
 			doc_h3("radio_docs_api_group_config_h3", "Radio_Group config")
-			doc_table("radio_docs_group_config_table", DOC_WIDGET_CONFIG[:])
+			doc_table("radio_docs_group_config_table", RADIO_GROUP_DOCS_CONFIG[:])
 
 			doc_h3("radio_docs_api_radio_props_h3", "Radio props")
 			doc_muted(
@@ -647,6 +650,9 @@ radio_docs_body :: proc(_: w.Rectangle_State) {
 				"Radio is inert outside a Radio_Group. child replaces the checked dot and runs only while checked.",
 			)
 			doc_table("radio_docs_radio_props_table", RADIO_DOCS_PROPS[:])
+
+			doc_h3("radio_docs_api_radio_config_h3", "Radio config")
+			doc_table("radio_docs_radio_config_table", RADIO_DOCS_CONFIG[:])
 		},
 	)
 }

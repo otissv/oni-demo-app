@@ -90,8 +90,7 @@ text_docs_for_id_preview :: proc(_: w.Rectangle_State) {
 @(private)
 text_docs_for_id_row :: proc(_: w.Rectangle_State) {
 	w.Checkbox({
-		config = {id = "text_docs_for_id_target"},
-		checked = .FALSE,
+		config = {id = "text_docs_for_id_target", checked = .FALSE},
 	})
 	w.Text({
 		config = {

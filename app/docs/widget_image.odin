@@ -11,9 +11,9 @@ import set "oni/set"`
 
 @(private)
 IMAGE_DOCS_USAGE_CALL :: `w.Image({
-	texture = logo,
 	config = {
 		id = "logo",
+		texture = logo,
 		width = set.Width(464),
 		height = set.Height(464),
 		texture_fit = set.Texture_Fit(.CONTAIN),
@@ -22,14 +22,7 @@ IMAGE_DOCS_USAGE_CALL :: `w.Image({
 
 @(private)
 IMAGE_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Image_Config (= Widget_Config)", "{}"},
-	{"texture", "Texture_Handle", "{}"},
-	{"src", "Rect", "{}"},
-	{"dst", "Rect", "{}"},
-	{"tint", "Colors", "unset"},
-	{"alt", "string", `""`},
-	{"texture_fit", "Cfg(Style_Texture_Fit)", "unset"},
-	{"texture_pos", "Cfg(Style_Texture_Pos)", "unset"},
+	{"config", "Image_Config (texture + Widget_Config)", "{}"},
 	{"child", "proc(Image_State)", "nil"},
 	{"on_mount", "proc(Image_State) -> Mount", "nil"},
 	{"on_unmount", "proc(Image_State) -> Mount", "nil"},
@@ -52,12 +45,23 @@ IMAGE_DOCS_PROPS := [?]Doc_Prop_Row {
 }
 
 @(private)
+IMAGE_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"texture", "Texture_Handle", "{}"},
+	{"src", "Rect", "{}"},
+	{"dst", "Rect", "{}"},
+	{"tint", "Colors", "unset"},
+	{"alt", "string", `""`},
+	{"texture_fit", "Cfg(Style_Texture_Fit)", "unset"},
+	{"texture_pos", "Cfg(Style_Texture_Pos)", "unset"},
+}
+
+@(private)
 image_docs_hero :: proc(_: w.Rectangle_State) {
 	w.Image(
 		{
-			texture = g.app.image_texture,
 			config = {
 				id = "image_docs_hero",
+				texture = g.app.image_texture,
 				width = set.Width(464),
 				height = set.Height(464),
 				texture_fit = set.Texture_Fit(.CONTAIN),
@@ -70,9 +74,9 @@ image_docs_hero :: proc(_: w.Rectangle_State) {
 image_docs_fit_preview :: proc(_: w.Rectangle_State) {
 	w.Image(
 		{
-			texture = g.app.image_texture,
 			config = {
 				id = "image_docs_fit",
+				texture = g.app.image_texture,
 				width = set.Width(320),
 				height = set.Height(180),
 				background = set.Colors(o.Color.MUTED),
@@ -89,9 +93,9 @@ image_docs_fit_preview :: proc(_: w.Rectangle_State) {
 image_docs_pos_preview :: proc(_: w.Rectangle_State) {
 	w.Image(
 		{
-			texture = g.app.image_texture,
 			config = {
 				id = "image_docs_pos",
+				texture = g.app.image_texture,
 				width = set.Width(320),
 				height = set.Height(180),
 				background = set.Colors(o.Color.MUTED),
@@ -99,8 +103,8 @@ image_docs_pos_preview :: proc(_: w.Rectangle_State) {
 				border_color = set.Border_color(o.Color.BORDER),
 				radius = set.Radius(8),
 				texture_fit = set.Texture_Fit(.COVER),
+				texture_pos = set.Texture_Pos(o.Texture_Pos_X_Y{x = 50, y = 50}),
 			},
-			texture_pos = set.Texture_Pos(o.Texture_Pos_X_Y{x = 50, y = 50}),
 		},
 	)
 }
@@ -142,9 +146,9 @@ image_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"image_docs_fit_code",
 				`w.Image({
-	texture = logo,
 	config = {
 		id = "banner",
+		texture = logo,
 		width = set.Width(320),
 		height = set.Height(180),
 		texture_fit = set.Texture_Fit(.CONTAIN),
@@ -163,14 +167,14 @@ image_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"image_docs_pos_code",
 				`w.Image({
-	texture = photo,
 	config = {
 		id = "crop",
+		texture = photo,
 		width = set.Width(320),
 		height = set.Height(180),
 		texture_fit = set.Texture_Fit(.COVER),
+		texture_pos = set.Texture_Pos(o.Texture_Pos_X_Y{x = 50, y = 50}),
 	},
-	texture_pos = set.Texture_Pos(o.Texture_Pos_X_Y{x = 50, y = 50}),
 })`,
 			)
 		},
@@ -182,18 +186,14 @@ image_docs_body :: proc(_: w.Rectangle_State) {
 		"w.Image in oni/widgets/image.odin. Image_Config is Widget_Config.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("image_docs_api_props_h3", "Props")
-			doc_muted(
-				"image_docs_api_props_note",
-				"texture_fit and texture_pos may also live on config; when set on props they override config for that frame.",
-			)
 			doc_table("image_docs_props_table", IMAGE_DOCS_PROPS[:])
 
 			doc_h3("image_docs_api_config_h3", "Config")
 			doc_muted(
 				"image_docs_api_config_note",
-				"Widget_Config fields below. config.texture_fit and config.texture_pos are merged with props.texture_fit / props.texture_pos.",
+				"Image_Config embeds Widget_Config plus texture, src/dst, tint, and alt.",
 			)
-			doc_table("image_docs_config_table", DOC_WIDGET_CONFIG[:])
+			doc_table("image_docs_config_table", IMAGE_DOCS_CONFIG[:])
 		},
 	)
 }

@@ -6,6 +6,9 @@ import w "../../oni/widgets"
 import "core:fmt"
 
 @(private)
+checkbox_demo_hero: w.Checkbox_Value = .FALSE
+
+@(private)
 checkbox_demo_remember: w.Checkbox_Value = .FALSE
 
 @(private)
@@ -23,8 +26,7 @@ import set "oni/set"`
 
 @(private)
 CHECKBOX_DOCS_USAGE_CALL :: `w.Checkbox({
-	config = {id = "remember"},
-	checked = remember,
+	config = {id = "remember", checked = remember},
 	on_checked_change = proc(checked: w.Checkbox_Value) {
 		remember = checked
 	},
@@ -32,9 +34,7 @@ CHECKBOX_DOCS_USAGE_CALL :: `w.Checkbox({
 
 @(private)
 CHECKBOX_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Checkbox_Config (= Widget_Config)", "{}"},
-	{"checked", "Checkbox_Value", ".FALSE"},
-	{"disabled", "bool", "false"},
+	{"config", "Checkbox_Config (checked + Widget_Config)", "{}"},
 	{"child", "proc(Checkbox_State)", "nil"},
 	{"on_checked_change", "proc(checked: Checkbox_Value)", "nil"},
 	{"on_mount", "proc(Checkbox_State) -> Mount", "nil"},
@@ -59,6 +59,7 @@ CHECKBOX_DOCS_PROPS := [?]Doc_Prop_Row {
 
 @(private)
 CHECKBOX_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"checked", "Checkbox_Value", ".FALSE"},
 	{"id", "string", `""`},
 	{"width", "Width", "16"},
 	{"height", "Height", "16"},
@@ -70,7 +71,7 @@ CHECKBOX_DOCS_CONFIG := [?]Doc_Prop_Row {
 	{"color", "Cfg(Colors)", "PRIMARY_FOREGROUND"},
 	{"opacity", "Cfg(Style_F32)", "1 (0.5 when disabled)"},
 	{"tabbable", "Cfg(Style_Bool)", "true"},
-	{"disabled", "Cfg(Style_Bool)", "unset (prefer props.disabled)"},
+	{"disabled", "Cfg(Style_Bool)", "unset"},
 	{"justify", "Cfg(Justify)", "CENTER"},
 	{"overflow_x", "Cfg(Overflow)", ".HIDDEN"},
 	{"overflow_y", "Cfg(Overflow)", ".HIDDEN"},
@@ -107,10 +108,9 @@ checkbox_docs_hero :: proc(_: w.Rectangle_State) {
 		},
 		child = proc(_: w.Rectangle_State) {
 			w.Checkbox({
-				config = {id = "checkbox_docs_hero"},
-				checked = checkbox_demo_remember,
+				config = {id = "checkbox_docs_hero", checked = checkbox_demo_hero},
 				on_checked_change = proc(checked: w.Checkbox_Value) {
-					checkbox_demo_remember = checked
+					checkbox_demo_hero = checked
 				},
 			})
 			w.Text(
@@ -146,8 +146,10 @@ checkbox_docs_basic_preview :: proc(_: w.Rectangle_State) {
 				},
 				child = proc(_: w.Rectangle_State) {
 					w.Checkbox({
-						config = {id = "checkbox_docs_remember"},
-						checked = checkbox_demo_remember,
+						config = {
+							id = "checkbox_docs_remember",
+							checked = checkbox_demo_remember,
+						},
 						on_checked_change = proc(checked: w.Checkbox_Value) {
 							checkbox_demo_remember = checked
 						},
@@ -155,8 +157,8 @@ checkbox_docs_basic_preview :: proc(_: w.Rectangle_State) {
 					w.Text(
 						{
 							config = {
-								for_id = "checkbox_docs_remember",
-								id = "checkbox_docs_remember_text",
+								for_id = "checkbox_docs_basic",
+								id = "checkbox_docs_basic_text",
 								text = "Remember me",
 								font_size = set.F32(14),
 							},
@@ -200,8 +202,7 @@ checkbox_docs_form_preview :: proc(_: w.Rectangle_State) {
 				},
 				child = proc(_: w.Rectangle_State) {
 					w.Checkbox({
-						config = {id = "checkbox_docs_terms"},
-						checked = checkbox_demo_terms,
+						config = {id = "checkbox_docs_terms", checked = checkbox_demo_terms},
 						on_checked_change = proc(checked: w.Checkbox_Value) {
 							checkbox_demo_terms = checked
 						},
@@ -254,8 +255,7 @@ checkbox_docs_indeterminate_preview :: proc(_: w.Rectangle_State) {
 				},
 				child = proc(_: w.Rectangle_State) {
 					w.Checkbox({
-						config = {id = "checkbox_docs_partial"},
-						checked = checkbox_demo_partial,
+						config = {id = "checkbox_docs_partial", checked = checkbox_demo_partial},
 						on_checked_change = proc(checked: w.Checkbox_Value) {
 							checkbox_demo_partial = checked
 						},
@@ -301,9 +301,11 @@ checkbox_docs_disabled_preview :: proc(_: w.Rectangle_State) {
 		child = proc(_: w.Rectangle_State) {
 			w.Checkbox(
 				{
-					config = {id = "checkbox_docs_disabled"},
-					checked = checkbox_demo_disabled,
-					disabled = true,
+					config = {
+						id = "checkbox_docs_disabled",
+						checked = checkbox_demo_disabled,
+						disabled = set.Disabled(true),
+					},
 				},
 			)
 			w.Text(
@@ -356,8 +358,7 @@ checkbox_docs_body :: proc(_: w.Rectangle_State) {
 			doc_code(
 				"checkbox_docs_basic_code",
 				`w.Checkbox({
-	config = {id = "remember"},
-	checked = remember,
+	config = {id = "remember", checked = remember},
 	on_checked_change = proc(checked: w.Checkbox_Value) {
 		remember = checked
 	},
@@ -382,8 +383,7 @@ w.Text({
 			doc_code(
 				"checkbox_docs_form_code",
 				`w.Checkbox({
-	config = {id = "terms"},
-	checked = terms,
+	config = {id = "terms", checked = terms},
 	on_checked_change = proc(checked: w.Checkbox_Value) {
 		terms = checked
 	},
@@ -401,8 +401,7 @@ w.Text({
 			doc_code(
 				"checkbox_docs_indeterminate_code",
 				`w.Checkbox({
-	config = {id = "select_all"},
-	checked = .INDETERMINATE,
+	config = {id = "select_all", checked = .INDETERMINATE},
 	on_checked_change = proc(checked: w.Checkbox_Value) {
 		select_all = checked
 	},
@@ -414,15 +413,13 @@ w.Text({
 	doc_section(
 		"checkbox_docs_disabled",
 		"Disabled",
-		"Set disabled on the props to suppress interaction. Theme opacity drops to 0.5.",
+		"Set config.disabled to suppress interaction. Theme opacity drops to 0.5.",
 		proc(_: w.Rectangle_State) {
 			doc_preview("checkbox_docs_disabled_preview", checkbox_docs_disabled_preview)
 			doc_code(
 				"checkbox_docs_disabled_code",
 				`w.Checkbox({
-	config = {id = "locked"},
-	checked = .TRUE,
-	disabled = true,
+	config = {id = "locked", checked = .TRUE, disabled = set.Disabled(true)},
 })`,
 			)
 		},
@@ -431,17 +428,16 @@ w.Text({
 	doc_section(
 		"checkbox_docs_custom",
 		"Custom indicator",
-		"Pass child to replace the built-in check / minus glyph. child runs only for TRUE and INDETERMINATE.",
+		"Pass config.child to replace the built-in check / minus glyph. It runs only for TRUE and INDETERMINATE.",
 		proc(_: w.Rectangle_State) {
 			doc_code(
 				"checkbox_docs_custom_code",
 				`w.Checkbox({
-	config = {id = "custom"},
-	checked = value,
-	on_checked_change = ...,
+	config = {id = "custom", checked = value},
 	child = proc(_: w.Checkbox_State) {
 		w.Text({config = {id = "custom_mark", text = "✓", font_size = set.F32(12)}})
 	},
+	on_checked_change = ...,
 })`,
 			)
 		},
@@ -450,7 +446,7 @@ w.Text({
 	doc_section(
 		"checkbox_docs_api",
 		"API Reference",
-		"w.Checkbox in oni/widgets/checkbox.odin. Checkbox_Config is Widget_Config.",
+		"w.Checkbox in oni/widgets/checkbox.odin. Checkbox_Config embeds Widget_Config.",
 		proc(_: w.Rectangle_State) {
 			doc_h3("checkbox_docs_api_props_h3", "Props")
 			doc_muted(
@@ -462,7 +458,7 @@ w.Text({
 			doc_h3("checkbox_docs_api_config_h3", "Config")
 			doc_muted(
 				"checkbox_docs_api_config_note",
-				"Defaults below come from checkbox_theme_base after merge. Prefer props.disabled over config.disabled.",
+				"Defaults below come from checkbox_theme_base after merge.",
 			)
 			doc_table("checkbox_docs_config_table", CHECKBOX_DOCS_CONFIG[:])
 		},

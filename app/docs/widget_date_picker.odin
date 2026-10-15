@@ -59,12 +59,14 @@ import set "oni/set"`
 
 @(private)
 DATE_PICKER_DOCS_USAGE_CALL :: `w.Date_Picker({
-	config = {id = "event"},
-	mode = .SINGLE,
-	selected = selected,
-	has_selected = has_selected,
-	open = open,
-	month = month,
+	config = {
+		id = "event",
+		mode = .SINGLE,
+		selected = selected,
+		has_selected = has_selected,
+		open = open,
+		month = month,
+	},
 	on_select = proc(selection: w.Calendar_Selection) {
 		selected = selection.single
 		has_selected = selection.has_single
@@ -76,8 +78,7 @@ DATE_PICKER_DOCS_USAGE_CALL :: `w.Date_Picker({
 			config = {id = "event_trigger"},
 			child = proc(_: w.Date_Picker_Trigger_State) {
 				w.Date_Picker_Value({
-					config = {id = "event_value"},
-					placeholder = "Pick a date",
+					config = {id = "event_value", placeholder = "Pick a date"},
 				})
 			},
 		})
@@ -86,36 +87,13 @@ DATE_PICKER_DOCS_USAGE_CALL :: `w.Date_Picker({
 
 @(private)
 DATE_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
-	{"config", "Date_Picker_Config (= Widget_Config)", "{}"},
-	{"mode", "Calendar_Mode", ".NONE → .SINGLE"},
-	{"selected", "Calendar_Date", "{}"},
-	{"has_selected", "bool", "false"},
-	{"selected_dates", "[]Calendar_Date", "nil"},
-	{"selected_range", "Calendar_Range", "{}"},
-	{"open", "bool", "false"},
-	{"keep_open", "bool", "false"},
-	{"month", "Calendar_Date", "{}"},
+	{"config", "Date_Picker_Config (Widget_Config + domain)", "{}"},
 	{"on_month_change", "proc(month: Calendar_Date)", "nil"},
 	{"on_select", "proc(selection: Calendar_Selection)", "nil"},
 	{"on_day_click", "proc(date: Calendar_Date)", "nil"},
 	{"on_open_change", "proc(open: bool)", "nil"},
-	{"required", "bool", "false"},
-	{"min", "int", "0"},
-	{"max", "int", "0"},
-	{"start_month", "Calendar_Date", "{}"},
-	{"end_month", "Calendar_Date", "{}"},
-	{"start_date", "Calendar_Date", "{}"},
-	{"end_date", "Calendar_Date", "{}"},
 	{"disabled_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
 	{"hidden_matcher", "proc(date: Calendar_Date) -> bool", "nil"},
-	{"hide_outside_days", "bool", "false"},
-	{"show_week_numbers", "bool", "false"},
-	{"week_starts_on", "Calendar_Weekday", ".SUNDAY"},
-	{"number_of_months", "int", "1"},
-	{"today", "Calendar_Date", "{} (system date)"},
-	{"disabled", "bool", "false"},
-	{"day_size", "Cfg(Style_F32)", "unset → 36"},
-	{"gap", "Cfg(Style_F32)", "unset → 4"},
 	{"day", "proc(Calendar_Day_State)", "nil → Calendar_Day"},
 	{"format_month", "proc(date: Calendar_Date) -> string", "nil"},
 	{"format_weekday", "proc(weekday: Calendar_Weekday) -> string", "nil"},
@@ -141,6 +119,33 @@ DATE_PICKER_DOCS_PROPS := [?]Doc_Prop_Row {
 	{"on_key_pressed", "proc(Date_Picker_Event)", "nil"},
 	{"on_key_down", "proc(Date_Picker_Event)", "nil"},
 	{"on_key_released", "proc(Date_Picker_Event)", "nil"},
+}
+
+@(private)
+DATE_PICKER_DOCS_CONFIG := [?]Doc_Prop_Row {
+	{"mode", "Calendar_Mode", ".NONE → .SINGLE"},
+	{"selected", "Calendar_Date", "{}"},
+	{"has_selected", "bool", "false"},
+	{"selected_dates", "[]Calendar_Date", "nil"},
+	{"selected_range", "Calendar_Range", "{}"},
+	{"open", "bool", "false"},
+	{"keep_open", "bool", "false"},
+	{"month", "Calendar_Date", "{}"},
+	{"required", "bool", "false"},
+	{"min", "int", "0"},
+	{"max", "int", "0"},
+	{"start_month", "Calendar_Date", "{}"},
+	{"end_month", "Calendar_Date", "{}"},
+	{"start_date", "Calendar_Date", "{}"},
+	{"end_date", "Calendar_Date", "{}"},
+	{"hide_outside_days", "bool", "false"},
+	{"show_week_numbers", "bool", "false"},
+	{"week_starts_on", "Calendar_Weekday", ".SUNDAY"},
+	{"number_of_months", "int", "1"},
+	{"today", "Calendar_Date", "{} (system date)"},
+	{"disabled", "Cfg(Style_Bool)", "set.Disabled(true)"},
+	{"day_size", "Cfg(Style_F32)", "unset → 36"},
+	{"gap", "Cfg(Style_F32)", "unset → 4"},
 }
 
 @(private)
@@ -198,7 +203,7 @@ date_picker_demo_on_input_month :: proc(month: w.Calendar_Date) {
 @(private)
 date_picker_demo_hero_trigger :: proc(_: w.Date_Picker_Trigger_State) {
 	w.Date_Picker_Value(
-		{config = {id = "date_picker_docs_hero_value"}, placeholder = "Pick a date"},
+		{config = {id = "date_picker_docs_hero_value", placeholder = "Pick a date"}},
 	)
 }
 
@@ -215,7 +220,7 @@ date_picker_demo_hero_child :: proc(_: w.Date_Picker_State) {
 @(private)
 date_picker_demo_basic_trigger :: proc(_: w.Date_Picker_Trigger_State) {
 	w.Date_Picker_Value(
-		{config = {id = "date_picker_docs_basic_value"}, placeholder = "Pick a date"},
+		{config = {id = "date_picker_docs_basic_value", placeholder = "Pick a date"}},
 	)
 }
 
@@ -232,7 +237,7 @@ date_picker_demo_basic_child :: proc(_: w.Date_Picker_State) {
 @(private)
 date_picker_demo_range_trigger :: proc(_: w.Date_Picker_Trigger_State) {
 	w.Date_Picker_Value(
-		{config = {id = "date_picker_docs_range_value"}, placeholder = "Pick a date range"},
+		{config = {id = "date_picker_docs_range_value", placeholder = "Pick a date range"}},
 	)
 }
 
@@ -290,12 +295,14 @@ date_picker_docs_range_status :: proc() -> string {
 date_picker_docs_hero_inner :: proc(_: w.Rectangle_State) {
 	w.Date_Picker(
 		{
-			config = {id = "date_picker_docs_hero"},
-			mode = .SINGLE,
-			selected = date_picker_demo_selected,
-			has_selected = date_picker_demo_has_selected,
-			open = date_picker_demo_hero_open,
-			month = date_picker_demo_month,
+			config = {
+				id = "date_picker_docs_hero",
+				mode = .SINGLE,
+				selected = date_picker_demo_selected,
+				has_selected = date_picker_demo_has_selected,
+				open = date_picker_demo_hero_open,
+				month = date_picker_demo_month,
+			},
 			on_select = date_picker_demo_on_select,
 			on_open_change = date_picker_demo_on_hero_open,
 			on_month_change = date_picker_demo_on_month,
@@ -338,12 +345,14 @@ date_picker_docs_hero_preview :: proc(_: w.Rectangle_State) {
 date_picker_docs_basic_inner :: proc(_: w.Rectangle_State) {
 	w.Date_Picker(
 		{
-			config = {id = "date_picker_docs_basic"},
-			mode = .SINGLE,
-			selected = date_picker_demo_selected,
-			has_selected = date_picker_demo_has_selected,
-			open = date_picker_demo_open,
-			month = date_picker_demo_month,
+			config = {
+				id = "date_picker_docs_basic",
+				mode = .SINGLE,
+				selected = date_picker_demo_selected,
+				has_selected = date_picker_demo_has_selected,
+				open = date_picker_demo_open,
+				month = date_picker_demo_month,
+			},
 			on_select = date_picker_demo_on_select,
 			on_open_change = date_picker_demo_on_open,
 			on_month_change = date_picker_demo_on_month,
@@ -386,12 +395,14 @@ date_picker_docs_basic_preview :: proc(_: w.Rectangle_State) {
 date_picker_docs_range_inner :: proc(_: w.Rectangle_State) {
 	w.Date_Picker(
 		{
-			config = {id = "date_picker_docs_range"},
-			mode = .RANGE,
-			selected_range = date_picker_demo_range,
-			open = date_picker_demo_range_open,
-			month = date_picker_demo_range_month,
-			number_of_months = 2,
+			config = {
+				id = "date_picker_docs_range",
+				mode = .RANGE,
+				selected_range = date_picker_demo_range,
+				open = date_picker_demo_range_open,
+				month = date_picker_demo_range_month,
+				number_of_months = 2,
+			},
 			on_select = date_picker_demo_on_range_select,
 			on_open_change = date_picker_demo_on_range_open,
 			on_month_change = date_picker_demo_on_range_month,
@@ -428,12 +439,14 @@ date_picker_docs_range_preview :: proc(_: w.Rectangle_State) {
 date_picker_docs_input_inner :: proc(_: w.Rectangle_State) {
 	w.Date_Picker(
 		{
-			config = {id = "date_picker_docs_input_root"},
-			mode = .SINGLE,
-			selected = date_picker_demo_input_selected,
-			has_selected = date_picker_demo_input_has_selected,
-			open = date_picker_demo_input_open,
-			month = date_picker_demo_input_month,
+			config = {
+				id = "date_picker_docs_input_root",
+				mode = .SINGLE,
+				selected = date_picker_demo_input_selected,
+				has_selected = date_picker_demo_input_has_selected,
+				open = date_picker_demo_input_open,
+				month = date_picker_demo_input_month,
+			},
 			on_select = date_picker_demo_on_input_select,
 			on_open_change = date_picker_demo_on_input_open,
 			on_month_change = date_picker_demo_on_input_month,
@@ -544,11 +557,15 @@ date_picker_docs_body :: proc(_: w.Rectangle_State) {
 	)
 
 	doc_section(
-		"date_picker_docs_props",
-		"Props",
-		"Root Date_Picker props. Calendar chrome options are forwarded to the default panel.",
+		"date_picker_docs_api",
+		"API Reference",
+		"w.Date_Picker in oni/widgets/date_picker.odin. Domain fields live on Date_Picker_Config; callbacks on props.",
 		proc(_: w.Rectangle_State) {
+			doc_h3("date_picker_docs_api_props_h3", "Props")
 			doc_table("date_picker_docs_props_table", DATE_PICKER_DOCS_PROPS[:])
+
+			doc_h3("date_picker_docs_api_config_h3", "Config")
+			doc_table("date_picker_docs_config_table", DATE_PICKER_DOCS_CONFIG[:])
 		},
 	)
 }
